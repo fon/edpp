@@ -1,0 +1,26 @@
+package comm;
+
+option java_package = "comm";
+option java_outer_classname = "ProtocolMessage";
+
+message Message {
+
+	enum MessageType {
+		NEW = 0;
+		INIT = 1;
+		NEXT = 2;
+		GOSSIP = 3;
+	} 
+	
+	required MessageType type = 1;
+	
+	
+	optional string session = 2;
+	optional int32 execution = 3;
+	optional int32 round = 4;
+	
+	optional double val = 5;
+	repeated double eigenvals = 6 [packed=true];
+	
+}
+	
