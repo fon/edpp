@@ -2,6 +2,8 @@ package util;
 
 import java.util.Arrays;
 
+import org.apache.commons.codec.binary.Base64;
+
 public class Id {
 	
     static final String HEXES = "0123456789ABCDEF";
@@ -17,13 +19,17 @@ public class Id {
 		this.id = id.clone();
 	}
 	
+	public Id(String stringId) {
+		this.id = getByteIdFromString(stringId);
+	}
+	
 	public byte [] getByteRepresentation() {
 		return id;
 	}
 	
 	@Override
 	public String toString() {
-		return getHex(this.id);
+		return getStringId(this.id);
 	}
 	
 	@Override
@@ -36,16 +42,13 @@ public class Id {
 		
 	}
 	
-	public static String getHex( byte [] raw ) {
-	    if ( raw == null ) {
-	      return null;
-	    }
-	    final StringBuilder hex = new StringBuilder( 2 * raw.length );
-	    for ( final byte b : raw ) {
-	      hex.append(HEXES.charAt((b & 0xF0) >> 4))
-	         .append(HEXES.charAt((b & 0x0F)));
-	    }
-	    return hex.toString();
-	  }
-	
+	public static byte [] getByteIdFromString(String stringId) {
+		byte [] byteId = Base64.decodeBase64(stringId);
+		return byteId;
+	}	
+	public static String getStringId(byte [] byteId) {
+		String stringId = new String(Base64.encodeBase64(byteId));
+		return stringId;
+	}
+
 }
