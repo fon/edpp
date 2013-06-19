@@ -1,15 +1,20 @@
 package util;
 
-public interface NeighborsTable extends Iterable<Neighbor>{
 
-	public Neighbor getNeighbor(int index);
+public interface NeighborsTable<T> extends Iterable<T>{
+
+	public T getNeighbor(Id nodeId);
 	
-	public void addNeighbor(Neighbor node);
+	public T getNeighbor(String stringId);
 	
-	public boolean removeNeighbor(String nodeId);
+	public boolean addNeighbor(T node);
 	
-	public boolean removeNeighbor(Neighbor node);
+	public boolean removeNeighbor(Id nodeId);
 	
-	public Neighbor [] toArray();
+	public boolean removeNeighbor(T node);
+	
+	public T [] toArray();
+	
+	public int getSize();
 	
 }

@@ -15,7 +15,7 @@ public class Neighbor {
 	}
 	
 	public Neighbor(Id id, InetAddress address) {
-		this.id = id;
+		this.id = new Id(id);
 		this.address = address;
 	}
 	
@@ -57,6 +57,11 @@ public class Neighbor {
 		Neighbor n = (Neighbor)obj;
 		
 		return this.id.equals(n.getId());
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.id.toString().hashCode();
 	}
 
 }
