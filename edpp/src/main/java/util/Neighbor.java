@@ -19,6 +19,11 @@ public class Neighbor {
 		this.address = address;
 	}
 	
+	public Neighbor(String stringId, InetAddress address) {
+		id = new Id(stringId);
+		this.address = address;
+	}
+	
 	public Id getId() {
 		return id;
 	}
@@ -31,6 +36,14 @@ public class Neighbor {
 		return address;
 	}
 	
+	/**
+	 * 
+	 * @param address The IP address of the neighbor
+	 */
+	public void setAddress(InetAddress address) {
+		this.address = address;
+	}
+	
 	@Override
 	public String toString() {
 		return id.toString();
@@ -38,12 +51,12 @@ public class Neighbor {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj==this) return true;
-		if(!(obj instanceof Neighbor)) return false;
+		if (obj == this) return true;
+		if (obj == null) return false;
+		if(this.getClass()!=obj.getClass()) return false;
 		Neighbor n = (Neighbor)obj;
 		
-		return this.id.equals(n.getId()) && 
-				this.address.equals(n.getAddress());
+		return this.id.equals(n.getId());
 	}
 
 }
