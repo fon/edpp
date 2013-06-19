@@ -23,11 +23,11 @@ public class PlainNeighborsTableSetTest {
 		a2 = InetAddress.getByName("192.168.0.2");
 		a3 = InetAddress.getByName("192.168.0.3");
 
-		Neighbor n1, n2, n3;
+		PlainNeighbor n1, n2, n3;
 		
-		n1 = new Neighbor(id1, a1);
-		n2 = new Neighbor(id2, a2);
-		n3 = new Neighbor(id3, a3);
+		n1 = new PlainNeighbor(id1, a1,10);
+		n2 = new PlainNeighbor(id2, a2,10);
+		n3 = new PlainNeighbor(id3, a3,10);
 		
 		table = new PlainNeighborsTableSet();
 		
@@ -43,8 +43,8 @@ public class PlainNeighborsTableSetTest {
 		Id i = new Id(id1);
 		InetAddress a1;
 		a1 = InetAddress.getByName("192.168.0.1");
-		Neighbor n = table.getNeighbor(i);
-		Neighbor expected = new Neighbor(i, a1);
+		PlainNeighbor n = table.getNeighbor(i);
+		PlainNeighbor expected = new PlainNeighbor(i, a1,10);
 		assertEquals(expected, n);
 	}
 	
@@ -52,8 +52,8 @@ public class PlainNeighborsTableSetTest {
 	public void getNeighborByStringId() {
 		byte [] id1 = {1,2,3,4,5,6,7,8,9,0};
 		Id i = new Id(id1);
-		Neighbor n = table.getNeighbor(i.toString());
-		Neighbor expected = new Neighbor(i, a1);
+		PlainNeighbor n = table.getNeighbor(i.toString());
+		PlainNeighbor expected = new PlainNeighbor(i, a1, 10);
 		assertEquals(expected, n);
 	}
 	
@@ -75,7 +75,7 @@ public class PlainNeighborsTableSetTest {
 	public void addAlreadyExistingNeighbor() {
 		byte [] id1 = {1,2,3,4,5,6,7,8,9,0};
 		Id i = new Id(id1);
-		Neighbor n = new Neighbor(i, a1);
+		PlainNeighbor n = new PlainNeighbor(i, a1, 10);
 		assertFalse(table.addNeighbor(n));
 	}
 	
@@ -83,7 +83,7 @@ public class PlainNeighborsTableSetTest {
 	public void removeNode() {
 		byte [] id1 = {1,2,3,4,5,6,7,8,9,0};
 		Id i = new Id(id1);
-		Neighbor n = new Neighbor(i, a1);
+		PlainNeighbor n = new PlainNeighbor(i, a1,10);
 		assertTrue(table.removeNeighbor(n));
 	}
 	
@@ -91,7 +91,7 @@ public class PlainNeighborsTableSetTest {
 	public void removeNonExistentNode() {
 		byte [] id1 = {1,2,3,4,5};
 		Id i = new Id(id1);
-		Neighbor n = new Neighbor(i, a1);
+		PlainNeighbor n = new PlainNeighbor(i, a1,10);
 		assertFalse(table.removeNeighbor(n));
 	}
 	
@@ -111,7 +111,7 @@ public class PlainNeighborsTableSetTest {
 	
 	@Test
 	public void convertTableToArray() {
-		Neighbor [] n1 = table.toArray();
+		PlainNeighbor [] n1 = table.toArray();
 		assertEquals(3, n1.length);
 	}
 	

@@ -6,19 +6,19 @@ import java.util.Set;
 
 public class PlainNeighborsTableSet implements PlainNeighborsTable {
 
-	private Set<Neighbor> neighborsList;
+	private Set<PlainNeighbor> neighborsList;
 	
 	public PlainNeighborsTableSet() {
-		neighborsList = new HashSet<Neighbor>();
+		neighborsList = new HashSet<PlainNeighbor>();
 	}
 	
 	public PlainNeighborsTableSet(int initCapacity) {
-		neighborsList = new HashSet<Neighbor>(initCapacity);
+		neighborsList = new HashSet<PlainNeighbor>(initCapacity);
 	}
 	
 	@Override
-	public Neighbor getNeighbor(Id nodeId) {
-		for (Neighbor n : neighborsList) {
+	public PlainNeighbor getNeighbor(Id nodeId) {
+		for (PlainNeighbor n : neighborsList) {
 			if (n.getId().equals(nodeId)) {
 				return n;
 			}
@@ -27,9 +27,9 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 	}
 
 	@Override
-	public Neighbor getNeighbor(String stringId) {
-		for (Iterator<Neighbor> i = neighborsList.iterator(); i.hasNext();) {
-		    Neighbor n = i.next();
+	public PlainNeighbor getNeighbor(String stringId) {
+		for (Iterator<PlainNeighbor> i = neighborsList.iterator(); i.hasNext();) {
+		    PlainNeighbor n = i.next();
 		    if (n.getId().toString().equals(stringId)) {   
 		        return n;
 		    }
@@ -38,15 +38,15 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 	}
 
 	@Override
-	public boolean addNeighbor(Neighbor node) {
+	public boolean addNeighbor(PlainNeighbor node) {
 		return neighborsList.add(node);
 
 	}
 
 	@Override
 	public boolean removeNeighbor(Id nodeId) {
-		for (Iterator<Neighbor> i = neighborsList.iterator(); i.hasNext();) {
-		    Neighbor n = i.next();
+		for (Iterator<PlainNeighbor> i = neighborsList.iterator(); i.hasNext();) {
+		    PlainNeighbor n = i.next();
 		    if (n.getId().equals(nodeId)) {   
 		        i.remove();
 		        return true;
@@ -56,23 +56,83 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 	}
 
 	@Override
-	public boolean removeNeighbor(Neighbor node) {
+	public boolean removeNeighbor(PlainNeighbor node) {
 		return neighborsList.remove(node);
 	}
 
 	@Override
-	public Neighbor[] toArray() {
-		return neighborsList.toArray(new Neighbor[0]);
+	public PlainNeighbor[] toArray() {
+		return neighborsList.toArray(new PlainNeighbor[0]);
 	}
 
 	@Override
-	public Iterator<Neighbor> iterator() {
+	public Iterator<PlainNeighbor> iterator() {
 		return neighborsList.iterator();
 	}
 
 	@Override
 	public int getSize() {
 		return neighborsList.size();
+	}
+
+	@Override
+	public double getWeight(Neighbor node) {
+		for (PlainNeighbor pn : neighborsList) {
+			if (pn.equals(node))
+				return pn.getWeight();
+		}
+		return -1;
+	}
+
+	@Override
+	public double getWeight(Id nodeId) {
+		for (PlainNeighbor pn : neighborsList) {
+			if (pn.getId().equals(nodeId))
+				return pn.getWeight();
+		}
+		return -1;
+	}
+
+	@Override
+	public double getWeight(String nodeId) {
+		for (PlainNeighbor pn : neighborsList) {
+			if (pn.getId().toString().equals(nodeId))
+				return pn.getWeight();
+		}
+		return -1;
+	}
+
+	@Override
+	public boolean setWeight(Neighbor node, double weight) {
+		for (PlainNeighbor pn : neighborsList) {
+			if (pn.equals(node)) {
+				pn.setWeight(weight);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean setWeight(Id nodeId, double weight) {
+		for (PlainNeighbor pn : neighborsList) {
+			if (pn.getId().equals(nodeId)) {
+				pn.setWeight(weight);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean setWeight(String nodeId, double weight) {
+		for (PlainNeighbor pn : neighborsList) {
+			if (pn.getId().toString().equals(nodeId)) {
+				pn.setWeight(weight);
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
