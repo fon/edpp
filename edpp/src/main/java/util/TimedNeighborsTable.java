@@ -1,18 +1,18 @@
 package util;
 
-public interface TimedNeighborsTable extends NeighborsTable {
+public interface TimedNeighborsTable extends NeighborsTable<TimedNeighbor> {
 
 	public TimedNeighbor [] getExpiredNeighbors();
 	
 	public TimedNeighbor [] getValidNeighbors();
 	
-	public boolean setNeighborTimer(TimedNeighbor node, long time);
-	
-	public boolean setNeighborTimer(String nodeId, long time);
+	public boolean setNeighborTimer(Id nodeId, long time);
 	
 	public boolean renewTimer(TimedNeighbor node);
+	
+	public boolean renewTimer(Id nodeId);
 
 	public boolean renewTimer(String nodeId);
 	
-	public void setTimeValue(long time);
+	public void setDefaultTimeValue(long time);
 }

@@ -6,6 +6,22 @@ public class TimedNeighbor extends Neighbor {
 	
 	private long remainingTime;
 	
+	static final long DEFAULT_TIMER = 1000;
+	
+	public TimedNeighbor(byte[] id, InetAddress address) {
+		super(id, address);
+		this.remainingTime = DEFAULT_TIMER;
+	}
+
+	public TimedNeighbor(Id id, InetAddress address) {
+		super(id, address);
+		this.remainingTime = DEFAULT_TIMER;
+	}
+	
+	public TimedNeighbor(String stringId, InetAddress address) {
+		super(stringId, address);
+		this.remainingTime = DEFAULT_TIMER;
+	}
 	
 	public TimedNeighbor(byte[] id, InetAddress address, long remainingTime) {
 		super(id, address);
