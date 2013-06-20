@@ -7,19 +7,39 @@ public class Session {
 
 	private UUID sessionId;
 	private Map<Integer, Execution> executions;
+	private boolean initiator;
 	
 	public Session() {
 		sessionId = UUID.randomUUID();
+		this.initiator = false;
+	}
+	
+	public Session(boolean initiator) {
+		sessionId = UUID.randomUUID();
+		this.initiator = initiator;
 	}
 	
 	public String getSessionId() {
 		return sessionId.toString();
 	}
 	
+	/**
+	 * 
+	 * @param executionNumber
+	 * @return The execution that corresponds to executionNumber
+	 */
 	public Execution getExecution(int executionNumber) {
 		return executions.get(executionNumber);
 	}
 	
+	/**
+	 * 
+	 * @return True if this is the node that initiated the session
+	 */
+	public boolean isInitiator() {
+		return initiator;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
@@ -34,5 +54,7 @@ public class Session {
 	public int hashCode() {
 		return sessionId.hashCode();
 	}
+
+
 	
 }

@@ -10,6 +10,4 @@ public interface Node {
 	
 	public boolean isAlive(Neighbor n);
 	
-	public int getNetworkSize();
-	
 }
