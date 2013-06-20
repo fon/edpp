@@ -84,6 +84,19 @@ public class Execution {
 	
 	/**
 	 * 
+	 * @param round
+	 * @return Returns the sum of the currently received values for some round
+	 */
+	public double getValsOfRound(int round) {
+		if (roundVals.get(round) == null) {
+			return 0;
+		} else {
+			return roundVals.get(round);
+		}
+	}
+	
+	/**
+	 * 
 	 * @return A table with all the out-neighbors along with
 	 * their weights
 	 */
@@ -202,8 +215,8 @@ public class Execution {
 		PlainNeighbor pn;
 		Set<Neighbor> on = localNode.getOutNeighbors();
 		outNeighbors = new PlainNeighborsTableSet();
-		double weight = (double)1/on.size();
-		for (Neighbor n : outNeighbors) {
+		double weight = 1.0/on.size();
+		for (Neighbor n : on) {
 			pn = new PlainNeighbor(n.getId(), n.getAddress(), weight);
 			outNeighbors.addNeighbor(pn);
 		}
