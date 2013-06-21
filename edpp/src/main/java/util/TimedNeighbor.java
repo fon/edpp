@@ -4,7 +4,7 @@ import java.net.InetAddress;
 
 public class TimedNeighbor extends Neighbor {
 	
-	private long remainingTime;
+	private volatile long remainingTime;
 	
 	static final long DEFAULT_TIMER = 1000;
 	
