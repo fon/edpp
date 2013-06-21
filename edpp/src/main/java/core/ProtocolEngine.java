@@ -12,7 +12,7 @@ import network.Node;
 
 public class ProtocolEngine implements Runnable {
 	
-	public static final int PROTOCOL_PORT = 5632;
+	public static final int PROTOCOL_PORT = 11990;
 
 	private Node localNode;
 	private BlockingQueue<Message> incomingQueue;
@@ -40,6 +40,7 @@ public class ProtocolEngine implements Runnable {
 		sendingThread.setDaemon(true);
 		receivingThread.start();
 		sendingThread.start();
+		
 	}
 	
 }
