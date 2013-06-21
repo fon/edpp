@@ -1,8 +1,8 @@
 package core;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import network.Node;
 
@@ -23,7 +23,7 @@ public class Session {
 		this.numberOfExecutions = numberOfExecutions;
 		this.numberOfRounds = numberOfRounds;
 		this.localNode = localNode;
-		executions = new HashMap<Integer, Execution>();
+		executions = new ConcurrentHashMap<Integer, Execution>();
 	}
 	
 	public Session(Node localNode, int numberOfExecutions, int numberOfRounds, boolean initiator) {
@@ -33,7 +33,7 @@ public class Session {
 		this.numberOfExecutions = numberOfExecutions;
 		this.numberOfRounds = numberOfRounds;
 		this.localNode = localNode;
-		executions = new HashMap<Integer, Execution>();
+		executions = new ConcurrentHashMap<Integer, Execution>();
 	}
 	
 	public String getSessionId() {

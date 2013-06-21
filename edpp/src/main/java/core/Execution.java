@@ -1,9 +1,9 @@
 package core;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import util.Neighbor;
 import util.Phase;
@@ -26,8 +26,7 @@ public class Execution {
 	private Phase phase;
 	private double [] impulseResponse;
 	private double nodeVal;
-	private Map<Integer, Double> roundVals;
-	
+	private Map<Integer, Double> roundVals;	
 	
 	public Execution(int executionNumber, int numOfRounds, Node localNode) {
 		this.executionNumber = executionNumber;
@@ -40,7 +39,9 @@ public class Execution {
 		nodeVal = chooseInitialValue();
 		impulseResponse[0] = nodeVal;
 		this.setRound(2);
-		roundVals = new HashMap<Integer, Double>();
+		
+		//TODO concurrent hashmap and atomic double
+		roundVals = new ConcurrentHashMap<Integer, Double>();
 	}
 
 	/**
