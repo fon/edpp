@@ -4,12 +4,12 @@ import java.net.InetAddress;
 
 import comm.ProtocolMessage.Message;
 
-public class OutgoingMessage {
+public class TransferableMessage {
 	
 	private Message message;
 	private InetAddress address;
 
-	public OutgoingMessage(Message message, InetAddress address) {
+	public TransferableMessage(Message message, InetAddress address) {
 		this.setMessage(message);
 		this.address = address;
 	}

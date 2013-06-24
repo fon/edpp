@@ -14,6 +14,7 @@ import util.Phase;
 import util.PlainNeighbor;
 import util.PlainNeighborsTable;
 import util.PlainNeighborsTableSet;
+import util.TimedNeighbor;
 import util.TimedNeighborsTable;
 import util.TimedNeighborsTableSet;
 
@@ -218,6 +219,15 @@ public class Execution {
 	 */
 	public boolean hasTerminated() {
 		return round.get() == this.numOfRounds;
+	}
+	
+	//TODO must add test
+	public boolean addInNeighbor(TimedNeighbor tn) {
+		if (inNeighbors.getNeighbor(tn.getId()) == null) {
+			return inNeighbors.addNeighbor(tn);
+		}
+		
+		return false;
 	}
 	
 	private void createOutTable() {

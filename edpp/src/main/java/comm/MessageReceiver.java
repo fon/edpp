@@ -1,6 +1,7 @@
 package comm;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
@@ -11,23 +12,25 @@ import core.ProtocolEngine;
 
 public class MessageReceiver implements Runnable {
 
-	private BlockingQueue<Message> incomingQueue;
+	private BlockingQueue<TransferableMessage> incomingQueue;
 	private ServerSocket ss;
 	private Socket incomingSocket;
 	
-	public MessageReceiver(BlockingQueue<Message> incomingQueue) {
+	public MessageReceiver(BlockingQueue<TransferableMessage> incomingQueue) {
 		this.incomingQueue = incomingQueue;
 	}
 	
 	@Override
 	public void run() {
+		InetAddress address;
 		try {
 			ss = new ServerSocket(ProtocolEngine.PROTOCOL_PORT);
 			while (true) {
 				incomingSocket = ss.accept();
+				address = incomingSocket.getInetAddress();
 				Message pm = Message.parseFrom(
 						incomingSocket.getInputStream());
-				incomingQueue.add(pm);
+				incomingQueue.add(new TransferableMessage(pm, address));
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

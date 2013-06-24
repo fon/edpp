@@ -8,10 +8,10 @@ import core.ProtocolEngine;
 
 public class MessageSender implements Runnable {
 
-	private BlockingQueue<OutgoingMessage> outgoingQueue;
+	private BlockingQueue<TransferableMessage> outgoingQueue;
 	private Socket s;
 	
-	public MessageSender(BlockingQueue<OutgoingMessage> outgoigQueue) {
+	public MessageSender(BlockingQueue<TransferableMessage> outgoigQueue) {
 		this.outgoingQueue = outgoigQueue;
 	}
 	
@@ -19,7 +19,7 @@ public class MessageSender implements Runnable {
 	public void run() {
 		while (true) {
 			try {
-				OutgoingMessage m = outgoingQueue.take();
+				TransferableMessage m = outgoingQueue.take();
 				s = new Socket(m.getAddress(), ProtocolEngine.PROTOCOL_PORT);
 				m.getMessage().writeTo(s.getOutputStream());
 				s.close();

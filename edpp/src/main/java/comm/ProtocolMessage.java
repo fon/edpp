@@ -21,62 +21,77 @@ public final class ProtocolMessage {
      */
     comm.ProtocolMessage.Message.MessageType getType();
 
-    // optional string session = 2;
+    // optional string nodeId = 2;
     /**
-     * <code>optional string session = 2;</code>
+     * <code>optional string nodeId = 2;</code>
+     */
+    boolean hasNodeId();
+    /**
+     * <code>optional string nodeId = 2;</code>
+     */
+    java.lang.String getNodeId();
+    /**
+     * <code>optional string nodeId = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getNodeIdBytes();
+
+    // optional string session = 3;
+    /**
+     * <code>optional string session = 3;</code>
      */
     boolean hasSession();
     /**
-     * <code>optional string session = 2;</code>
+     * <code>optional string session = 3;</code>
      */
     java.lang.String getSession();
     /**
-     * <code>optional string session = 2;</code>
+     * <code>optional string session = 3;</code>
      */
     com.google.protobuf.ByteString
         getSessionBytes();
 
-    // optional int32 execution = 3;
+    // optional int32 execution = 4;
     /**
-     * <code>optional int32 execution = 3;</code>
+     * <code>optional int32 execution = 4;</code>
      */
     boolean hasExecution();
     /**
-     * <code>optional int32 execution = 3;</code>
+     * <code>optional int32 execution = 4;</code>
      */
     int getExecution();
 
-    // optional int32 round = 4;
+    // optional int32 round = 5;
     /**
-     * <code>optional int32 round = 4;</code>
+     * <code>optional int32 round = 5;</code>
      */
     boolean hasRound();
     /**
-     * <code>optional int32 round = 4;</code>
+     * <code>optional int32 round = 5;</code>
      */
     int getRound();
 
-    // optional double val = 5;
+    // optional double val = 6;
     /**
-     * <code>optional double val = 5;</code>
+     * <code>optional double val = 6;</code>
      */
     boolean hasVal();
     /**
-     * <code>optional double val = 5;</code>
+     * <code>optional double val = 6;</code>
      */
     double getVal();
 
-    // repeated double eigenvals = 6 [packed = true];
+    // repeated double eigenvals = 7 [packed = true];
     /**
-     * <code>repeated double eigenvals = 6 [packed = true];</code>
+     * <code>repeated double eigenvals = 7 [packed = true];</code>
      */
     java.util.List<java.lang.Double> getEigenvalsList();
     /**
-     * <code>repeated double eigenvals = 6 [packed = true];</code>
+     * <code>repeated double eigenvals = 7 [packed = true];</code>
      */
     int getEigenvalsCount();
     /**
-     * <code>repeated double eigenvals = 6 [packed = true];</code>
+     * <code>repeated double eigenvals = 7 [packed = true];</code>
      */
     double getEigenvals(int index);
   }
@@ -144,38 +159,43 @@ public final class ProtocolMessage {
             }
             case 18: {
               bitField0_ |= 0x00000002;
-              session_ = input.readBytes();
+              nodeId_ = input.readBytes();
               break;
             }
-            case 24: {
+            case 26: {
               bitField0_ |= 0x00000004;
-              execution_ = input.readInt32();
+              session_ = input.readBytes();
               break;
             }
             case 32: {
               bitField0_ |= 0x00000008;
+              execution_ = input.readInt32();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000010;
               round_ = input.readInt32();
               break;
             }
-            case 41: {
-              bitField0_ |= 0x00000010;
+            case 49: {
+              bitField0_ |= 0x00000020;
               val_ = input.readDouble();
               break;
             }
-            case 49: {
-              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+            case 57: {
+              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
                 eigenvals_ = new java.util.ArrayList<java.lang.Double>();
-                mutable_bitField0_ |= 0x00000020;
+                mutable_bitField0_ |= 0x00000040;
               }
               eigenvals_.add(input.readDouble());
               break;
             }
-            case 50: {
+            case 58: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040) && input.getBytesUntilLimit() > 0) {
                 eigenvals_ = new java.util.ArrayList<java.lang.Double>();
-                mutable_bitField0_ |= 0x00000020;
+                mutable_bitField0_ |= 0x00000040;
               }
               while (input.getBytesUntilLimit() > 0) {
                 eigenvals_.add(input.readDouble());
@@ -191,7 +211,7 @@ public final class ProtocolMessage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
           eigenvals_ = java.util.Collections.unmodifiableList(eigenvals_);
         }
         this.unknownFields = unknownFields.build();
@@ -342,17 +362,60 @@ public final class ProtocolMessage {
       return type_;
     }
 
-    // optional string session = 2;
-    public static final int SESSION_FIELD_NUMBER = 2;
-    private java.lang.Object session_;
+    // optional string nodeId = 2;
+    public static final int NODEID_FIELD_NUMBER = 2;
+    private java.lang.Object nodeId_;
     /**
-     * <code>optional string session = 2;</code>
+     * <code>optional string nodeId = 2;</code>
      */
-    public boolean hasSession() {
+    public boolean hasNodeId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional string session = 2;</code>
+     * <code>optional string nodeId = 2;</code>
+     */
+    public java.lang.String getNodeId() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          nodeId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string nodeId = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNodeIdBytes() {
+      java.lang.Object ref = nodeId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        nodeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional string session = 3;
+    public static final int SESSION_FIELD_NUMBER = 3;
+    private java.lang.Object session_;
+    /**
+     * <code>optional string session = 3;</code>
+     */
+    public boolean hasSession() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string session = 3;</code>
      */
     public java.lang.String getSession() {
       java.lang.Object ref = session_;
@@ -369,7 +432,7 @@ public final class ProtocolMessage {
       }
     }
     /**
-     * <code>optional string session = 2;</code>
+     * <code>optional string session = 3;</code>
      */
     public com.google.protobuf.ByteString
         getSessionBytes() {
@@ -385,72 +448,72 @@ public final class ProtocolMessage {
       }
     }
 
-    // optional int32 execution = 3;
-    public static final int EXECUTION_FIELD_NUMBER = 3;
+    // optional int32 execution = 4;
+    public static final int EXECUTION_FIELD_NUMBER = 4;
     private int execution_;
     /**
-     * <code>optional int32 execution = 3;</code>
+     * <code>optional int32 execution = 4;</code>
      */
     public boolean hasExecution() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>optional int32 execution = 3;</code>
+     * <code>optional int32 execution = 4;</code>
      */
     public int getExecution() {
       return execution_;
     }
 
-    // optional int32 round = 4;
-    public static final int ROUND_FIELD_NUMBER = 4;
+    // optional int32 round = 5;
+    public static final int ROUND_FIELD_NUMBER = 5;
     private int round_;
     /**
-     * <code>optional int32 round = 4;</code>
+     * <code>optional int32 round = 5;</code>
      */
     public boolean hasRound() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional int32 round = 4;</code>
+     * <code>optional int32 round = 5;</code>
      */
     public int getRound() {
       return round_;
     }
 
-    // optional double val = 5;
-    public static final int VAL_FIELD_NUMBER = 5;
+    // optional double val = 6;
+    public static final int VAL_FIELD_NUMBER = 6;
     private double val_;
     /**
-     * <code>optional double val = 5;</code>
+     * <code>optional double val = 6;</code>
      */
     public boolean hasVal() {
-      return ((bitField0_ & 0x00000010) == 0x00000010);
+      return ((bitField0_ & 0x00000020) == 0x00000020);
     }
     /**
-     * <code>optional double val = 5;</code>
+     * <code>optional double val = 6;</code>
      */
     public double getVal() {
       return val_;
     }
 
-    // repeated double eigenvals = 6 [packed = true];
-    public static final int EIGENVALS_FIELD_NUMBER = 6;
+    // repeated double eigenvals = 7 [packed = true];
+    public static final int EIGENVALS_FIELD_NUMBER = 7;
     private java.util.List<java.lang.Double> eigenvals_;
     /**
-     * <code>repeated double eigenvals = 6 [packed = true];</code>
+     * <code>repeated double eigenvals = 7 [packed = true];</code>
      */
     public java.util.List<java.lang.Double>
         getEigenvalsList() {
       return eigenvals_;
     }
     /**
-     * <code>repeated double eigenvals = 6 [packed = true];</code>
+     * <code>repeated double eigenvals = 7 [packed = true];</code>
      */
     public int getEigenvalsCount() {
       return eigenvals_.size();
     }
     /**
-     * <code>repeated double eigenvals = 6 [packed = true];</code>
+     * <code>repeated double eigenvals = 7 [packed = true];</code>
      */
     public double getEigenvals(int index) {
       return eigenvals_.get(index);
@@ -459,6 +522,7 @@ public final class ProtocolMessage {
 
     private void initFields() {
       type_ = comm.ProtocolMessage.Message.MessageType.NEW;
+      nodeId_ = "";
       session_ = "";
       execution_ = 0;
       round_ = 0;
@@ -485,19 +549,22 @@ public final class ProtocolMessage {
         output.writeEnum(1, type_.getNumber());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getSessionBytes());
+        output.writeBytes(2, getNodeIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, execution_);
+        output.writeBytes(3, getSessionBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeInt32(4, round_);
+        output.writeInt32(4, execution_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeDouble(5, val_);
+        output.writeInt32(5, round_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeDouble(6, val_);
       }
       if (getEigenvalsList().size() > 0) {
-        output.writeRawVarint32(50);
+        output.writeRawVarint32(58);
         output.writeRawVarint32(eigenvalsMemoizedSerializedSize);
       }
       for (int i = 0; i < eigenvals_.size(); i++) {
@@ -518,19 +585,23 @@ public final class ProtocolMessage {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getSessionBytes());
+          .computeBytesSize(2, getNodeIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, execution_);
+          .computeBytesSize(3, getSessionBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(4, round_);
+          .computeInt32Size(4, execution_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(5, val_);
+          .computeInt32Size(5, round_);
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(6, val_);
       }
       {
         int dataSize = 0;
@@ -661,16 +732,18 @@ public final class ProtocolMessage {
         super.clear();
         type_ = comm.ProtocolMessage.Message.MessageType.NEW;
         bitField0_ = (bitField0_ & ~0x00000001);
-        session_ = "";
+        nodeId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        execution_ = 0;
+        session_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        round_ = 0;
+        execution_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
-        val_ = 0D;
+        round_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        eigenvals_ = java.util.Collections.emptyList();
+        val_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000020);
+        eigenvals_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -706,22 +779,26 @@ public final class ProtocolMessage {
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.session_ = session_;
+        result.nodeId_ = nodeId_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.execution_ = execution_;
+        result.session_ = session_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
-        result.round_ = round_;
+        result.execution_ = execution_;
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
+        result.round_ = round_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
         result.val_ = val_;
-        if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        if (((bitField0_ & 0x00000040) == 0x00000040)) {
           eigenvals_ = java.util.Collections.unmodifiableList(eigenvals_);
-          bitField0_ = (bitField0_ & ~0x00000020);
+          bitField0_ = (bitField0_ & ~0x00000040);
         }
         result.eigenvals_ = eigenvals_;
         result.bitField0_ = to_bitField0_;
@@ -743,8 +820,13 @@ public final class ProtocolMessage {
         if (other.hasType()) {
           setType(other.getType());
         }
-        if (other.hasSession()) {
+        if (other.hasNodeId()) {
           bitField0_ |= 0x00000002;
+          nodeId_ = other.nodeId_;
+          onChanged();
+        }
+        if (other.hasSession()) {
+          bitField0_ |= 0x00000004;
           session_ = other.session_;
           onChanged();
         }
@@ -760,7 +842,7 @@ public final class ProtocolMessage {
         if (!other.eigenvals_.isEmpty()) {
           if (eigenvals_.isEmpty()) {
             eigenvals_ = other.eigenvals_;
-            bitField0_ = (bitField0_ & ~0x00000020);
+            bitField0_ = (bitField0_ & ~0x00000040);
           } else {
             ensureEigenvalsIsMutable();
             eigenvals_.addAll(other.eigenvals_);
@@ -834,16 +916,90 @@ public final class ProtocolMessage {
         return this;
       }
 
-      // optional string session = 2;
-      private java.lang.Object session_ = "";
+      // optional string nodeId = 2;
+      private java.lang.Object nodeId_ = "";
       /**
-       * <code>optional string session = 2;</code>
+       * <code>optional string nodeId = 2;</code>
        */
-      public boolean hasSession() {
+      public boolean hasNodeId() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
-       * <code>optional string session = 2;</code>
+       * <code>optional string nodeId = 2;</code>
+       */
+      public java.lang.String getNodeId() {
+        java.lang.Object ref = nodeId_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          nodeId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string nodeId = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNodeIdBytes() {
+        java.lang.Object ref = nodeId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          nodeId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string nodeId = 2;</code>
+       */
+      public Builder setNodeId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string nodeId = 2;</code>
+       */
+      public Builder clearNodeId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        nodeId_ = getDefaultInstance().getNodeId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string nodeId = 2;</code>
+       */
+      public Builder setNodeIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        nodeId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // optional string session = 3;
+      private java.lang.Object session_ = "";
+      /**
+       * <code>optional string session = 3;</code>
+       */
+      public boolean hasSession() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string session = 3;</code>
        */
       public java.lang.String getSession() {
         java.lang.Object ref = session_;
@@ -857,7 +1013,7 @@ public final class ProtocolMessage {
         }
       }
       /**
-       * <code>optional string session = 2;</code>
+       * <code>optional string session = 3;</code>
        */
       public com.google.protobuf.ByteString
           getSessionBytes() {
@@ -873,169 +1029,169 @@ public final class ProtocolMessage {
         }
       }
       /**
-       * <code>optional string session = 2;</code>
+       * <code>optional string session = 3;</code>
        */
       public Builder setSession(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         session_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string session = 2;</code>
+       * <code>optional string session = 3;</code>
        */
       public Builder clearSession() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         session_ = getDefaultInstance().getSession();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string session = 2;</code>
+       * <code>optional string session = 3;</code>
        */
       public Builder setSessionBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         session_ = value;
         onChanged();
         return this;
       }
 
-      // optional int32 execution = 3;
+      // optional int32 execution = 4;
       private int execution_ ;
       /**
-       * <code>optional int32 execution = 3;</code>
+       * <code>optional int32 execution = 4;</code>
        */
       public boolean hasExecution() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>optional int32 execution = 3;</code>
+       * <code>optional int32 execution = 4;</code>
        */
       public int getExecution() {
         return execution_;
       }
       /**
-       * <code>optional int32 execution = 3;</code>
+       * <code>optional int32 execution = 4;</code>
        */
       public Builder setExecution(int value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         execution_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 execution = 3;</code>
+       * <code>optional int32 execution = 4;</code>
        */
       public Builder clearExecution() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         execution_ = 0;
         onChanged();
         return this;
       }
 
-      // optional int32 round = 4;
+      // optional int32 round = 5;
       private int round_ ;
       /**
-       * <code>optional int32 round = 4;</code>
+       * <code>optional int32 round = 5;</code>
        */
       public boolean hasRound() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional int32 round = 4;</code>
+       * <code>optional int32 round = 5;</code>
        */
       public int getRound() {
         return round_;
       }
       /**
-       * <code>optional int32 round = 4;</code>
+       * <code>optional int32 round = 5;</code>
        */
       public Builder setRound(int value) {
-        bitField0_ |= 0x00000008;
+        bitField0_ |= 0x00000010;
         round_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 round = 4;</code>
+       * <code>optional int32 round = 5;</code>
        */
       public Builder clearRound() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         round_ = 0;
         onChanged();
         return this;
       }
 
-      // optional double val = 5;
+      // optional double val = 6;
       private double val_ ;
       /**
-       * <code>optional double val = 5;</code>
+       * <code>optional double val = 6;</code>
        */
       public boolean hasVal() {
-        return ((bitField0_ & 0x00000010) == 0x00000010);
+        return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
-       * <code>optional double val = 5;</code>
+       * <code>optional double val = 6;</code>
        */
       public double getVal() {
         return val_;
       }
       /**
-       * <code>optional double val = 5;</code>
+       * <code>optional double val = 6;</code>
        */
       public Builder setVal(double value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         val_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional double val = 5;</code>
+       * <code>optional double val = 6;</code>
        */
       public Builder clearVal() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         val_ = 0D;
         onChanged();
         return this;
       }
 
-      // repeated double eigenvals = 6 [packed = true];
+      // repeated double eigenvals = 7 [packed = true];
       private java.util.List<java.lang.Double> eigenvals_ = java.util.Collections.emptyList();
       private void ensureEigenvalsIsMutable() {
-        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
           eigenvals_ = new java.util.ArrayList<java.lang.Double>(eigenvals_);
-          bitField0_ |= 0x00000020;
+          bitField0_ |= 0x00000040;
          }
       }
       /**
-       * <code>repeated double eigenvals = 6 [packed = true];</code>
+       * <code>repeated double eigenvals = 7 [packed = true];</code>
        */
       public java.util.List<java.lang.Double>
           getEigenvalsList() {
         return java.util.Collections.unmodifiableList(eigenvals_);
       }
       /**
-       * <code>repeated double eigenvals = 6 [packed = true];</code>
+       * <code>repeated double eigenvals = 7 [packed = true];</code>
        */
       public int getEigenvalsCount() {
         return eigenvals_.size();
       }
       /**
-       * <code>repeated double eigenvals = 6 [packed = true];</code>
+       * <code>repeated double eigenvals = 7 [packed = true];</code>
        */
       public double getEigenvals(int index) {
         return eigenvals_.get(index);
       }
       /**
-       * <code>repeated double eigenvals = 6 [packed = true];</code>
+       * <code>repeated double eigenvals = 7 [packed = true];</code>
        */
       public Builder setEigenvals(
           int index, double value) {
@@ -1045,7 +1201,7 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated double eigenvals = 6 [packed = true];</code>
+       * <code>repeated double eigenvals = 7 [packed = true];</code>
        */
       public Builder addEigenvals(double value) {
         ensureEigenvalsIsMutable();
@@ -1054,7 +1210,7 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated double eigenvals = 6 [packed = true];</code>
+       * <code>repeated double eigenvals = 7 [packed = true];</code>
        */
       public Builder addAllEigenvals(
           java.lang.Iterable<? extends java.lang.Double> values) {
@@ -1064,11 +1220,11 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated double eigenvals = 6 [packed = true];</code>
+       * <code>repeated double eigenvals = 7 [packed = true];</code>
        */
       public Builder clearEigenvals() {
         eigenvals_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         onChanged();
         return this;
       }
@@ -1098,13 +1254,13 @@ public final class ProtocolMessage {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rmessage.proto\022\004comm\"\301\001\n\007Message\022\'\n\004typ" +
-      "e\030\001 \002(\0162\031.comm.Message.MessageType\022\017\n\007se" +
-      "ssion\030\002 \001(\t\022\021\n\texecution\030\003 \001(\005\022\r\n\005round\030" +
-      "\004 \001(\005\022\013\n\003val\030\005 \001(\001\022\025\n\teigenvals\030\006 \003(\001B\002\020" +
-      "\001\"6\n\013MessageType\022\007\n\003NEW\020\000\022\010\n\004INIT\020\001\022\010\n\004N" +
-      "EXT\020\002\022\n\n\006GOSSIP\020\003B\027\n\004commB\017ProtocolMessa" +
-      "ge"
+      "\n\rmessage.proto\022\004comm\"\321\001\n\007Message\022\'\n\004typ" +
+      "e\030\001 \002(\0162\031.comm.Message.MessageType\022\016\n\006no" +
+      "deId\030\002 \001(\t\022\017\n\007session\030\003 \001(\t\022\021\n\texecution" +
+      "\030\004 \001(\005\022\r\n\005round\030\005 \001(\005\022\013\n\003val\030\006 \001(\001\022\025\n\tei" +
+      "genvals\030\007 \003(\001B\002\020\001\"6\n\013MessageType\022\007\n\003NEW\020" +
+      "\000\022\010\n\004INIT\020\001\022\010\n\004NEXT\020\002\022\n\n\006GOSSIP\020\003B\027\n\004com" +
+      "mB\017ProtocolMessage"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1116,7 +1272,7 @@ public final class ProtocolMessage {
           internal_static_comm_Message_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_comm_Message_descriptor,
-              new java.lang.String[] { "Type", "Session", "Execution", "Round", "Val", "Eigenvals", });
+              new java.lang.String[] { "Type", "NodeId", "Session", "Execution", "Round", "Val", "Eigenvals", });
           return null;
         }
       };

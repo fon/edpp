@@ -18,12 +18,12 @@ import core.ProtocolEngine;
 
 public class MessageSenderTest {
 
-	static BlockingQueue<OutgoingMessage> queue;
+	static BlockingQueue<TransferableMessage> queue;
 	static Thread senderThread;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		queue = new LinkedBlockingQueue<OutgoingMessage>();
+		queue = new LinkedBlockingQueue<TransferableMessage>();
 		senderThread = new Thread(new MessageSender(queue));
 		senderThread.setDaemon(true);
 		senderThread.start();
@@ -40,7 +40,7 @@ public class MessageSenderTest {
 				.setRound(200)
 				.build();
 		
-		OutgoingMessage m = new OutgoingMessage(testMessage, InetAddress.getLocalHost());
+		TransferableMessage m = new TransferableMessage(testMessage, InetAddress.getLocalHost());
 		queue.put(m);
 		
 		incomingSocket = ss.accept();

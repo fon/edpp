@@ -11,8 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 import comm.MessageReceiver;
 import comm.MessageSender;
-import comm.OutgoingMessage;
-import comm.ProtocolMessage.Message;
+import comm.TransferableMessage;
 
 import network.Node;
 
@@ -21,12 +20,12 @@ public class ProtocolEngine implements Runnable {
 	public static final int PROTOCOL_PORT = 11990;
 	public static final long TIMEOUT = 1000;
 	
-	private static final int NTHREADS = 10;
+	private static final int NTHREADS = 5;
 	
 
 	private Node localNode;
-	private BlockingQueue<Message> incomingQueue;
-	private BlockingQueue<OutgoingMessage> outgoingQueue;
+	private BlockingQueue<TransferableMessage> incomingQueue;
+	private BlockingQueue<TransferableMessage> outgoingQueue;
 	private MessageReceiver receiver;
 	private MessageSender sender;
 	private ExecutorService executor;
@@ -36,10 +35,10 @@ public class ProtocolEngine implements Runnable {
 	public ProtocolEngine(Node localNode) {
 		this.localNode = localNode;
 		
-		incomingQueue = new LinkedBlockingQueue<Message>();
+		incomingQueue = new LinkedBlockingQueue<TransferableMessage>();
 		receiver = new MessageReceiver(incomingQueue);
 		
-		outgoingQueue = new LinkedBlockingQueue<OutgoingMessage>();
+		outgoingQueue = new LinkedBlockingQueue<TransferableMessage>();
 		sender = new MessageSender(outgoingQueue);
 		
 		executor = Executors.newFixedThreadPool(NTHREADS);
@@ -50,7 +49,7 @@ public class ProtocolEngine implements Runnable {
 
 	@Override
 	public void run() {
-		Message incomingMessage;
+		TransferableMessage incomingMessage;
 		
 		//Set up and run the basic threads
 		Thread receivingThread = new Thread(receiver);

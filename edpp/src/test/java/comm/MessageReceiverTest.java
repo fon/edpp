@@ -18,12 +18,12 @@ import core.ProtocolEngine;
 
 public class MessageReceiverTest {
 
-	static BlockingQueue<Message> queue;
+	static BlockingQueue<TransferableMessage> queue;
 	static Thread receiverThread;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		queue = new LinkedBlockingQueue<Message>();
+		queue = new LinkedBlockingQueue<TransferableMessage>();
 		receiverThread = new Thread(new MessageReceiver(queue));
 		receiverThread.setDaemon(true);
 		receiverThread.start();
@@ -40,8 +40,8 @@ public class MessageReceiverTest {
 		Socket s = new Socket(InetAddress.getLocalHost(), ProtocolEngine.PROTOCOL_PORT);
 		testMessage.writeTo(s.getOutputStream());
 		s.close();
-		Message receivedMessage = queue.take();
-		assertEquals(testMessage, receivedMessage);
+		TransferableMessage receivedMessage = queue.take();
+		assertEquals(testMessage, receivedMessage.getMessage());
 	}
 	
 }

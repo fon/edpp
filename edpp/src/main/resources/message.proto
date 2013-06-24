@@ -14,13 +14,14 @@ message Message {
 	
 	required MessageType type = 1;
 	
+	optional string nodeId = 2;
 	
-	optional string session = 2;
-	optional int32 execution = 3;
-	optional int32 round = 4;
+	optional string session = 3;
+	optional int32 execution = 4;
+	optional int32 round = 5;
 	
-	optional double val = 5;
-	repeated double eigenvals = 6 [packed=true];
+	optional double val = 6;
+	repeated double eigenvals = 7 [packed=true];
 	
 }
 	
