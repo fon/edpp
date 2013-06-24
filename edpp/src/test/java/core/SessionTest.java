@@ -26,13 +26,13 @@ public class SessionTest {
 			 * We initially defined 5 executions, so
 			 * all must return true
 			 */
-			assertTrue(session.createNewExecution(i));
+			assertNotNull(session.createNewExecution(i));
 		}
 		/*
 		 * The addition of a sixth execution must return
 		 * false, since we only defined 5
 		 */
-		assertFalse(session.createNewExecution(6));
+		assertNull(session.createNewExecution(6));
 		// Verify that we have 5 executions
 		assertEquals(5, session.getCurrentNumberOfExecutions());
 	}

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
+import util.Id;
 import util.Neighbor;
 
 public class FakeNode implements Node {
@@ -51,6 +52,12 @@ public class FakeNode implements Node {
 	public static byte [] getNode1() {
 		byte id1 [] = {1,2,3,4,5,6,7,8,9,0};
 		return id1;
+	}
+
+	@Override
+	public Id getLocalId() {
+		byte localId [] = {1,1,1,1,1,1,1,1,1,1,1,1};
+		return new Id(localId);
 	}
 
 }

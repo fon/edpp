@@ -58,13 +58,13 @@ public class Session {
 		return executions.size();
 	}
 	
-	public boolean createNewExecution(int executionNumber) {
+	public Execution createNewExecution(int executionNumber) {
 		if(numberOfNextExecution.get() > numberOfExecutions)
-			return false;
+			return null;
 		Execution execution = new Execution(executionNumber, numberOfRounds, localNode);
 		executions.put(executionNumber, execution);
 		numberOfNextExecution.incrementAndGet();
-		return true;
+		return execution;
 	}
 	
 	/**
