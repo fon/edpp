@@ -3,33 +3,35 @@ package core;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import network.Node;
 
 public class Session {
 
-	private UUID sessionId;
+	private final UUID sessionId;
 	private Map<Integer, Execution> executions;
-	private boolean initiator;
-	private int numberOfNextExecution;
-	private int numberOfRounds;
-	private int numberOfExecutions;
-	private Node localNode;
+	private final boolean initiator;
+	private AtomicInteger numberOfNextExecution;
+	private final int numberOfRounds;
+	private final int numberOfExecutions;
+	private final Node localNode;
 	
-	public Session(Node localNode, int numberOfExecutions, int numberOfRounds) {
+	public Session(final Node localNode, final int numberOfExecutions, final int numberOfRounds) {
 		sessionId = UUID.randomUUID();
 		this.initiator = false;
-		numberOfNextExecution = 1;
+		numberOfNextExecution = new AtomicInteger(1);
 		this.numberOfExecutions = numberOfExecutions;
 		this.numberOfRounds = numberOfRounds;
 		this.localNode = localNode;
 		executions = new ConcurrentHashMap<Integer, Execution>();
 	}
 	
-	public Session(Node localNode, int numberOfExecutions, int numberOfRounds, boolean initiator) {
+	public Session(final Node localNode, final int numberOfExecutions, 
+			final int numberOfRounds, final boolean initiator) {
 		sessionId = UUID.randomUUID();
 		this.initiator = initiator;
-		numberOfNextExecution = 1;
+		numberOfNextExecution = new AtomicInteger(1);
 		this.numberOfExecutions = numberOfExecutions;
 		this.numberOfRounds = numberOfRounds;
 		this.localNode = localNode;
@@ -57,11 +59,11 @@ public class Session {
 	}
 	
 	public boolean createNewExecution(int executionNumber) {
-		if(numberOfNextExecution > numberOfExecutions)
+		if(numberOfNextExecution.get() > numberOfExecutions)
 			return false;
 		Execution execution = new Execution(executionNumber, numberOfRounds, localNode);
 		executions.put(executionNumber, execution);
-		numberOfNextExecution++;
+		numberOfNextExecution.incrementAndGet();
 		return true;
 	}
 	

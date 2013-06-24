@@ -4,6 +4,10 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.google.common.util.concurrent.AtomicDouble;
+import com.google.common.util.concurrent.AtomicDoubleArray;
 
 import util.Neighbor;
 import util.Phase;
@@ -17,28 +21,28 @@ import network.Node;
 
 public class Execution {
 	
-	private int executionNumber;
-	private int numOfRounds;
-	private int round;
-	private Node localNode;
+	private final int executionNumber;
+	private final int numOfRounds;
+	private AtomicInteger round;
+	private final Node localNode;
 	private PlainNeighborsTable outNeighbors;
 	private TimedNeighborsTable inNeighbors;
 	private Phase phase;
-	private double [] impulseResponse;
-	private double nodeVal;
+	private AtomicDoubleArray impulseResponse;
+	private AtomicDouble nodeVal;
 	private Map<Integer, Double> roundVals;	
 	
-	public Execution(int executionNumber, int numOfRounds, Node localNode) {
+	public Execution(final int executionNumber,final int numOfRounds, final Node localNode) {
 		this.executionNumber = executionNumber;
 		this.numOfRounds = numOfRounds;
 		this.localNode = localNode;
 		createOutTable();
 		inNeighbors = new TimedNeighborsTableSet();
 		setPhase(Phase.INIT);
-		impulseResponse = new double[numOfRounds];
-		nodeVal = chooseInitialValue();
-		impulseResponse[0] = nodeVal;
-		this.setRound(2);
+		impulseResponse = new AtomicDoubleArray(numOfRounds);
+		nodeVal = new AtomicDouble(chooseInitialValue());
+		impulseResponse.set(0, nodeVal.get());
+		round = new AtomicInteger(2);
 		
 		//TODO concurrent hashmap and atomic double
 		roundVals = new ConcurrentHashMap<Integer, Double>();
@@ -57,7 +61,7 @@ public class Execution {
 	 * @return Returns the current round of the execution
 	 */
 	public int getCurrentRound() {
-		return round;
+		return round.get();
 	}
 
 	/**
@@ -65,7 +69,7 @@ public class Execution {
 	 * @param round The new round number
 	 */
 	public void setRound(int round) {
-		this.round = round;
+		this.round.set(round);
 	}
 	
 	/**
@@ -127,7 +131,7 @@ public class Execution {
 	 * @return  An enum with values 
 	 *  INIT, DATA_EXCHANGE, GOSSIP depending on the current phase
 	 */
-	public Phase getPhase() {
+	public synchronized Phase getPhase() {
 		return phase;
 	}
 
@@ -135,7 +139,7 @@ public class Execution {
 	 * Change the current phase of the execution
 	 * @param phase
 	 */
-	public void setPhase(Phase phase) {
+	public synchronized void setPhase(Phase phase) {
 		this.phase = phase;
 	}
 	
@@ -145,7 +149,7 @@ public class Execution {
 	 * @return The impulse response of a round
 	 */
 	public double getImpulseResponse(int round) {
-		return impulseResponse[round-1];
+		return impulseResponse.get(round-1);
 	}
 	
 	/**
@@ -155,7 +159,7 @@ public class Execution {
 	 * out-neighbors
 	 */
 	public double getCurrentValue() {
-		return nodeVal;
+		return nodeVal.get();
 	}
 	
 	/**
@@ -165,7 +169,7 @@ public class Execution {
 	 * out-neighbors
 	 */
 	public void setCurrentValue(double nodeVal) {
-		this.nodeVal = nodeVal;
+		this.nodeVal.set(nodeVal);
 	}
 
 	/**
@@ -174,7 +178,11 @@ public class Execution {
 	 * in the current execution
 	 */
 	public double [] getImpulseResponses() {
-		return impulseResponse;
+		double [] responses = new double[impulseResponse.length()];
+		for (int i = 0; i<impulseResponse.length(); i++) {
+			responses[i] = impulseResponse.get(i);
+		}
+		return responses;
 	}
 	
 	/**
@@ -185,7 +193,7 @@ public class Execution {
 	 */
 	public boolean setImpulseResponse(int round, double response) {
 		if (round <= numOfRounds) {
-			impulseResponse[round-1] = response;
+			impulseResponse.set(round-1, response);
 			return true;
 		}
 		return false;
@@ -197,8 +205,8 @@ public class Execution {
 	 * @return Set the impulse response of the current round
 	 */
 	public boolean setCurrentImpulseResponse(double response) {
-		if (this.round <= numOfRounds) {
-			impulseResponse[round-1] = response;
+		if (round.get() <= numOfRounds) {
+			impulseResponse.set(round.addAndGet(-1), response);
 			return true;
 		}
 		return false;
@@ -209,7 +217,7 @@ public class Execution {
 	 * @return True if the execution has terminated
 	 */
 	public boolean hasTerminated() {
-		return this.round == this.numOfRounds;
+		return round.get() == this.numOfRounds;
 	}
 	
 	private void createOutTable() {
@@ -223,7 +231,7 @@ public class Execution {
 		}
 	}
 	
-	private int chooseInitialValue() {
+	private static int chooseInitialValue() {
 		int initVal;
 		Random rand = new Random();
 		initVal = rand.nextInt(2);
