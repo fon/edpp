@@ -1,41 +1,42 @@
 package util;
 
 import java.net.InetAddress;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class TimedNeighbor extends Neighbor {
 	
-	private volatile long remainingTime;
+	private volatile AtomicLong remainingTime;
 	
 	static final long DEFAULT_TIMER = 1000;
 	
 	public TimedNeighbor(byte[] id, InetAddress address) {
 		super(id, address);
-		this.remainingTime = DEFAULT_TIMER;
+		this.remainingTime = new AtomicLong(DEFAULT_TIMER);
 	}
 
 	public TimedNeighbor(Id id, InetAddress address) {
 		super(id, address);
-		this.remainingTime = DEFAULT_TIMER;
+		this.remainingTime = new AtomicLong(DEFAULT_TIMER);
 	}
 	
 	public TimedNeighbor(String stringId, InetAddress address) {
 		super(stringId, address);
-		this.remainingTime = DEFAULT_TIMER;
+		this.remainingTime = new AtomicLong(DEFAULT_TIMER);
 	}
 	
 	public TimedNeighbor(byte[] id, InetAddress address, long remainingTime) {
 		super(id, address);
-		this.remainingTime = remainingTime;
+		this.remainingTime = new AtomicLong(DEFAULT_TIMER);
 	}
 
 	public TimedNeighbor(Id id, InetAddress address, long remainingTime) {
 		super(id, address);
-		this.remainingTime = remainingTime;
+		this.remainingTime = new AtomicLong(DEFAULT_TIMER);
 	}
 	
 	public TimedNeighbor(String stringId, InetAddress address, long remainingTime) {
 		super(stringId, address);
-		this.remainingTime = remainingTime;
+		this.remainingTime = new AtomicLong(DEFAULT_TIMER);
 	}
 	
 	/**
@@ -44,7 +45,7 @@ public class TimedNeighbor extends Neighbor {
 	 * the node needs to be probed for liveness
 	 */
 	public long getTimeToProbe() {
-		return remainingTime;
+		return remainingTime.get();
 	}
 	
 	/**
@@ -52,7 +53,7 @@ public class TimedNeighbor extends Neighbor {
 	 * @param time The new remaining time
 	 */
 	public void setRemainingTime(long time) {
-		this.remainingTime = time;
+		this.remainingTime.set(time);
 	}
 	
 	/**
@@ -60,10 +61,10 @@ public class TimedNeighbor extends Neighbor {
 	 * @param time Decrease remaining time by time
 	 */
 	public void decreaseTime(long time) {
-		if (remainingTime-time < 0)
-			remainingTime = 0;
+		if (remainingTime.get()-time < 0)
+			remainingTime.set(0);
 		else
-			remainingTime -= time;
+			remainingTime.addAndGet(-time);
 	}
 	
 	/**
@@ -71,7 +72,7 @@ public class TimedNeighbor extends Neighbor {
 	 * @param time Increase remaining time by time
 	 */
 	public void increaseTime(long time) {
-		remainingTime += time;
+		remainingTime.addAndGet(time);
 	}
 	
 	@Override

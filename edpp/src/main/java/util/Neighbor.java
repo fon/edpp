@@ -4,7 +4,7 @@ import java.net.InetAddress;
 
 public class Neighbor {
 	
-	protected Id id;
+	protected final Id id;
 	protected InetAddress address;
 	
 		
@@ -32,7 +32,7 @@ public class Neighbor {
 	 * 
 	 * @return The IP address of the neighbor
 	 */
-	public InetAddress getAddress() {
+	public synchronized InetAddress getAddress() {
 		return address;
 	}
 	
@@ -40,7 +40,7 @@ public class Neighbor {
 	 * 
 	 * @param address The IP address of the neighbor
 	 */
-	public void setAddress(InetAddress address) {
+	public synchronized void setAddress(InetAddress address) {
 		this.address = address;
 	}
 	

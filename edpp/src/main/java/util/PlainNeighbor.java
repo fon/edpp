@@ -2,18 +2,20 @@ package util;
 
 import java.net.InetAddress;
 
+import com.google.common.util.concurrent.AtomicDouble;
+
 public class PlainNeighbor extends Neighbor {
 
-	private double weight;
+	private AtomicDouble weight;
 	
 	public PlainNeighbor(byte[] id, InetAddress address, double weight) {
 		super(id, address);
-		this.setWeight(weight);
+		this.weight = new AtomicDouble(weight);
 	}
 
 	public PlainNeighbor(Id id, InetAddress address, double weight) {
 		super(id, address);
-		this.setWeight(weight);
+		this.weight = new AtomicDouble(weight);
 	}
 	
 	public PlainNeighbor(String stringId, InetAddress address, double weight) {
@@ -22,11 +24,11 @@ public class PlainNeighbor extends Neighbor {
 	}
 
 	public double getWeight() {
-		return weight;
+		return weight.get();
 	}
 
 	public void setWeight(double weight) {
-		this.weight = weight;
+		this.weight.set(weight);
 	}
 	
 }
