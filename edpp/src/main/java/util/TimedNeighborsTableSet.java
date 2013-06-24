@@ -1,52 +1,58 @@
 package util;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class TimedNeighborsTableSet implements TimedNeighborsTable {
 
 
 	private Set<TimedNeighbor> neighborsList;
-	private long defaultTimerValue;
+	private AtomicLong defaultTimerValue;
 	
 	public TimedNeighborsTableSet() {
-		neighborsList = new HashSet<TimedNeighbor>();
-		this.defaultTimerValue = TimedNeighbor.DEFAULT_TIMER;
+		neighborsList = Collections.synchronizedSet(new HashSet<TimedNeighbor>());
+		this.defaultTimerValue = new AtomicLong(TimedNeighbor.DEFAULT_TIMER);
 	}
 	
 	public TimedNeighborsTableSet(long timerValue) {
-		neighborsList = new HashSet<TimedNeighbor>();
-		this.defaultTimerValue = timerValue;
+		neighborsList = Collections.synchronizedSet(new HashSet<TimedNeighbor>());
+		this.defaultTimerValue = new AtomicLong(timerValue);
 	}
 	
 	public TimedNeighborsTableSet(int initCapacity) {
-		neighborsList = new HashSet<TimedNeighbor>(initCapacity);
-		this.defaultTimerValue = TimedNeighbor.DEFAULT_TIMER;
+		neighborsList = Collections.synchronizedSet(new HashSet<TimedNeighbor>());
+		this.defaultTimerValue = new AtomicLong(TimedNeighbor.DEFAULT_TIMER);
 	}
 	
 	public TimedNeighborsTableSet(int initCapacity, long timerValue) {
-		neighborsList = new HashSet<TimedNeighbor>(initCapacity);
-		this.defaultTimerValue = timerValue;
+		neighborsList = Collections.synchronizedSet(new HashSet<TimedNeighbor>());
+		this.defaultTimerValue = new AtomicLong(timerValue);
 	}
 	
 	@Override
 	public TimedNeighbor getNeighbor(Id nodeId) {
-		for (TimedNeighbor n : neighborsList) {
-			if (n.getId().equals(nodeId)) {
-				return n;
-			}
+		synchronized (neighborsList) {
+			for (TimedNeighbor n : neighborsList) {
+				if (n.getId().equals(nodeId)) {
+					return n;
+				}
+			}			
 		}
 		return null;
 	}
 
 	@Override
 	public TimedNeighbor getNeighbor(String stringId) {
-		for (Iterator<TimedNeighbor> i = neighborsList.iterator(); i.hasNext();) {
-		    TimedNeighbor n = i.next();
-		    if (n.getId().toString().equals(stringId)) {   
-		        return n;
-		    }
+		synchronized (neighborsList) {
+			for (Iterator<TimedNeighbor> i = neighborsList.iterator(); i.hasNext();) {
+				TimedNeighbor n = i.next();
+				if (n.getId().toString().equals(stringId)) {   
+					return n;
+				}
+			}			
 		}
 		return null;
 	}
@@ -58,12 +64,14 @@ public class TimedNeighborsTableSet implements TimedNeighborsTable {
 
 	@Override
 	public boolean removeNeighbor(Id nodeId) {
-		for (Iterator<TimedNeighbor> i = neighborsList.iterator(); i.hasNext();) {
-		    TimedNeighbor n = i.next();
-		    if (n.getId().equals(nodeId)) {   
-		        i.remove();
-		        return true;
-		    }
+		synchronized (neighborsList) {
+			for (Iterator<TimedNeighbor> i = neighborsList.iterator(); i.hasNext();) {
+				TimedNeighbor n = i.next();
+				if (n.getId().equals(nodeId)) {   
+					i.remove();
+					return true;
+				}
+			}			
 		}
 		return false;
 	}
@@ -86,9 +94,11 @@ public class TimedNeighborsTableSet implements TimedNeighborsTable {
 	@Override
 	public TimedNeighbor[] getExpiredNeighbors() {
 		HashSet<TimedNeighbor> s = new HashSet<TimedNeighbor>();
-		for(TimedNeighbor n : neighborsList) {
-			if(n.getTimeToProbe() == 0)
-				s.add(n);
+		synchronized (neighborsList) {
+			for(TimedNeighbor n : neighborsList) {
+				if(n.getTimeToProbe() == 0)
+					s.add(n);
+			}			
 		}
 		return s.toArray(new TimedNeighbor[0]);
 	}
@@ -96,60 +106,70 @@ public class TimedNeighborsTableSet implements TimedNeighborsTable {
 	@Override
 	public TimedNeighbor[] getValidNeighbors() {
 		HashSet<TimedNeighbor> s = new HashSet<TimedNeighbor>();
-		for(TimedNeighbor n : neighborsList) {
-			if(n.getTimeToProbe() > 0)
-				s.add(n);
+		synchronized (neighborsList) {
+			for(TimedNeighbor n : neighborsList) {
+				if(n.getTimeToProbe() > 0)
+					s.add(n);
+			}			
 		}
 		return s.toArray(new TimedNeighbor[0]);
 	}
 
 	@Override
 	public boolean setNeighborTimer(Id nodeId, long time) {
-		for(TimedNeighbor n : neighborsList) {
-			if (n.getId().equals(nodeId)) {
-				n.setRemainingTime(time);
-				return true;
-			}
+		synchronized (neighborsList) {
+			for(TimedNeighbor n : neighborsList) {
+				if (n.getId().equals(nodeId)) {
+					n.setRemainingTime(time);
+					return true;
+				}
+			}			
 		}
 		return false;
 	}
 
 	@Override
 	public boolean renewTimer(TimedNeighbor node) {
-		for(TimedNeighbor n : neighborsList) {
-			if (n.equals(node)) {
-				n.setRemainingTime(defaultTimerValue);
-				return true;
-			}
+		synchronized (neighborsList) {
+			for(TimedNeighbor n : neighborsList) {
+				if (n.equals(node)) {
+					n.setRemainingTime(defaultTimerValue.get());
+					return true;
+				}
+			}			
 		}
 		return false;
 	}
 	
 	@Override
 	public boolean renewTimer(Id nodeId) {
-		for(TimedNeighbor n : neighborsList) {
-			if (n.getId().equals(nodeId)) {
-				n.setRemainingTime(defaultTimerValue);
-				return true;
-			}
+		synchronized (neighborsList) {
+			for(TimedNeighbor n : neighborsList) {
+				if (n.getId().equals(nodeId)) {
+					n.setRemainingTime(defaultTimerValue.get());
+					return true;
+				}
+			}			
 		}
 		return false;
 	}
 
 	@Override
 	public boolean renewTimer(String nodeId) {
-		for(TimedNeighbor n : neighborsList) {
-			if (n.getId().toString().equals(nodeId)) {
-				n.setRemainingTime(defaultTimerValue);
-				return true;
-			}
+		synchronized (neighborsList) {
+			for(TimedNeighbor n : neighborsList) {
+				if (n.getId().toString().equals(nodeId)) {
+					n.setRemainingTime(defaultTimerValue.get());
+					return true;
+				}
+			}			
 		}
 		return false;
 	}
 
 	@Override
 	public void setDefaultTimeValue(long time) {
-		this.defaultTimerValue = time;
+		this.defaultTimerValue.set(time);
 	}
 
 	@Override
