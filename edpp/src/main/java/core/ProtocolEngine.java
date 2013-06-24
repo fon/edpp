@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import comm.MessageReceiver;
@@ -29,6 +30,7 @@ public class ProtocolEngine implements Runnable {
 	private MessageReceiver receiver;
 	private MessageSender sender;
 	private ExecutorService executor;
+	private ScheduledExecutorService scheduledExecutor;
 	private Map<String, Session> sessions;
 	
 	public ProtocolEngine(Node localNode) {
@@ -41,6 +43,7 @@ public class ProtocolEngine implements Runnable {
 		sender = new MessageSender(outgoingQueue);
 		
 		executor = Executors.newFixedThreadPool(NTHREADS);
+		scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 		
 		sessions = new ConcurrentHashMap<String, Session>();
 	}
@@ -51,21 +54,28 @@ public class ProtocolEngine implements Runnable {
 		
 		//Set up and run the basic threads
 		Thread receivingThread = new Thread(receiver);
-		receivingThread.setDaemon(true);
 		Thread sendingThread = new Thread(sender);
+		
+		//Set the threads as daemons, so that the vm will exit
+		//if only those threads remain running
+		receivingThread.setDaemon(true);
 		sendingThread.setDaemon(true);
+		
 		receivingThread.start();
 		sendingThread.start();
+		
+		// Schedule thread maintenance
+		scheduledExecutor.scheduleWithFixedDelay(new MaintenanceTask(sessions, outgoingQueue), 
+				TIMEOUT, TIMEOUT, TimeUnit.MILLISECONDS);
 		
 		while (true) {
 			try {
 				incomingMessage = 
-						incomingQueue.poll(TIMEOUT, TimeUnit.MILLISECONDS);
-				if (incomingMessage == null) {				
-					// TODO perform maintenance tasks
-				} else {
-					executor.execute(new MessageHandler(incomingMessage, sessions, localNode));
-					//TODO handle message and perform maintenance tasks
+						incomingQueue.take();
+				//ReceivedMessage
+				if (incomingMessage != null) {
+					executor.execute(new MessageHandlerTask(incomingMessage, sessions, 
+							localNode, outgoingQueue));					
 				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

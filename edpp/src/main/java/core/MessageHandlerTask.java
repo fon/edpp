@@ -1,22 +1,27 @@
 package core;
 
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 
+import comm.OutgoingMessage;
 import comm.ProtocolMessage.Message;
 
 import network.Node;
 
-public class MessageHandler implements Runnable {
+public class MessageHandlerTask implements Runnable {
 
 	private Message incomingMessage;
 	private Node localNode;
 	private Map<String, Session> sessions;
+	private BlockingQueue<OutgoingMessage> outQueue;
 	
-	public MessageHandler(Message incomingMessage, 
-			Map<String, Session> sessions, Node localNode) {
+	public MessageHandlerTask(Message incomingMessage, 
+			Map<String, Session> sessions, Node localNode,
+			BlockingQueue<OutgoingMessage> outQueue) {
 		this.incomingMessage = incomingMessage;
 		this.sessions = sessions;
-		this.localNode = localNode;	
+		this.localNode = localNode;
+		this.outQueue = outQueue;
 	}
 	
 	@Override
