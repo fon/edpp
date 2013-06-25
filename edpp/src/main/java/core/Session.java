@@ -16,6 +16,8 @@ public class Session {
 	private final int numberOfRounds;
 	private final int numberOfExecutions;
 	private final Node localNode;
+	private Execution initExecution;
+	private int roundOffset;
 	
 	public Session(final Node localNode, final int numberOfExecutions, final int numberOfRounds) {
 		sessionId = UUID.randomUUID();
@@ -25,6 +27,8 @@ public class Session {
 		this.numberOfRounds = numberOfRounds;
 		this.localNode = localNode;
 		executions = new ConcurrentHashMap<Integer, Execution>();
+		initExecution = null;
+		roundOffset = numberOfRounds/numberOfExecutions;
 	}
 	
 	public Session(final Node localNode, final int numberOfExecutions, 
@@ -36,6 +40,8 @@ public class Session {
 		this.numberOfRounds = numberOfRounds;
 		this.localNode = localNode;
 		executions = new ConcurrentHashMap<Integer, Execution>();
+		initExecution = null;
+		roundOffset = numberOfRounds/numberOfExecutions;
 	}
 	
 	public String getSessionId() {
@@ -58,14 +64,31 @@ public class Session {
 		return executions.size();
 	}
 	
-	public Execution createNewExecution(int executionNumber) {
-		if(numberOfNextExecution.get() > numberOfExecutions)
-			return null;
-		Execution execution = new Execution(executionNumber, numberOfRounds, localNode);
-		executions.put(executionNumber, execution);
-		numberOfNextExecution.incrementAndGet();
-		return execution;
+	/**
+	 * 
+	 * @return The initial Execution of the session
+	 * or null if no execution has been created yet
+	 */
+	public Execution getInitExecution() {
+		return initExecution;
 	}
+	
+	//TODO add test
+	public Execution createNewExecution() {
+		return createNewExecution(numberOfNextExecution.get());
+	}
+	
+	//TODO add test
+		public Execution createNewExecution(int executionNumber) {
+			if (numberOfNextExecution.get() > numberOfExecutions)
+				return null;
+			Execution execution = new Execution(executionNumber, numberOfRounds, localNode);
+			executions.put(numberOfNextExecution.get(), execution);
+			if (numberOfNextExecution.get() == 1) 
+				initExecution = execution;
+			numberOfNextExecution.incrementAndGet();
+			return execution;
+		}
 	
 	/**
 	 * 
@@ -84,6 +107,21 @@ public class Session {
 		return initiator;
 	}
 	
+	
+	//TODO must add test
+	/**
+	 * 
+	 * @return true if a new execution should be created
+	 */
+	public boolean newExecutionExpected() {
+		int currRound = initExecution.getCurrentRound();
+		//If all the expected executions have been created
+		//do not create an additional one
+		if (executions.size() >= numberOfExecutions)
+			return false;
+		return (currRound % roundOffset == 0);
+	}
+
 	@Override
 	public String toString() {
 		return getSessionId();

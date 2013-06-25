@@ -15,4 +15,8 @@ public interface TimedNeighborsTable extends NeighborsTable<TimedNeighbor> {
 	public boolean renewTimer(String nodeId);
 	
 	public void setDefaultTimeValue(long time);
+
+	public void renewTimers();
+
+	public boolean setTimerToInf(String nodeId);
 }

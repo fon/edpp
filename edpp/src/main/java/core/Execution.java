@@ -218,7 +218,7 @@ public class Execution {
 	 * @return True if the execution has terminated
 	 */
 	public boolean hasTerminated() {
-		return round.get() == this.numOfRounds;
+		return round.get() == this.numOfRounds+1;
 	}
 	
 	//TODO must add test
@@ -228,6 +228,41 @@ public class Execution {
 		}
 		
 		return false;
+	}
+	
+	//TODO must add test
+	public void recomputeWeight() {
+		Set<Neighbor> on = localNode.getOutNeighbors();
+		double weight = 1.0/on.size();
+		synchronized (outNeighbors) {
+			for (PlainNeighbor n : outNeighbors) {
+				n.setWeight(weight);
+			}
+		}
+	}
+	
+	public boolean setTimerToInf(String nodeId) {
+		return inNeighbors.setTimerToInf(nodeId);
+	}
+	
+	public void resetTimers() {
+		inNeighbors.renewTimers();
+	}
+
+	public boolean resetTimer(String nodeId) {
+		return inNeighbors.renewTimer(nodeId);
+	}
+
+	//TODO must add test
+	public boolean roundIsOver() {
+		synchronized (inNeighbors) {
+			for (TimedNeighbor tn : inNeighbors) {
+				if (tn.getTimeToProbe() != TimedNeighbor.INF) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 	
 	private void createOutTable() {
@@ -247,6 +282,15 @@ public class Execution {
 		initVal = rand.nextInt(2);
 		return initVal;
 	}
-
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == this) return true;
+		if (obj == null) return false;
+		if (!(obj instanceof Execution)) return false;
+		Execution e = (Execution)obj;
+		
+		return this.executionNumber == e.getExecutionNumber();
+	}
+
 }
