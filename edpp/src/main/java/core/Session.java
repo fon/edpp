@@ -73,12 +73,10 @@ public class Session {
 		return initExecution;
 	}
 	
-	//TODO add test
 	public Execution createNewExecution() {
 		return createNewExecution(numberOfNextExecution.get());
 	}
 	
-	//TODO add test
 		public Execution createNewExecution(int executionNumber) {
 			if (numberOfNextExecution.get() > numberOfExecutions)
 				return null;
@@ -108,7 +106,6 @@ public class Session {
 	}
 	
 	
-	//TODO must add test
 	/**
 	 * 
 	 * @return true if a new execution should be created
