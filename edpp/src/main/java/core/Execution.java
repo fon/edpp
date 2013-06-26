@@ -45,7 +45,6 @@ public class Execution {
 		impulseResponse.set(0, nodeVal.get());
 		round = new AtomicInteger(2);
 		
-		//TODO concurrent hashmap and atomic double
 		roundVals = new ConcurrentHashMap<Integer, Double>();
 	}
 
@@ -221,7 +220,6 @@ public class Execution {
 		return round.get() == this.numOfRounds+1;
 	}
 	
-	//TODO must add test
 	public boolean addInNeighbor(TimedNeighbor tn) {
 		if (inNeighbors.getNeighbor(tn.getId()) == null) {
 			return inNeighbors.addNeighbor(tn);
@@ -253,7 +251,6 @@ public class Execution {
 		return inNeighbors.renewTimer(nodeId);
 	}
 
-	//TODO must add test
 	public boolean roundIsOver() {
 		synchronized (inNeighbors) {
 			for (TimedNeighbor tn : inNeighbors) {
