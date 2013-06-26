@@ -184,5 +184,31 @@ public class TimedNeighborsTableSetTest {
 		table.renewTimer(i);
 		assertEquals(5000, table.getNeighbor(i).getTimeToProbe());
 	}
+	
+	@Test
+	public void renewAllTimers() {
+		table.setDefaultTimeValue(5000);
+		table.renewTimers();
+		synchronized (table) {
+			for (TimedNeighbor tn : table) {
+				assertEquals(5000, tn.getTimeToProbe());
+			}
+		}
+	}
+	
+	@Test
+	public void setExistingTimerToInf() {
+		byte [] id1 = {1,2,3,4,5,6,7,8,9,0};
+		Id i = new Id(id1);
+		assertTrue(table.setTimerToInf(i.toString()));
+		assertEquals(TimedNeighbor.INF, table.getNeighbor(i).getTimeToProbe());
+	}
+	
+	@Test
+	public void setNonExistingTimerToInf() {
+		byte [] id1 = {1,1,1,1,1};
+		Id i = new Id(id1);
+		assertFalse(table.setTimerToInf(i.toString()));
+	}
 
 }
