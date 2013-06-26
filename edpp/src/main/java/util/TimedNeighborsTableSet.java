@@ -177,7 +177,6 @@ public class TimedNeighborsTableSet implements TimedNeighborsTable {
 		return neighborsList.size();
 	}
 
-	//TODO add test
 	@Override
 	public void renewTimers() {
 		synchronized (neighborsList) {
@@ -187,7 +186,6 @@ public class TimedNeighborsTableSet implements TimedNeighborsTable {
 		}
 	}
 
-	//TODO add test
 	@Override
 	public boolean setTimerToInf(String nodeId) {
 		synchronized (neighborsList) {
