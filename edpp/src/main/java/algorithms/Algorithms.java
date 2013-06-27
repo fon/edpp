@@ -1,5 +1,6 @@
 package algorithms;
 
+import Jama.EigenvalueDecomposition;
 import Jama.Matrix;
 import Jama.SingularValueDecomposition;
 
@@ -16,8 +17,9 @@ public class Algorithms {
 	}
 	
 	public static double [] computeEigenValues(double [][] matrix) {
-		//TODO add implementation here
-		return null;
+		Matrix m = new Matrix(matrix);
+		EigenvalueDecomposition ed = new EigenvalueDecomposition(m);
+		return ed.getRealEigenvalues();
 	}
 	
 	public static class KungsRealizationAlgorithm {
