@@ -68,7 +68,7 @@ public class ExecutionTest {
 	public void canAccessCorrectRound() {
 		execution = new Execution(1, NUM_OF_ROUNDS, localNode);
 		execution.setCurrentImpulseResponse(10.0);
-		assertEquals(10.0, execution.getImpulseResponse(2), 0);
+		assertEquals(10.0, execution.getImpulseResponse(1), 0);
 		
 		execution.setImpulseResponse(5, 5.0);
 		assertEquals(5.0, execution.getImpulseResponse(5),0);
