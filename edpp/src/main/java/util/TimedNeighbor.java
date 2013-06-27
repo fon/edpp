@@ -59,7 +59,8 @@ public class TimedNeighbor extends Neighbor {
 	
 	/**
 	 * Decreases the remaining time
-	 * @param time Decrease remaining time by time
+	 * @param time Decrease remaining time by a time parameter
+	 * remaining time is never negative
 	 */
 	public void decreaseTime(long time) {
 		if (remainingTime.get()-time < 0)

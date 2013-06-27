@@ -4,7 +4,9 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.google.common.util.concurrent.AtomicDoubleArray;
@@ -32,6 +34,8 @@ public class Execution {
 	private AtomicDoubleArray impulseResponse;
 	private AtomicDouble nodeVal;
 	private Map<Integer, Double> roundVals;	
+	private AtomicLong initTimeout;
+	private AtomicLong snapshot;
 	
 	public Execution(final int executionNumber,final int numOfRounds, final Node localNode) {
 		this.executionNumber = executionNumber;
@@ -43,8 +47,9 @@ public class Execution {
 		impulseResponse = new AtomicDoubleArray(numOfRounds);
 		nodeVal = new AtomicDouble(chooseInitialValue());
 		impulseResponse.set(0, nodeVal.get());
-		round = new AtomicInteger(2);
-		
+		round = new AtomicInteger(1);
+		snapshot = new AtomicLong(System.nanoTime());
+		initTimeout = new AtomicLong(2*ProtocolEngine.TIMEOUT);
 		roundVals = new ConcurrentHashMap<Integer, Double>();
 	}
 
@@ -64,12 +69,19 @@ public class Execution {
 		return round.get();
 	}
 
+	//TODO must add test
 	/**
 	 * Sets the current round of the execution
 	 * @param round The new round number
 	 */
 	public void setRound(int round) {
 		this.round.set(round);
+		Double d = roundVals.get(round);
+		if (d == null) {
+			this.setCurrentValue(0);
+		} else {
+			this.setCurrentValue(d);
+		}
 	}
 	
 	/**
@@ -98,6 +110,15 @@ public class Execution {
 		} else {
 			return roundVals.get(round);
 		}
+	}
+	
+	//TODO add test
+	public synchronized long remainingInitTime() {
+		long interval = snapshot.addAndGet(-System.nanoTime());
+		//set the time for the next sampling
+		snapshot = new AtomicLong(System.currentTimeMillis());
+		long remTime = TimeUnit.MILLISECONDS.convert(interval, TimeUnit.NANOSECONDS);
+		return initTimeout.addAndGet(-remTime);
 	}
 	
 	/**
@@ -218,6 +239,15 @@ public class Execution {
 	 */
 	public boolean hasTerminated() {
 		return round.get() == this.numOfRounds+1;
+	}
+	
+	//TODO add test
+	/**
+	 * 
+	 * @return true if this is not the last round of execution
+	 */
+	public boolean hasAnotherRound() {
+		return round.get() < this.numOfRounds;
 	}
 	
 	public boolean addInNeighbor(TimedNeighbor tn) {

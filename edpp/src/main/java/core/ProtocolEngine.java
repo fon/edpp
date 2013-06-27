@@ -64,7 +64,7 @@ public class ProtocolEngine implements Runnable {
 		sendingThread.start();
 		
 		// Schedule thread maintenance
-		scheduledExecutor.scheduleWithFixedDelay(new MaintenanceTask(sessions, outgoingQueue), 
+		scheduledExecutor.scheduleWithFixedDelay(new MaintenanceTask(sessions, outgoingQueue, localNode), 
 				TIMEOUT, TIMEOUT, TimeUnit.MILLISECONDS);
 		
 		while (true) {
@@ -72,10 +72,8 @@ public class ProtocolEngine implements Runnable {
 				incomingMessage = 
 						incomingQueue.take();
 				//ReceivedMessage
-				if (incomingMessage != null) {
-					executor.execute(new MessageHandlerTask(incomingMessage, sessions, 
-							localNode, outgoingQueue));					
-				}
+				executor.execute(new MessageHandlerTask(incomingMessage, sessions, 
+						localNode, outgoingQueue));					
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
