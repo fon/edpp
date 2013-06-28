@@ -8,9 +8,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import Jama.Matrix;
+import algorithms.Algorithms;
+
 import com.google.common.util.concurrent.AtomicDouble;
 import com.google.common.util.concurrent.AtomicDoubleArray;
 
+import util.GossipData;
 import util.Neighbor;
 import util.Phase;
 import util.PlainNeighbor;
@@ -36,6 +40,10 @@ public class Execution {
 	private Map<Integer, Double> roundVals;	
 	private AtomicLong initTimeout;
 	private AtomicLong snapshot;
+	private Matrix matrixA;
+	private boolean hasComputedMatrix;
+	private double [] eigenvalues;
+	private GossipData gossip;
 	
 	public Execution(final int executionNumber,final int numOfRounds, final Node localNode) {
 		this.executionNumber = executionNumber;
@@ -51,6 +59,8 @@ public class Execution {
 		snapshot = new AtomicLong(System.nanoTime());
 		initTimeout = new AtomicLong(2*ProtocolEngine.TIMEOUT);
 		roundVals = new ConcurrentHashMap<Integer, Double>();
+		this.hasComputedMatrix = false;
+		gossip = new GossipData();
 	}
 
 	/**
@@ -113,12 +123,97 @@ public class Execution {
 	}
 	
 	//TODO add test
+	/**
+	 * Computes the remaining time in the current execution's timer, by
+	 * subtractiong the time since the last sampling
+	 * @return The remaining time  of the execution's timer
+	 */
 	public synchronized long remainingInitTime() {
-		long interval = snapshot.addAndGet(-System.nanoTime());
+		long interval = System.nanoTime() - snapshot.get();
 		//set the time for the next sampling
 		snapshot = new AtomicLong(System.currentTimeMillis());
 		long remTime = TimeUnit.MILLISECONDS.convert(interval, TimeUnit.NANOSECONDS);
 		return initTimeout.addAndGet(-remTime);
+	}
+	
+	//TODO add test
+	/**
+	 * Runs Kung's realization algorithm to compute the approximate matrix A and its eigenvalues
+	 * @param networkDiameter the diameter of the network or some approximation
+	 * @return The approximation of matrix A, if we had gathered all the required impulse responses, otherwise null
+	 */
+	public synchronized Matrix computeRealizationMatrix(int networkDiameter) {
+		if (this.hasAnotherRound() || hasComputedMatrix) {
+			return null;
+		}
+		double [] responses = new double[impulseResponse.length()];
+		
+		for (int i = 0; i< impulseResponse.length(); i++) {
+			responses[i] = impulseResponse.get(i);
+		}
+		
+		this.matrixA = Algorithms.computeSystemMatrixA(responses, networkDiameter);
+		eigenvalues = Algorithms.computeEigenvalues(matrixA);
+		gossip.setNewProposal(localNode.getLocalId().toString(), eigenvalues);
+		hasComputedMatrix = true;
+		return matrixA;
+	}
+	
+	//TODO add test
+	/**
+	 * 
+	 * @return The approximation matrix, if the computation has already been performed, otherwise null
+	 */
+	public Matrix getRealizationMatrix() {
+		if (hasComputedMatrix) {
+			return matrixA;
+		} else {
+			return null;
+		}
+	}
+	
+	//TODO add test
+	/**
+	 * 
+	 * @return A double array with the eigenvalues of the approximation matrix
+	 * or null if the approximation matrix has not been computed yet
+	 */
+	public double [] getMatrixAEigenvalues() {
+		if (hasComputedMatrix) {
+			return eigenvalues;
+		} else {
+			return null;
+		}
+	}
+	
+	//TODO add test
+	/**
+	 * Changes the values of the eigenvalue array. This method should be used if the
+	 * approximation matrix has already been computed and we are in the GOSSIP round,
+	 * otherwise no change will be made to the eigenvalues array
+	 * @param newValues An array with the new values the eigenvalues array should get
+	 * @return {@value true} if the values were updated successfully, {@value false} otherwise
+	 */
+	public boolean setMatrixAEigenvalues(double [] newValues) {
+		if (hasComputedMatrix && this.getPhase() == Phase.GOSSIP) {
+			eigenvalues = newValues;
+			gossip.setNewProposal(localNode.getLocalId().toString(), newValues);
+			return true;
+		}
+		return false;
+	}
+	
+	//TODO add test
+	public void addGossipEigenvalues(String nodeId, double [] array) {
+		gossip.setNewProposal(nodeId, array);
+	}
+	
+	//TODO add test
+	public double [] getMedianEigenvalues() {
+		if (hasComputedMatrix && this.getPhase() == Phase.GOSSIP) {
+			return gossip.computeMedianOfProposedValues();
+		}
+		return null;
 	}
 	
 	/**
