@@ -88,11 +88,33 @@ public class MaintenanceTask implements Runnable {
 								e.getInNeighbors().renewTimers();
 							} else {
 								e.setPhase(Phase.GOSSIP);
-								//TODO realization algorithm here
+								e.computeRealizationMatrix(localNode.getDiameter());
+								//compute the eigenvalues of the approximation matrix
+								//TODO probably should test this for null
+								double [] eigenvals = e.getMatrixAEigenvalues();
+								Message msg = MessageBuilder.buildGossipMessage(localNode.getLocalId().toString(),
+										s.getSessionId(), e.getExecutionNumber(), eigenvals);
+								//send GOSSIP message to out-neighbors
+								sendGossipMessage(msg, e);
 							}
 						}
+					} else if (e.getPhase() == Phase.GOSSIP) {
+						//TODO handle GOSSIP
+						//Almost identical to the DATA_EXCHANGE phase
 					}
 				}
+			}
+		}
+	}
+	
+	private void sendGossipMessage(Message m, Execution e) {
+		InetAddress address;
+		PlainNeighborsTable pnt = e.getOutNeighbors();
+		
+		synchronized (pnt) {
+			for (PlainNeighbor n : pnt) {
+				address = n.getAddress();
+				outgoingQueue.add(new TransferableMessage(m, address));
 			}
 		}
 	}

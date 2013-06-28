@@ -157,7 +157,14 @@ public class MessageHandlerTask implements Runnable {
 						e.recomputeWeight();								
 					} else {
 						e.setPhase(Phase.GOSSIP);
-						//TODO realization algorithm here
+						e.computeRealizationMatrix(localNode.getDiameter());
+						//compute the eigenvalues of the approximation matrix
+						//TODO probably should test this for null
+						double [] eigenvals = e.getMatrixAEigenvalues();
+						Message msg = MessageBuilder.buildGossipMessage(localNode.getLocalId().toString(),
+								s.getSessionId(), e.getExecutionNumber(), eigenvals);
+						//send GOSSIP message to out-neighbors
+						sendGossipMessage(msg, e);
 					}
 					e.setRound(e.getCurrentRound()+1);
 					e.getInNeighbors().renewTimers();
@@ -186,7 +193,24 @@ public class MessageHandlerTask implements Runnable {
 	}
 	
 	private void handleGossipMessage() {
-		//TODO
+		Session s;
+		Execution e;
+		Message m = incomingMessage.getMessage();
+		String sessionId = m.getSession();
+		int executionNumber = m.getExecution();
+		double[] eigenvals = new double[m.getEigenvalsCount()];
+		for (int i = 0; i < eigenvals.length; i++) {
+			eigenvals[i] = m.getEigenvals(i);
+		}
+		
+		s = sessions.get(sessionId);
+		
+		if (s != null) {
+			e = s.getExecution(executionNumber);
+			if (e != null) {
+				e.addGossipEigenvalues(m.getNodeId(), eigenvals);
+			}
+		}
 	}
 	
 	private boolean addToInNeighborsTable(TimedNeighbor tn, Session s, int executionNumber) {
@@ -198,6 +222,18 @@ public class MessageHandlerTask implements Runnable {
 			}
 		}
 		return false;
+	}
+	
+	private void sendGossipMessage(Message m, Execution e) {
+		InetAddress address;
+		PlainNeighborsTable pnt = e.getOutNeighbors();
+		
+		synchronized (pnt) {
+			for (PlainNeighbor n : pnt) {
+				address = n.getAddress();
+				outQueue.add(new TransferableMessage(m, address));
+			}
+		}
 	}
 	
 	private void sendOutMessage(MessageType type, Session session, Execution execution,
