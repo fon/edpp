@@ -16,9 +16,14 @@ public class Algorithms {
 		return KungsRealizationAlgorithm.systemMatrixAToArray(impulseResponses, networkDiameter);
 	}
 	
-	public static double [] computeEigenValues(double [][] matrix) {
+	public static double [] computeEigenvalues(double [][] matrix) {
 		Matrix m = new Matrix(matrix);
 		EigenvalueDecomposition ed = new EigenvalueDecomposition(m);
+		return ed.getRealEigenvalues();
+	}
+	
+	public static double [] computeEigenvalues(Matrix matrix) {
+		EigenvalueDecomposition ed = new EigenvalueDecomposition(matrix);
 		return ed.getRealEigenvalues();
 	}
 	
