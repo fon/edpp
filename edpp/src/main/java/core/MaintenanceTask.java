@@ -100,7 +100,7 @@ public class MaintenanceTask implements Runnable {
 						}
 					} else if (e.getPhase() == Phase.GOSSIP) {
 						//TODO handle GOSSIP
-						//Almost identical to the DATA_EXCHANGE phase
+						//Needs to check whether 
 					}
 				}
 			}

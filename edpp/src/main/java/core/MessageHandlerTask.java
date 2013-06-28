@@ -209,6 +209,7 @@ public class MessageHandlerTask implements Runnable {
 			e = s.getExecution(executionNumber);
 			if (e != null) {
 				e.addGossipEigenvalues(m.getNodeId(), eigenvals);
+				e.setTimerToInf(m.getNodeId());
 			}
 		}
 	}
