@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,17 +8,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import network.Node;
 
-public class Session {
+public class Session implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9215101229263020198L;
+	
 	private final UUID sessionId;
 	private Map<Integer, Execution> executions;
-	private final boolean initiator;
-	private AtomicInteger numberOfNextExecution;
+	private final transient boolean initiator;
+	private transient AtomicInteger numberOfNextExecution;
 	private final int numberOfRounds;
 	private final int numberOfExecutions;
-	private final Node localNode;
-	private Execution initExecution;
-	private int roundOffset;
+	private final transient Node localNode;
+	private transient Execution initExecution;
+	private transient int roundOffset;
 	
 	public Session(final Node localNode, final int numberOfExecutions, final int numberOfRounds) {
 		sessionId = UUID.randomUUID();

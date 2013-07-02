@@ -1,5 +1,6 @@
 package util;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -7,8 +8,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
 
-public class GossipData {
+public class GossipData implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1496225759246739361L;
+	
 	Map<String, double[]> collectedEigenvalues;
 	
 	public GossipData() {

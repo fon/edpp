@@ -1,5 +1,6 @@
 package core;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -26,25 +27,30 @@ import util.TimedNeighborsTableSet;
 
 import network.Node;
 
-public class Execution {
+public class Execution implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6505271319331510315L;
 	
 	private final int executionNumber;
 	private final int numOfRounds;
-	private AtomicInteger round;
-	private final Node localNode;
-	private PlainNeighborsTable outNeighbors;
-	private TimedNeighborsTable inNeighbors;
-	private Phase phase;
+	private transient AtomicInteger round;
+	private transient final Node localNode;
+	private transient PlainNeighborsTable outNeighbors;
+	private transient TimedNeighborsTable inNeighbors;
+	private transient Phase phase;
 	private AtomicDoubleArray impulseResponse;
-	private AtomicDouble nodeVal;
-	private Map<Integer, Double> roundVals;	
-	private AtomicLong initTimeout;
-	private AtomicLong snapshot;
+	private transient AtomicDouble nodeVal;
+	private transient Map<Integer, Double> roundVals;	
+	private transient AtomicLong initTimeout;
+	private transient AtomicLong snapshot;
 	private Matrix matrixA;
 	private boolean hasComputedMatrix, computedMedian;
 	private double [] eigenvalues;
 	private double [] medianEigenvalues;
-	private GossipData gossip;
+	private transient GossipData gossip;
 	
 	public Execution(final int executionNumber,final int numOfRounds, final Node localNode) {
 		this.executionNumber = executionNumber;

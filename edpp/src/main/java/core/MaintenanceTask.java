@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
+import jdbm.PrimaryTreeMap;
+
 import network.Node;
 
 import util.Phase;
@@ -23,13 +25,16 @@ public class MaintenanceTask implements Runnable {
 	private Map<String, Session> sessions;
 	private BlockingQueue<TransferableMessage> outgoingQueue;
 	private Node localNode;
+	private PrimaryTreeMap<Integer, RecordedSession> db;
 
 	public MaintenanceTask(Map<String, Session> sessions,
 			BlockingQueue<TransferableMessage> outgoingQueue,
-			Node localNode) {
+			Node localNode,
+			PrimaryTreeMap<Integer, RecordedSession> db) {
 		this.sessions = sessions;
 		this.outgoingQueue = outgoingQueue;
 		this.localNode = localNode;
+		this.db = db;
 	}
 
 	@Override

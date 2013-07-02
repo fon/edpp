@@ -9,6 +9,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import jdbm.PrimaryTreeMap;
+
 import comm.MessageReceiver;
 import comm.MessageSender;
 import comm.TransferableMessage;
@@ -31,9 +33,12 @@ public class ProtocolController implements Runnable {
 	private ExecutorService executor;
 	private ScheduledExecutorService scheduledExecutor;
 	private Map<String, Session> sessions;
+	private PrimaryTreeMap<Integer, RecordedSession> db;
 	
-	public ProtocolController(Node localNode) {
+	public ProtocolController(Node localNode,
+			PrimaryTreeMap<Integer, RecordedSession> db) {
 		this.localNode = localNode;
+		this.db = db;
 		
 		incomingQueue = new LinkedBlockingQueue<TransferableMessage>();
 		receiver = new MessageReceiver(incomingQueue);
@@ -64,7 +69,7 @@ public class ProtocolController implements Runnable {
 		sendingThread.start();
 		
 		// Schedule thread maintenance
-		scheduledExecutor.scheduleWithFixedDelay(new MaintenanceTask(sessions, outgoingQueue, localNode), 
+		scheduledExecutor.scheduleWithFixedDelay(new MaintenanceTask(sessions, outgoingQueue, localNode, db), 
 				TIMEOUT, TIMEOUT, TimeUnit.MILLISECONDS);
 		
 		while (true) {
@@ -73,7 +78,7 @@ public class ProtocolController implements Runnable {
 						incomingQueue.take();
 				//ReceivedMessage
 				executor.execute(new MessageHandlerTask(incomingMessage, sessions, 
-						localNode, outgoingQueue));					
+						localNode, outgoingQueue, db));					
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

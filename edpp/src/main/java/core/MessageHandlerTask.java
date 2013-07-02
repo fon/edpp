@@ -4,6 +4,8 @@ import java.net.InetAddress;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 
+import jdbm.PrimaryTreeMap;
+
 import util.Phase;
 import util.PlainNeighbor;
 import util.PlainNeighborsTable;
@@ -22,15 +24,18 @@ public class MessageHandlerTask implements Runnable {
 	private Node localNode;
 	private Map<String, Session> sessions;
 	private BlockingQueue<TransferableMessage> outQueue;
+	private PrimaryTreeMap<Integer, RecordedSession> db;
 	
 	public MessageHandlerTask(TransferableMessage incomingMessage, 
 			Map<String, Session> sessions, Node localNode,
-			BlockingQueue<TransferableMessage> outQueue) {
+			BlockingQueue<TransferableMessage> outQueue,
+			PrimaryTreeMap<Integer, RecordedSession> db) {
 		
 		this.incomingMessage = incomingMessage;
 		this.sessions = sessions;
 		this.localNode = localNode;
 		this.outQueue = outQueue;
+		this.db = db;
 	}
 	
 	@Override
