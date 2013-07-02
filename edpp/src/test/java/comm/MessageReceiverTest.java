@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.MessageType;
-import core.ProtocolEngine;
+import core.ProtocolController;
 
 public class MessageReceiverTest {
 
@@ -37,7 +37,7 @@ public class MessageReceiverTest {
 				.setRound(200)
 				.build();
 		
-		Socket s = new Socket(InetAddress.getLocalHost(), ProtocolEngine.PROTOCOL_PORT);
+		Socket s = new Socket(InetAddress.getLocalHost(), ProtocolController.PROTOCOL_PORT);
 		testMessage.writeTo(s.getOutputStream());
 		s.close();
 		TransferableMessage receivedMessage = queue.take();

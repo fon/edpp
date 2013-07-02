@@ -66,7 +66,7 @@ public class MaintenanceTask implements Runnable {
 								TimedNeighbor neighbor = iter.next();
 								long remainingTime = neighbor.getTimeToProbe();
 								if (remainingTime != TimedNeighbor.INF)
-									neighbor.decreaseTime(ProtocolEngine.TIMEOUT);
+									neighbor.decreaseTime(ProtocolController.TIMEOUT);
 								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
 									if (localNode.isAlive(neighbor)) {
 										inNeighbors.renewTimer(neighbor);
@@ -99,6 +99,32 @@ public class MaintenanceTask implements Runnable {
 							}
 						}
 					} else if (e.getPhase() == Phase.GOSSIP) {
+						inNeighbors = e.getInNeighbors();
+						
+						synchronized (inNeighbors) {
+							Iterator<TimedNeighbor> iter = inNeighbors.iterator();
+							boolean endOfRound = true;
+							while (iter.hasNext()) {
+								TimedNeighbor neighbor = iter.next();
+								long remainingTime = neighbor.getTimeToProbe();
+								if (remainingTime != TimedNeighbor.INF)
+									neighbor.decreaseTime(ProtocolController.TIMEOUT);
+								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
+									if (localNode.isAlive(neighbor)) {
+										inNeighbors.renewTimer(neighbor);
+										endOfRound = false;
+									} else {
+										iter.remove();
+									}
+								} else if (neighbor.getTimeToProbe() != TimedNeighbor.INF) {
+									endOfRound = false;
+								}
+							}
+							if (endOfRound) {
+								e.computeMedianEigenvalues();
+								// TODO must fix setting phase to terminated
+							}
+						}
 						//TODO handle GOSSIP
 						//Needs to check whether 
 					}

@@ -8,7 +8,7 @@ import java.util.concurrent.BlockingQueue;
 
 import comm.ProtocolMessage.Message;
 
-import core.ProtocolEngine;
+import core.ProtocolController;
 
 public class MessageReceiver implements Runnable {
 
@@ -24,7 +24,7 @@ public class MessageReceiver implements Runnable {
 	public void run() {
 		InetAddress address;
 		try {
-			ss = new ServerSocket(ProtocolEngine.PROTOCOL_PORT);
+			ss = new ServerSocket(ProtocolController.PROTOCOL_PORT);
 			while (true) {
 				incomingSocket = ss.accept();
 				address = incomingSocket.getInetAddress();

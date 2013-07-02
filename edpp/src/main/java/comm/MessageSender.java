@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-import core.ProtocolEngine;
+import core.ProtocolController;
 
 public class MessageSender implements Runnable {
 
@@ -20,7 +20,7 @@ public class MessageSender implements Runnable {
 		while (true) {
 			try {
 				TransferableMessage m = outgoingQueue.take();
-				s = new Socket(m.getAddress(), ProtocolEngine.PROTOCOL_PORT);
+				s = new Socket(m.getAddress(), ProtocolController.PROTOCOL_PORT);
 				m.getMessage().writeTo(s.getOutputStream());
 				s.close();
 			} catch (InterruptedException e) {

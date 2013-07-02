@@ -41,8 +41,9 @@ public class Execution {
 	private AtomicLong initTimeout;
 	private AtomicLong snapshot;
 	private Matrix matrixA;
-	private boolean hasComputedMatrix;
+	private boolean hasComputedMatrix, computedMedian;
 	private double [] eigenvalues;
+	private double [] medianEigenvalues;
 	private GossipData gossip;
 	
 	public Execution(final int executionNumber,final int numOfRounds, final Node localNode) {
@@ -57,10 +58,11 @@ public class Execution {
 		impulseResponse.set(0, nodeVal.get());
 		round = new AtomicInteger(1);
 		snapshot = new AtomicLong(System.nanoTime());
-		initTimeout = new AtomicLong(2*ProtocolEngine.TIMEOUT);
+		initTimeout = new AtomicLong(2*ProtocolController.TIMEOUT);
 		roundVals = new ConcurrentHashMap<Integer, Double>();
 		this.hasComputedMatrix = false;
 		gossip = new GossipData();
+		computedMedian = false;
 	}
 
 	/**
@@ -209,9 +211,19 @@ public class Execution {
 	}
 	
 	//TODO add test
-	public double [] getMedianEigenvalues() {
+	public double [] computeMedianEigenvalues() {
 		if (hasComputedMatrix && this.getPhase() == Phase.GOSSIP) {
-			return gossip.computeMedianOfProposedValues();
+			medianEigenvalues = gossip.computeMedianOfProposedValues();
+			computedMedian = true;
+			return medianEigenvalues;
+		}
+		return null;
+	}
+	
+	//TODO add test
+	public double [] getMedianEigenvalues() {
+		if (computedMedian) {
+			return medianEigenvalues;
 		}
 		return null;
 	}

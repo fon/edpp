@@ -15,7 +15,7 @@ import comm.TransferableMessage;
 
 import network.Node;
 
-public class ProtocolEngine implements Runnable {
+public class ProtocolController implements Runnable {
 	
 	public static final int PROTOCOL_PORT = 11990;
 	public static final long TIMEOUT = 1000;
@@ -32,7 +32,7 @@ public class ProtocolEngine implements Runnable {
 	private ScheduledExecutorService scheduledExecutor;
 	private Map<String, Session> sessions;
 	
-	public ProtocolEngine(Node localNode) {
+	public ProtocolController(Node localNode) {
 		this.localNode = localNode;
 		
 		incomingQueue = new LinkedBlockingQueue<TransferableMessage>();

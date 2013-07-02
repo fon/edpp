@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.MessageType;
-import core.ProtocolEngine;
+import core.ProtocolController;
 
 public class MessageSenderTest {
 
@@ -32,7 +32,7 @@ public class MessageSenderTest {
 	@Test
 	public void checkThatMessageWillBeDelivered() throws IOException, InterruptedException {
 		Socket incomingSocket;
-		ServerSocket ss = new ServerSocket(ProtocolEngine.PROTOCOL_PORT);
+		ServerSocket ss = new ServerSocket(ProtocolController.PROTOCOL_PORT);
 		
 		Message testMessage = Message.newBuilder()
 				.setType(MessageType.NEW)
