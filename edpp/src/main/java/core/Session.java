@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import network.Node;
@@ -17,24 +18,28 @@ public class Session implements Serializable{
 	
 	private final UUID sessionId;
 	private Map<Integer, Execution> executions;
-	private final transient boolean initiator;
-	private transient AtomicInteger numberOfNextExecution;
+	private final boolean initiator;
+	private  AtomicInteger numberOfNextExecution;
 	private final int numberOfRounds;
 	private final int numberOfExecutions;
 	private final transient Node localNode;
-	private transient Execution initExecution;
-	private transient int roundOffset;
+	private Execution initExecution;
+	private int roundOffset;
+	private AtomicInteger completedExecutions;
+	private AtomicBoolean completedSession;
 	
 	public Session(final Node localNode, final int numberOfExecutions, final int numberOfRounds) {
 		sessionId = UUID.randomUUID();
 		this.initiator = false;
 		numberOfNextExecution = new AtomicInteger(1);
+		completedExecutions = new AtomicInteger(0);
 		this.numberOfExecutions = numberOfExecutions;
 		this.numberOfRounds = numberOfRounds;
 		this.localNode = localNode;
 		executions = new ConcurrentHashMap<Integer, Execution>();
 		initExecution = null;
 		roundOffset = numberOfRounds/numberOfExecutions;
+		completedSession = new AtomicBoolean(false);
 	}
 	
 	public Session(final Node localNode, final int numberOfExecutions, 
@@ -94,6 +99,27 @@ public class Session implements Serializable{
 			return execution;
 		}
 	
+	//TODO add test
+	public int getCompletedExecutions() {
+		return completedExecutions.get();
+	}
+	
+	//TODO add test
+	public boolean addCompletedExecution() {
+		int exec = completedExecutions.incrementAndGet();
+		boolean complete = false;
+		if (exec == getNumberOfExecutions()) {
+			complete = true;
+			completedSession.set(complete);
+		}
+		return complete;
+	}
+		
+	//TODO add test
+	public boolean hasTerminated() {
+		return completedSession.get();
+	}
+		
 	/**
 	 * 
 	 * @param executionNumber
