@@ -87,12 +87,14 @@ public class Execution implements Serializable {
 		return round.get();
 	}
 
-	//TODO must add test
 	/**
-	 * Sets the current round of the execution
+	 * Sets the current round of the execution. This also
+	 * changes the current computing value to the value of
+	 * the proper round
 	 * @param round The new round number
 	 */
 	public void setRound(int round) {
+		setImpulseResponse(this.round.get(), nodeVal.get());
 		this.round.set(round);
 		Double d = roundVals.get(round);
 		if (d == null) {
@@ -130,7 +132,6 @@ public class Execution implements Serializable {
 		}
 	}
 	
-	//TODO add test
 	/**
 	 * Computes the remaining time in the current execution's timer, by
 	 * subtractiong the time since the last sampling
@@ -144,7 +145,6 @@ public class Execution implements Serializable {
 		return initTimeout.addAndGet(-remTime);
 	}
 	
-	//TODO add test
 	/**
 	 * Runs Kung's realization algorithm to compute the approximate matrix A and its eigenvalues
 	 * @param networkDiameter the diameter of the network or some approximation
@@ -159,15 +159,15 @@ public class Execution implements Serializable {
 		for (int i = 0; i< impulseResponse.length(); i++) {
 			responses[i] = impulseResponse.get(i);
 		}
-		
+
 		this.matrixA = Algorithms.computeSystemMatrixA(responses, networkDiameter);
+		
 		eigenvalues = Algorithms.computeEigenvalues(matrixA);
 		gossip.setNewProposal(localNode.getLocalId().toString(), eigenvalues);
 		hasComputedMatrix = true;
 		return matrixA;
 	}
 	
-	//TODO add test
 	/**
 	 * 
 	 * @return The approximation matrix, if the computation has already been performed, otherwise null
@@ -180,7 +180,6 @@ public class Execution implements Serializable {
 		}
 	}
 	
-	//TODO add test
 	/**
 	 * 
 	 * @return A double array with the eigenvalues of the approximation matrix
@@ -194,7 +193,6 @@ public class Execution implements Serializable {
 		}
 	}
 	
-	//TODO add test
 	/**
 	 * Changes the values of the eigenvalue array. This method should be used if the
 	 * approximation matrix has already been computed and we are in the GOSSIP round,
@@ -211,12 +209,22 @@ public class Execution implements Serializable {
 		return false;
 	}
 	
-	//TODO add test
+	/**
+	 * Addes an array of eigenvalues for a node. If the node has already
+	 * proposed some values, they will be overwritten
+	 * @param nodeId The Id of the node that proposed eigenvalues
+	 * @param array The proposed eigenvalues
+	 */
 	public void addGossipEigenvalues(String nodeId, double [] array) {
 		gossip.setNewProposal(nodeId, array);
 	}
 	
-	//TODO add test
+	/**
+	 * Computes the median of the eigenvalues based on the local node and the
+	 * proposals if its in-neighbors
+	 * @return An array containing the median of the eigenvalues, or null
+	 * if the execution has not reached the gossip phase and has not computed the required matrix
+	 */
 	public double [] computeMedianEigenvalues() {
 		if (hasComputedMatrix && this.getPhase() == Phase.GOSSIP) {
 			medianEigenvalues = gossip.computeMedianOfProposedValues();
@@ -226,7 +234,10 @@ public class Execution implements Serializable {
 		return null;
 	}
 	
-	//TODO add test
+	/**
+	 * 
+	 * @return An array with the final eigenvalues if they have been computed, null otherwise
+	 */
 	public double [] getMedianEigenvalues() {
 		if (computedMedian) {
 			return medianEigenvalues;
@@ -354,7 +365,6 @@ public class Execution implements Serializable {
 		return round.get() == this.numOfRounds+1;
 	}
 	
-	//TODO add test
 	/**
 	 * 
 	 * @return true if this is not the last round of execution
@@ -363,6 +373,11 @@ public class Execution implements Serializable {
 		return round.get() < this.numOfRounds;
 	}
 	
+	/**
+	 * Adds a new in-neighbor to the in-neighbors list
+	 * @param tn The TimedNeighbor to be added to the list
+	 * @return true if the neighbor was successfully added, false if the neighbor already existed
+	 */
 	public boolean addInNeighbor(TimedNeighbor tn) {
 		if (inNeighbors.getNeighbor(tn.getId()) == null) {
 			return inNeighbors.addNeighbor(tn);
@@ -371,7 +386,10 @@ public class Execution implements Serializable {
 		return false;
 	}
 	
-	//TODO must add test
+	/**
+	 * Recomputes the weights of the out-neighbors
+	 * depending on the current out-neighbors list
+	 */
 	public void recomputeWeight() {
 		Set<Neighbor> on = localNode.getOutNeighbors();
 		double weight = 1.0/on.size();
