@@ -126,12 +126,16 @@ public class MaintenanceTask implements Runnable {
 								}
 							}
 							if (endOfRound) {
+								e.setPhase(Phase.TERMINATED);
 								e.computeMedianEigenvalues();
-								// TODO must fix setting phase to terminated
+								s.addCompletedExecution();
+								if (s.hasTerminated()) {
+									synchronized (db) {
+										db.put(db.size()+1, new RecordedSession(s));
+									}
+								}
 							}
 						}
-						//TODO handle GOSSIP
-						//Needs to check whether 
 					}
 				}
 			}

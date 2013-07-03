@@ -139,7 +139,7 @@ public class MessageHandlerTask implements Runnable {
 			if (e != null) {
 				//If the data exchange stage is over, just ignore it
 				//If we are still in INIT phase, we will use the message later
-				if (e.getPhase() == Phase.GOSSIP)
+				if (e.getPhase() == Phase.GOSSIP || e.getPhase() == Phase.TERMINATED)
 					return;
 				//If the message is for the current or a future round
 				if (e.getCurrentRound() >= round) {
@@ -213,8 +213,22 @@ public class MessageHandlerTask implements Runnable {
 		if (s != null) {
 			e = s.getExecution(executionNumber);
 			if (e != null) {
+				if (e.getPhase() != Phase.GOSSIP) 
+					return;
+				//Add the collected gossip round values
 				e.addGossipEigenvalues(m.getNodeId(), eigenvals);
 				e.setTimerToInf(m.getNodeId());
+				//If the round is over, the execution finished
+				if (e.roundIsOver()) {
+					e.setPhase(Phase.TERMINATED);
+					s.addCompletedExecution();
+					//If the session finished, compute the final eigenvalues
+					if (s.hasTerminated()) {
+						synchronized (db) {
+							db.put(db.size()+1, new RecordedSession(s));
+						}
+					}
+				}
 			}
 		}
 	}

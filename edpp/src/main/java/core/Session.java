@@ -1,6 +1,7 @@
 package core;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +28,7 @@ public class Session implements Serializable{
 	private int roundOffset;
 	private AtomicInteger completedExecutions;
 	private AtomicBoolean completedSession;
+	private double [] computedEigenvalues;
 	
 	public Session(final Node localNode, final int numberOfExecutions, final int numberOfRounds) {
 		sessionId = UUID.randomUUID();
@@ -110,11 +112,20 @@ public class Session implements Serializable{
 		boolean complete = false;
 		if (exec == getNumberOfExecutions()) {
 			complete = true;
+			computedEigenvalues = this.majorityVotingResults();
 			completedSession.set(complete);
 		}
 		return complete;
 	}
-		
+	
+	//TODO add test
+	public double [] getComputedEigenvalues() {
+		if (this.hasTerminated()) {
+			return computedEigenvalues;
+		}
+		return null;
+	}
+	
 	//TODO add test
 	public boolean hasTerminated() {
 		return completedSession.get();
@@ -171,6 +182,37 @@ public class Session implements Serializable{
 		return sessionId.hashCode();
 	}
 
-
+	//TODO add test
+	private double [] majorityVotingResults() {
+		int sizeOfArray = initExecution.getMatrixAEigenvalues().length;
+		double [] results = new double[sizeOfArray];
+		
+		double [][] completeResults = new double[numberOfExecutions][sizeOfArray];
+		
+		Collection<Execution> execs = executions.values();
+		int i=0;
+		for (Execution e : execs) {
+			completeResults[i] = e.getMedianEigenvalues();
+			i++;
+		}
+		
+		for (int j = 0; j < sizeOfArray; j++) {
+			int count = 1;
+			double major = completeResults[0][j];
+			
+			for (i = 1; i < numberOfExecutions; i++) {
+				if (major == completeResults[i][j]) {
+					count++;
+				} else if (count == 0) {
+					major = completeResults[i][j];
+					count = 1;
+				} else {
+					count--;
+				}
+				results[j] = major;
+			}
+		}
+		return results;
+	}
 	
 }
