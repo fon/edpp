@@ -55,9 +55,9 @@ public class MessageBuilder {
 				.setType(MessageType.GOSSIP)
 				.setSession(sessionId)
 				.setExecution(numOfExecution);
-		
+
 		for (int i=0; i < eigenvalues.length; i++) {
-			builder = builder.setEigenvals(i, eigenvalues[i]);
+			builder = builder.addEigenvals(eigenvalues[i]);
 		}
 		
 		return builder.build();
