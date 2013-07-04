@@ -90,23 +90,21 @@ public class Session implements Serializable{
 		return createNewExecution(numberOfNextExecution.get());
 	}
 	
-		public Execution createNewExecution(int executionNumber) {
-			if (numberOfNextExecution.get() > numberOfExecutions)
-				return null;
-			Execution execution = new Execution(executionNumber, numberOfRounds, localNode);
-			executions.put(numberOfNextExecution.get(), execution);
-			if (numberOfNextExecution.get() == 1) 
-				initExecution = execution;
-			numberOfNextExecution.incrementAndGet();
-			return execution;
-		}
+	public Execution createNewExecution(int executionNumber) {
+		if (numberOfNextExecution.get() > numberOfExecutions)
+			return null;
+		Execution execution = new Execution(executionNumber, numberOfRounds, localNode);
+		executions.put(numberOfNextExecution.get(), execution);
+		if (numberOfNextExecution.get() == 1) 
+			initExecution = execution;
+		numberOfNextExecution.incrementAndGet();
+		return execution;
+	}
 	
-	//TODO add test
 	public int getCompletedExecutions() {
 		return completedExecutions.get();
 	}
 	
-	//TODO add test
 	public boolean addCompletedExecution() {
 		int exec = completedExecutions.incrementAndGet();
 		boolean complete = false;
@@ -118,7 +116,6 @@ public class Session implements Serializable{
 		return complete;
 	}
 	
-	//TODO add test
 	public double [] getComputedEigenvalues() {
 		if (this.hasTerminated()) {
 			return computedEigenvalues;
@@ -126,7 +123,6 @@ public class Session implements Serializable{
 		return null;
 	}
 	
-	//TODO add test
 	public boolean hasTerminated() {
 		return completedSession.get();
 	}
@@ -150,7 +146,7 @@ public class Session implements Serializable{
 	
 	
 	/**
-	 * 
+	 * Checks whether a new execution should be created
 	 * @return true if a new execution should be created
 	 */
 	public boolean newExecutionExpected() {
@@ -182,7 +178,6 @@ public class Session implements Serializable{
 		return sessionId.hashCode();
 	}
 
-	//TODO add test
 	private double [] majorityVotingResults() {
 		int sizeOfArray = initExecution.getMatrixAEigenvalues().length;
 		double [] results = new double[sizeOfArray];
@@ -192,7 +187,10 @@ public class Session implements Serializable{
 		Collection<Execution> execs = executions.values();
 		int i=0;
 		for (Execution e : execs) {
-			completeResults[i] = e.getMedianEigenvalues();
+			double [] median = e.getMedianEigenvalues();
+			for (int j = 0; j < median.length; j++) {
+				completeResults[i][j] = median[j];
+			}
 			i++;
 		}
 		
