@@ -9,10 +9,9 @@ import java.util.ArrayList;
 
 import network.FakeNode;
 
+import org.jblas.DoubleMatrix;
 import org.junit.Before;
 import org.junit.Test;
-
-import Jama.Matrix;
 
 import util.Id;
 import util.Phase;
@@ -32,10 +31,10 @@ public class ExecutionTest {
 	};
 	
 	double [][] expectedMatrixA = { 
-			{0.8216, -0.4873, 0.1192, -0.0065},
-			{0.4873, 0.7846, 0.1619, 0.1915},
-			{-0.1192, 0.1619, 0.7605, -0.4553},
-			{-0.0065, -0.1915, 0.4553, 0.3925}
+			{0.8216, -0.4873, -0.1192, 0.0065},
+			{0.4873, 0.7846, -0.1619, -0.1915},
+			{0.1192, -0.1619, 0.7605, -0.4553},
+			{0.0065, 0.1915, 0.4553, 0.3925}
 	};
 	
 	double [] expectedEigenvals = {
@@ -170,10 +169,10 @@ public class ExecutionTest {
 		execution.setImpulseResponse(1, impulseResponses[0]);
 		assertFalse(execution.hasAnotherRound());
 		
-		Matrix m = execution.computeRealizationMatrix(4);
+		DoubleMatrix m = execution.computeRealizationMatrix(4);
 		
-		for (int i=0; i < m.getRowDimension(); i++) {
-			for (int j=0; j < m.getColumnDimension(); j++) {
+		for (int i=0; i < m.getRows(); i++) {
+			for (int j=0; j < m.getColumns(); j++) {
 				assertEquals(expectedMatrixA[i][j], m.get(i, j), 0.05);
 			}
 		}
@@ -200,10 +199,10 @@ public class ExecutionTest {
 		
 		execution.computeRealizationMatrix(4);
 		
-		Matrix m = execution.getRealizationMatrix();
+		DoubleMatrix m = execution.getRealizationMatrix();
 		
-		for (int i=0; i < m.getRowDimension(); i++) {
-			for (int j=0; j < m.getColumnDimension(); j++) {
+		for (int i=0; i < m.getRows(); i++) {
+			for (int j=0; j < m.getColumns(); j++) {
 				assertEquals(expectedMatrixA[i][j], m.get(i, j), 0.05);
 			}
 		}

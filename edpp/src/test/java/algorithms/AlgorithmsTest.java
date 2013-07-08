@@ -14,10 +14,10 @@ public class AlgorithmsTest {
 	};
 	
 	double [][] expectedMatrixA = { 
-			{0.8216, -0.4873, 0.1192, -0.0065},
-			{0.4873, 0.7846, 0.1619, 0.1915},
-			{-0.1192, 0.1619, 0.7605, -0.4553},
-			{-0.0065, -0.1915, 0.4553, 0.3925}
+			{0.8216, -0.4873, -0.1192, 0.0065},
+			{0.4873, 0.7846, -0.1619, -0.1915},
+			{0.1192, -0.1619, 0.7605, -0.4553},
+			{0.0065, 0.1915, 0.4553, 0.3925}
 	};
 
 	@Test
@@ -29,6 +29,18 @@ public class AlgorithmsTest {
 			assertArrayEquals(expectedMatrixA[i], results[i], 0.05);
 		}
 		
+	}
+	
+	@Test
+	public void computeMatrixUsingZeroImpulseResponses() {
+		double [][] results;
+		double [] zeroImpulseResponses = { 0.0, 0.0 };
+		results = Algorithms.systemMatrixAToArray(zeroImpulseResponses, 1);
+		for (int i = 0; i< results.length; i++) {
+			for (int j = 0; j<results[0].length; j++) {
+				assertEquals(0.0, results[i][j], 0.0);
+			}
+		}
 	}
 
 }

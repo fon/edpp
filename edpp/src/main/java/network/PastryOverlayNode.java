@@ -81,7 +81,7 @@ public class PastryOverlayNode implements Node {
 
 	@Override
 	public int getDiameter() {
-		return (int) Math.log(networkSize);
+		return (int) Math.ceil(Math.log(networkSize));
 	}
 
 }

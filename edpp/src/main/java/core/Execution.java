@@ -9,7 +9,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import Jama.Matrix;
+import org.jblas.DoubleMatrix;
+
 import algorithms.Algorithms;
 
 import com.google.common.util.concurrent.AtomicDouble;
@@ -46,7 +47,7 @@ public class Execution implements Serializable {
 	private transient Map<Integer, Double> roundVals;	
 	private transient AtomicLong initTimeout;
 	private transient AtomicLong snapshot;
-	private Matrix matrixA;
+	private DoubleMatrix matrixA;
 	private boolean hasComputedMatrix, computedMedian;
 	private double [] eigenvalues;
 	private double [] medianEigenvalues;
@@ -150,7 +151,7 @@ public class Execution implements Serializable {
 	 * @param networkDiameter the diameter of the network or some approximation
 	 * @return The approximation of matrix A, if we had gathered all the required impulse responses, otherwise null
 	 */
-	public synchronized Matrix computeRealizationMatrix(int networkDiameter) {
+	public synchronized DoubleMatrix computeRealizationMatrix(int networkDiameter) {
 		if (this.hasAnotherRound() || hasComputedMatrix) {
 			return null;
 		}
@@ -161,7 +162,6 @@ public class Execution implements Serializable {
 		}
 
 		this.matrixA = Algorithms.computeSystemMatrixA(responses, networkDiameter);
-		
 		eigenvalues = Algorithms.computeEigenvalues(matrixA);
 		gossip.setNewProposal(localNode.getLocalId().toString(), eigenvalues);
 		hasComputedMatrix = true;
@@ -172,7 +172,7 @@ public class Execution implements Serializable {
 	 * 
 	 * @return The approximation matrix, if the computation has already been performed, otherwise null
 	 */
-	public Matrix getRealizationMatrix() {
+	public DoubleMatrix getRealizationMatrix() {
 		if (hasComputedMatrix) {
 			return matrixA;
 		} else {

@@ -40,7 +40,6 @@ public class MessageHandlerTask implements Runnable {
 	
 	@Override
 	public void run() {
-		
 		Message m = incomingMessage.getMessage();
 		switch (m.getType()) {
 		case NEW:

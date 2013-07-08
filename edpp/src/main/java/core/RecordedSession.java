@@ -1,7 +1,13 @@
 package core;
 
-public class RecordedSession {
+import java.io.Serializable;
 
+public class RecordedSession implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8424294980274800118L;
 	private final long timestamp;
 	private final Session recordedSession;
 	

@@ -1,6 +1,7 @@
 package core;
 
 import java.net.InetAddress;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -39,31 +40,95 @@ public class MaintenanceTask implements Runnable {
 
 	@Override
 	public void run() {
-		
+		System.out.println("Running maintenance task");
 		Execution e;
 		TimedNeighborsTable inNeighbors;
+		Collection<Session> sessionSet = sessions.values();
 		
-		for (Session s : sessions.values()) {
+		Iterator<Session> sessionIter = sessionSet.iterator();
+		Session s;
+		while (sessionIter.hasNext()) {
+			s = sessionIter.next();
 			//Get all executions of the session
+			System.out.println("Checking session "+s.getSessionId());
 			for (int i = 1; i <= s.getCurrentNumberOfExecutions(); i++) {
 				e = s.getExecution(i);
 				if (e != null){
+					System.out.println("Checking execution "+e.getExecutionNumber());
 					//Check if it is in the INIT phase
 					if (e.getPhase() == Phase.INIT) {
 						//Check if the INIT phase should end
 						if (e.remainingInitTime() <= 0) {
+							System.out.println("Stage is "+e.getPhase()+" and remaining time is "+e.remainingInitTime());
 							/*
 							 * Enter DATA_EXCHANGE phase
 							 * Go to next round and
 							 * send message to all out-neighbors
 							 */
 							e.setPhase(Phase.DATA_EXCHANGE);
+							System.out.println("Stage is now "+Phase.DATA_EXCHANGE);
+							System.out.println("The current round is "+e.getCurrentRound());
 							sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound());
 							e.recomputeWeight();
 							e.setRound(2);
+							System.out.println("Recomputed weights and set round to "+e.getCurrentRound());
 						}
 					} else if (e.getPhase() == Phase.DATA_EXCHANGE) { /* Check for in-neighbors suspected of failure*/
 						inNeighbors = e.getInNeighbors();
+						boolean endOfRound = true;
+						System.out.println("Got in neighbors list and now time to check their times");
+						synchronized (inNeighbors) {
+							Iterator<TimedNeighbor> iter = inNeighbors.iterator();
+							System.out.println("Making check now");
+							while (iter.hasNext()) {
+								TimedNeighbor neighbor = iter.next();
+								System.out.println("Checking neighbor with id "+neighbor.getId().toString());
+								long remainingTime = neighbor.getTimeToProbe();
+								if (remainingTime != TimedNeighbor.INF)
+									neighbor.decreaseTime(ProtocolController.TIMEOUT);
+								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
+									if (localNode.isAlive(neighbor)) {
+										inNeighbors.renewTimer(neighbor);
+										endOfRound = false;
+									} else {
+										iter.remove();
+									}
+								} else if (neighbor.getTimeToProbe() != TimedNeighbor.INF) {
+									endOfRound = false;
+								}
+							}
+							System.out.println("Finished with check");
+						}
+						if (endOfRound) {
+							System.out.println("Round "+e.getCurrentRound()+" has ended");
+							// If it is the end of the round check if we have another round
+							if (e.hasAnotherRound()) {
+								System.out.println("This has another round");
+								sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound());
+								e.recomputeWeight();
+								e.setRound(e.getCurrentRound() + 1);
+								e.getInNeighbors().renewTimers();
+							} else {
+								System.out.println("This was the last round");
+								e.setPhase(Phase.GOSSIP);
+								System.out.println("Time to compute the realization matrix");
+								e.computeRealizationMatrix(localNode.getDiameter());
+								System.out.println("Computed the matrix");
+								e.getRealizationMatrix().print();
+//								e.getRealizationMatrix().print(NumberFormat.FRACTION_FIELD, 5);
+								//compute the eigenvalues of the approximation matrix
+								//TODO probably should test this for null
+								double [] eigenvals = e.getMatrixAEigenvalues();
+								Message msg = MessageBuilder.buildGossipMessage(localNode.getLocalId().toString(),
+										s.getSessionId(), e.getExecutionNumber(), eigenvals);
+								//send GOSSIP message to out-neighbors
+								sendGossipMessage(msg, e);
+								System.out.println("Sent the message to all the required nodes");
+							}
+						}
+					} else if (e.getPhase() == Phase.GOSSIP) {
+						inNeighbors = e.getInNeighbors();
+						
 						boolean endOfRound = true;
 						synchronized (inNeighbors) {
 							Iterator<TimedNeighbor> iter = inNeighbors.iterator();
@@ -85,55 +150,22 @@ public class MaintenanceTask implements Runnable {
 							}
 						}
 						if (endOfRound) {
-							// If it is the end of the round check if we have another round
-							if (e.hasAnotherRound()) {
-								sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound());
-								e.recomputeWeight();
-								e.setRound(e.getCurrentRound() + 1);
-								e.getInNeighbors().renewTimers();
-							} else {
-								e.setPhase(Phase.GOSSIP);
-								e.computeRealizationMatrix(localNode.getDiameter());
-								//compute the eigenvalues of the approximation matrix
-								//TODO probably should test this for null
-								double [] eigenvals = e.getMatrixAEigenvalues();
-								Message msg = MessageBuilder.buildGossipMessage(localNode.getLocalId().toString(),
-										s.getSessionId(), e.getExecutionNumber(), eigenvals);
-								//send GOSSIP message to out-neighbors
-								sendGossipMessage(msg, e);
-							}
-						}
-					} else if (e.getPhase() == Phase.GOSSIP) {
-						inNeighbors = e.getInNeighbors();
-						
-						synchronized (inNeighbors) {
-							Iterator<TimedNeighbor> iter = inNeighbors.iterator();
-							boolean endOfRound = true;
-							while (iter.hasNext()) {
-								TimedNeighbor neighbor = iter.next();
-								long remainingTime = neighbor.getTimeToProbe();
-								if (remainingTime != TimedNeighbor.INF)
-									neighbor.decreaseTime(ProtocolController.TIMEOUT);
-								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
-									if (localNode.isAlive(neighbor)) {
-										inNeighbors.renewTimer(neighbor);
-										endOfRound = false;
-									} else {
-										iter.remove();
-									}
-								} else if (neighbor.getTimeToProbe() != TimedNeighbor.INF) {
-									endOfRound = false;
+							e.computeMedianEigenvalues();
+							e.setPhase(Phase.TERMINATED);
+							s.addCompletedExecution();
+							if (s.hasTerminated()) {
+								synchronized (db) {
+									int size = db.size()+1;
+									RecordedSession recSes = new RecordedSession(s);
+									System.out.println("Hohohoho "+size);
+									System.out.println(recSes.getRecordedSession().getSessionId());
+									
+									db.put(new Integer(size+1), recSes);
+									System.out.println("Hahahha");
 								}
-							}
-							if (endOfRound) {
-								e.setPhase(Phase.TERMINATED);
-								e.computeMedianEigenvalues();
-								s.addCompletedExecution();
-								if (s.hasTerminated()) {
-									synchronized (db) {
-										db.put(db.size()+1, new RecordedSession(s));
-									}
-								}
+								
+								System.out.println("AsAsASA");
+								sessionIter.remove();
 							}
 						}
 					}

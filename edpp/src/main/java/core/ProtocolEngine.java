@@ -20,12 +20,9 @@ public class ProtocolEngine {
 	private ExecutorService executor;
 	private RecordManager recMan;
 	private PrimaryTreeMap<Integer, RecordedSession> db;
+	private ProtocolController pc;
 	
 	public ProtocolEngine(Node localNode) {
-		Thread controllerThread = new Thread(new ProtocolController(localNode, db));
-		controllerThread.setDaemon(true);
-		controllerThread.start();
-		
 		try {
 			recMan = RecordManagerFactory.createRecordManager(DBNAME);
 		} catch (IOException e) {
@@ -34,17 +31,23 @@ public class ProtocolEngine {
 		}
 		
 		db = recMan.treeMap(REC_NAME);
+		pc = new ProtocolController(localNode, db);
+		Thread controllerThread = new Thread(pc);
+		controllerThread.setDaemon(true);
+		controllerThread.start();
+		
 		
 		executor = Executors.newCachedThreadPool();
 		
 	}
 	
 	public Session requestSessionData() {
-		Future<Session> future = executor.submit(new ProtocolRun(db));
+		Future<Session> future = executor.submit(new ProtocolRun(db, pc));
 		Session s = null;
 		
 		try {
 			s = future.get();
+			System.out.println("Session id is: "+s.getSessionId());
 			recMan.commit();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

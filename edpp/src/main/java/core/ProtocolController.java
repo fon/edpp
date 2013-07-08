@@ -87,4 +87,8 @@ public class ProtocolController implements Runnable {
 		
 	}
 	
+	public void putMessageToInQueue(TransferableMessage tm) {
+		incomingQueue.add(tm);
+	}
+	
 }
