@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.logging.Logger;
 
 import jdbm.PrimaryTreeMap;
 
@@ -23,6 +24,8 @@ import comm.ProtocolMessage.Message.MessageType;
 
 public class MaintenanceTask implements Runnable {
 	
+	private  Logger logger;
+	
 	private Map<String, Session> sessions;
 	private BlockingQueue<TransferableMessage> outgoingQueue;
 	private Node localNode;
@@ -32,6 +35,7 @@ public class MaintenanceTask implements Runnable {
 			BlockingQueue<TransferableMessage> outgoingQueue,
 			Node localNode,
 			PrimaryTreeMap<Integer, RecordedSession> db) {
+		logger = Logger.getLogger(MaintenanceTask.class.getName());
 		this.sessions = sessions;
 		this.outgoingQueue = outgoingQueue;
 		this.localNode = localNode;
@@ -40,7 +44,7 @@ public class MaintenanceTask implements Runnable {
 
 	@Override
 	public void run() {
-		System.out.println("Running maintenance task");
+		logger.fine("Running maintenance task");
 		Execution e;
 		TimedNeighborsTable inNeighbors;
 		Collection<Session> sessionSet = sessions.values();
@@ -50,39 +54,39 @@ public class MaintenanceTask implements Runnable {
 		while (sessionIter.hasNext()) {
 			s = sessionIter.next();
 			//Get all executions of the session
-			System.out.println("Checking session "+s.getSessionId());
+			logger.info("Checking session "+s.getSessionId());
 			for (int i = 1; i <= s.getCurrentNumberOfExecutions(); i++) {
 				e = s.getExecution(i);
 				if (e != null){
-					System.out.println("Checking execution "+e.getExecutionNumber());
+					logger.info("Checking execution "+e.getExecutionNumber());
 					//Check if it is in the INIT phase
 					if (e.getPhase() == Phase.INIT) {
 						//Check if the INIT phase should end
 						if (e.remainingInitTime() <= 0) {
-							System.out.println("Stage is "+e.getPhase()+" and remaining time is "+e.remainingInitTime());
+							logger.info("Stage is "+e.getPhase()+" and remaining time is "+e.remainingInitTime());
 							/*
 							 * Enter DATA_EXCHANGE phase
 							 * Go to next round and
 							 * send message to all out-neighbors
 							 */
 							e.setPhase(Phase.DATA_EXCHANGE);
-							System.out.println("Stage is now "+Phase.DATA_EXCHANGE);
-							System.out.println("The current round is "+e.getCurrentRound());
+							logger.info("Stage is now "+Phase.DATA_EXCHANGE);
+							logger.info("The current round is "+e.getCurrentRound());
 							sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound());
 							e.recomputeWeight();
 							e.setRound(2);
-							System.out.println("Recomputed weights and set round to "+e.getCurrentRound());
+							logger.info("Recomputed weights and set round to "+e.getCurrentRound());
 						}
 					} else if (e.getPhase() == Phase.DATA_EXCHANGE) { /* Check for in-neighbors suspected of failure*/
 						inNeighbors = e.getInNeighbors();
 						boolean endOfRound = true;
-						System.out.println("Got in neighbors list and now time to check their times");
+						logger.info("Got in neighbors list and now time to check their times");
 						synchronized (inNeighbors) {
 							Iterator<TimedNeighbor> iter = inNeighbors.iterator();
-							System.out.println("Making check now");
+//							System.out.println("Making check now");
 							while (iter.hasNext()) {
 								TimedNeighbor neighbor = iter.next();
-								System.out.println("Checking neighbor with id "+neighbor.getId().toString());
+								logger.info("Checking neighbor with id "+neighbor.getId().toString());
 								long remainingTime = neighbor.getTimeToProbe();
 								if (remainingTime != TimedNeighbor.INF)
 									neighbor.decreaseTime(ProtocolController.TIMEOUT);
@@ -100,20 +104,20 @@ public class MaintenanceTask implements Runnable {
 							System.out.println("Finished with check");
 						}
 						if (endOfRound) {
-							System.out.println("Round "+e.getCurrentRound()+" has ended");
+							logger.info("Round "+e.getCurrentRound()+" has ended");
 							// If it is the end of the round check if we have another round
 							if (e.hasAnotherRound()) {
-								System.out.println("This has another round");
+								logger.fine("This has another round");
 								sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound());
 								e.recomputeWeight();
 								e.setRound(e.getCurrentRound() + 1);
 								e.getInNeighbors().renewTimers();
 							} else {
-								System.out.println("This was the last round");
+								logger.fine("This was the last round");
 								e.setPhase(Phase.GOSSIP);
-								System.out.println("Time to compute the realization matrix");
+								logger.info("Time to compute the realization matrix");
 								e.computeRealizationMatrix(localNode.getDiameter());
-								System.out.println("Computed the matrix");
+								logger.info("Computed the matrix");
 								e.getRealizationMatrix().print();
 //								e.getRealizationMatrix().print(NumberFormat.FRACTION_FIELD, 5);
 								//compute the eigenvalues of the approximation matrix
@@ -123,7 +127,7 @@ public class MaintenanceTask implements Runnable {
 										s.getSessionId(), e.getExecutionNumber(), eigenvals);
 								//send GOSSIP message to out-neighbors
 								sendGossipMessage(msg, e);
-								System.out.println("Sent the message to all the required nodes");
+								logger.info("Sent the message to all the required nodes");
 							}
 						}
 					} else if (e.getPhase() == Phase.GOSSIP) {
@@ -157,14 +161,9 @@ public class MaintenanceTask implements Runnable {
 								synchronized (db) {
 									int size = db.size()+1;
 									RecordedSession recSes = new RecordedSession(s);
-									System.out.println("Hohohoho "+size);
 									System.out.println(recSes.getRecordedSession().getSessionId());
-									
 									db.put(new Integer(size+1), recSes);
-									System.out.println("Hahahha");
 								}
-								
-								System.out.println("AsAsASA");
 								sessionIter.remove();
 							}
 						}
