@@ -7,8 +7,12 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,13 +24,19 @@ public class MessageSenderTest {
 
 	static BlockingQueue<TransferableMessage> queue;
 	static Thread senderThread;
+	static ExecutorService executor;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		queue = new LinkedBlockingQueue<TransferableMessage>();
-		senderThread = new Thread(new MessageSender(queue));
-		senderThread.setDaemon(true);
-		senderThread.start();
+		executor = Executors.newFixedThreadPool(4,new ThreadFactory() {
+		    public Thread newThread(Runnable r) {
+		        Thread t=new Thread(r);
+		        t.setDaemon(true);
+		        return t;
+		    }
+		});
+		executor.execute(new MessageSender(queue));
 	}
 
 	@Test
@@ -50,6 +60,11 @@ public class MessageSenderTest {
 		ss.close();
 		
 		assertEquals(testMessage, pm);
+	}
+	
+	@AfterClass
+	public static void setUpAfterClass() throws Exception {
+		executor.shutdown();
 	}
 
 }

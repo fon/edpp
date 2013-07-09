@@ -7,8 +7,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,13 +24,19 @@ public class MessageReceiverTest {
 
 	static BlockingQueue<TransferableMessage> queue;
 	static Thread receiverThread;
+	static ExecutorService executor;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		queue = new LinkedBlockingQueue<TransferableMessage>();
-		receiverThread = new Thread(new MessageReceiver(queue));
-		receiverThread.setDaemon(true);
-		receiverThread.start();
+		executor = Executors.newFixedThreadPool(4,new ThreadFactory() {
+		    public Thread newThread(Runnable r) {
+		        Thread t=new Thread(r);
+		        t.setDaemon(true);
+		        return t;
+		    }
+		});
+		executor.execute(new MessageReceiver(queue));
 	}
 
 	@Test
@@ -44,4 +54,8 @@ public class MessageReceiverTest {
 		assertEquals(testMessage, receivedMessage.getMessage());
 	}
 	
+	@AfterClass
+	public static void setUpAfterClass() throws Exception {
+		executor.shutdown();
+	}
 }
