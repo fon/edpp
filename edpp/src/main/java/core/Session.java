@@ -60,6 +60,38 @@ public class Session implements Serializable{
 		
 	}
 	
+	public Session(final Node localNode, final String sessionId, final int numberOfExecutions, 
+			final int numberOfRounds) {
+		this.sessionId = UUID.fromString(sessionId);
+		this.initiator = false;
+		numberOfNextExecution = new AtomicInteger(1);
+		this.numberOfExecutions = numberOfExecutions;
+		completedExecutions = new AtomicInteger(0);
+		this.numberOfRounds = numberOfRounds;
+		this.localNode = localNode;
+		executions = new ConcurrentHashMap<Integer, Execution>();
+		initExecution = null;
+		roundOffset = numberOfRounds/numberOfExecutions;
+		completedSession = new AtomicBoolean(false);
+		
+	}
+	
+	public Session(final Node localNode, final String sessionId, final int numberOfExecutions, 
+			final int numberOfRounds, final boolean initiator) {
+		this.sessionId = UUID.fromString(sessionId);
+		this.initiator = initiator;
+		numberOfNextExecution = new AtomicInteger(1);
+		this.numberOfExecutions = numberOfExecutions;
+		completedExecutions = new AtomicInteger(0);
+		this.numberOfRounds = numberOfRounds;
+		this.localNode = localNode;
+		executions = new ConcurrentHashMap<Integer, Execution>();
+		initExecution = null;
+		roundOffset = numberOfRounds/numberOfExecutions;
+		completedSession = new AtomicBoolean(false);
+		
+	}
+	
 	public String getSessionId() {
 		return sessionId.toString();
 	}

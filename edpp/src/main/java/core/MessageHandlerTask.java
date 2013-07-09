@@ -61,19 +61,27 @@ public class MessageHandlerTask implements Runnable {
 			this.handleGossipMessage();
 			break;
 		default:
-			System.err.println("Received malformed message");
+			logger.warning("Received malformed message");
 			break;
 		}
 	}
 	
 	private Session createNewSession(boolean isInitiator) {
 		Execution initExecution;
+		Session s;
 		Message m = incomingMessage.getMessage();
 		
 		int numberOfExecutions = m.getExecution();
 		int numberOfRounds = m.getRound();
-		Session s = new Session(localNode, numberOfExecutions, 
-				numberOfRounds, isInitiator);
+		logger.info("Created new Session");
+		if (isInitiator) {
+			s = new Session(localNode, numberOfExecutions, 
+					numberOfRounds, isInitiator);
+		} else {
+			s = new Session(localNode,m.getSession(), numberOfExecutions,
+					numberOfRounds, isInitiator);
+		}
+		logger.info("Created new execution");
 		initExecution = s.createNewExecution();
 		
 		if (!isInitiator) {
@@ -102,16 +110,23 @@ public class MessageHandlerTask implements Runnable {
 		// Check whether session already exists
 		s = sessions.get(sessionId);
 		if (s == null) {
+			logger.info("Session with id "+sessionId+" does not exist");
 			s = createNewSession(false);
 			tn = new TimedNeighbor(m.getNodeId(), incomingMessage.getAddress());
+			logger.info("Adding node "+m.getNodeId()+" with IP "+incomingMessage.getAddress()
+					+" to the in-neighbors list");
 			addToInNeighborsTable(tn, s, executionNumber);
 		} else {
 			// Check whether the execution exists
+			logger.info("Session with id "+sessionId+" already exists");
 			e = s.getExecution(executionNumber);
 			if (e == null) {
+				logger.info("Execution number "+executionNumber+" does not exist. Will create it");
 				e = s.createNewExecution(executionNumber);
 				e.addValToRound(m.getVal(), 2);
 				tn = new TimedNeighbor(m.getNodeId(), incomingMessage.getAddress());
+				logger.info("Adding node "+m.getNodeId()+" with IP "+incomingMessage.getAddress()
+						+" to the in-neighbors list");
 				addToInNeighborsTable(tn, s, executionNumber);
 			} else {
 				/*
@@ -119,9 +134,12 @@ public class MessageHandlerTask implements Runnable {
 				 * Check whether we are still in the INIT phase
 				 * and add node to in-neighbors and val to current round
 				 */
+				logger.info("Execution number "+executionNumber+" already exists");
 				if (e.getPhase() == Phase.INIT && (!e.hasTerminated())) {
 					e.addValToRound(m.getVal(), 2);
 					tn = new TimedNeighbor(m.getNodeId(), incomingMessage.getAddress());
+					logger.info("Adding node "+m.getNodeId()+" with IP "+incomingMessage.getAddress()
+							+" to the in-neighbors list");
 					addToInNeighborsTable(tn, s, executionNumber);
 				}
 			}
