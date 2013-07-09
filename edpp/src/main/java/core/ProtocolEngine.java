@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import jdbm.PrimaryTreeMap;
 import jdbm.RecordManager;
@@ -18,12 +18,17 @@ public class ProtocolEngine {
 	static final String DBNAME = "sessiondata.db";
 	static final String REC_NAME = "sessionRec";
 	
+	private Logger logger;
+	
 	private ExecutorService executor;
 	private RecordManager recMan;
 	private PrimaryTreeMap<Integer, RecordedSession> db;
 	private ProtocolController pc;
 	
 	public ProtocolEngine(Node localNode) {
+		
+		logger = Logger.getLogger(ProtocolEngine.class.getName());
+		
 		try {
 			recMan = RecordManagerFactory.createRecordManager(DBNAME);
 		} catch (IOException e) {
@@ -43,24 +48,26 @@ public class ProtocolEngine {
 	}
 	
 	public void terminate() {
+			logger.info("Terminating the sampling engine gracefully");
+			executor.shutdownNow();
 			try {
-				executor.awaitTermination(10, TimeUnit.SECONDS);
+				recMan.commit();
 				recMan.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (InterruptedException e) {
-				executor.shutdownNow();
 			}
 	}
 	
 	public Session requestSessionData() {
+		logger.info("Submitting a request for a new protocol run");
 		Future<Session> future = executor.submit(new ProtocolRun(db, pc));
 		Session s = null;
 		
 		try {
+			logger.info("Awaiting for sampling data...");
 			s = future.get();
-			System.out.println("Session id is: "+s.getSessionId());
+			logger.info("Received sampling data for session "+s.getSessionId());
 			recMan.commit();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

@@ -50,6 +50,11 @@ public class TestPastryNode {
 			        }
 			      }       
 			    }
+			    Runtime.getRuntime().addShutdownHook(new Thread() {
+			        public void run() { 
+			        	terminate();
+			        }
+			     });
 			   
 			    System.out.println("Finished creating new node "+node);
 			    System.out.println("Wait to properly join pastry overlay");
