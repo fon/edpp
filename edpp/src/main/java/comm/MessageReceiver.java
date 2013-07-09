@@ -35,7 +35,6 @@ public class MessageReceiver implements Runnable {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			// TODO Must fix this to locate the exact case of the exception
-			e.printStackTrace();
 		}
 
 	}
@@ -44,8 +43,7 @@ public class MessageReceiver implements Runnable {
 		try {
 			ss.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
 		}
 	}
 

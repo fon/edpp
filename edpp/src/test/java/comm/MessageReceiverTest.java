@@ -58,6 +58,7 @@ public class MessageReceiverTest {
 	
 	@AfterClass
 	public static void setUpAfterClass() throws Exception {
+		mr.stopService();
 		executor.shutdown();
 	}
 }
