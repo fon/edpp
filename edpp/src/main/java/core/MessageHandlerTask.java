@@ -158,33 +158,46 @@ public class MessageHandlerTask implements Runnable {
 		//Check whether session already exists
 		s = sessions.get(sessionId);
 		if (s != null) {
+			logger.info("Session with id "+sessionId+" was found. Checking for execution "+execution);
 			e = s.getExecution(execution);
 			if (e != null) {
+				logger.info("Execution "+execution+" was located");
 				//If the data exchange stage is over, just ignore it
 				//If we are still in INIT phase, we will use the message later
-				if (e.getPhase() == Phase.GOSSIP || e.getPhase() == Phase.TERMINATED)
+				if (e.getPhase() == Phase.GOSSIP || e.getPhase() == Phase.TERMINATED) {
+					logger.info("The execution is not in the data exchange phase. Will not process incoming message");
 					return;
+				}
 				//If the message is for the current or a future round
 				if (e.getCurrentRound() >= round) {
+					logger.info("Adding "+m.getVal()+" to the values of round "+round);
 					e.addValToRound(m.getVal(), round);
 				}
 				//If the message was of the current round set the clock to INF
 				if (e.getCurrentRound() == round) {
+					logger.info("The message was for the current round. Node "+m.getNodeId()+" is still alive");
 					e.setTimerToInf(m.getNodeId());
 				} else {
 					//Reset the clock. The node is still alive (just an optimization)
+					logger.info("The message was for a future round. Node "+m.getNodeId()+" is still alive");
 					e.resetTimer(m.getNodeId());
 				}
 				// Check if all clocks are INF
 				if (e.roundIsOver()) {
+					logger.info("Round "+e.getCurrentRound()+" is over");
 					e.setCurrentImpulseResponse(e.getCurrentValue());
+					logger.info("The impulse response of round "+e.getCurrentRound()+" is"+ e.getImpulseResponse(e.getCurrentRound()));
 					//Check if we have terminated or for initiator round
 					if (e.hasAnotherRound()) {
+						logger.info("The session has another round");
 						//Send message to out neighbors
 						sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound());
+						logger.info("Recomputing the weights of out-neighbors");
 						e.recomputeWeight();								
 					} else {
+						logger.info("This was the final round of the data exchange phase. Entering gossip round");
 						e.setPhase(Phase.GOSSIP);
+						logger.info("Computing realization matrix");
 						e.computeRealizationMatrix(localNode.getDiameter());
 						//compute the eigenvalues of the approximation matrix
 						//TODO probably should test this for null
@@ -195,6 +208,7 @@ public class MessageHandlerTask implements Runnable {
 						sendGossipMessage(msg, e);
 					}
 					e.setRound(e.getCurrentRound()+1);
+					logger.info("Renewing the timers of all the in-neighbors");
 					e.getInNeighbors().renewTimers();
 
 					//Check whether a new execution should be initiated
@@ -202,6 +216,7 @@ public class MessageHandlerTask implements Runnable {
 					//Otherwise an execution might be initiated multiple times
 					if (s.isInitiator() && e.equals(s.getInitExecution())
 							&& s.newExecutionExpected()) {
+						logger.info("Initiating a new execution");
 						Execution newExecution;
 						newExecution = s.createNewExecution();
 						sendOutMessage(MessageType.INIT, s, newExecution, 
@@ -234,19 +249,27 @@ public class MessageHandlerTask implements Runnable {
 		s = sessions.get(sessionId);
 		
 		if (s != null) {
+			logger.info("Session with id "+sessionId+" was found. Checking for execution "+executionNumber);
 			e = s.getExecution(executionNumber);
 			if (e != null) {
-				if (e.getPhase() != Phase.GOSSIP) 
+				logger.info("Execution "+executionNumber+" was located");
+				if (e.getPhase() != Phase.GOSSIP) {
+					logger.warning("The execution was not in the gossip phase. Discarding message");
 					return;
+				}
 				//Add the collected gossip round values
+				logger.info("Adding the eigenvalues of node with id "+m.getNodeId()+" and IP"+ incomingMessage.getAddress()
+						+" to the list of gossip eigenvalues");
 				e.addGossipEigenvalues(m.getNodeId(), eigenvals);
 				e.setTimerToInf(m.getNodeId());
 				//If the round is over, the execution finished
 				if (e.roundIsOver()) {
+					logger.info("Gossip round is now over");
 					e.setPhase(Phase.TERMINATED);
 					s.addCompletedExecution();
 					//If the session finished, compute the final eigenvalues
 					if (s.hasTerminated()) {
+						logger.info("Session "+s.getSessionId()+" terminated.");
 						synchronized (db) {
 							db.put(db.size()+1, new RecordedSession(s));
 						}
@@ -274,6 +297,7 @@ public class MessageHandlerTask implements Runnable {
 		synchronized (pnt) {
 			for (PlainNeighbor n : pnt) {
 				address = n.getAddress();
+				logger.info("Sending GOSSIP message to "+n.getId()+" with address "+address);
 				outQueue.add(new TransferableMessage(m, address));
 			}
 		}
@@ -294,6 +318,7 @@ public class MessageHandlerTask implements Runnable {
 				valueToSend = execution.getCurrentValue() * n.getWeight();
 				switch (type) {
 				case INIT:
+					logger.info("Sending INIT message to "+n.getId()+" with address "+address);
 					outMessage = MessageBuilder.buildInitMessage(nodeId, sessionId, 
 							executionNumber, roundNumber, valueToSend);
 					break;
@@ -301,6 +326,7 @@ public class MessageHandlerTask implements Runnable {
 				default:
 					//round number + 1, because we send the message for a round
 					//using the value of the previous round
+					logger.info("Sending NEXT message to "+n.getId()+" with address "+address);
 					outMessage = MessageBuilder.buildNextMessage(nodeId,
 							sessionId, executionNumber, roundNumber+1, valueToSend);
 					break;
