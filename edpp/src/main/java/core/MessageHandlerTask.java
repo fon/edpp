@@ -3,6 +3,7 @@ package core;
 import java.net.InetAddress;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.logging.Logger;
 
 import jdbm.PrimaryTreeMap;
 
@@ -20,6 +21,8 @@ import network.Node;
 
 public class MessageHandlerTask implements Runnable {
 
+	private Logger logger;
+	
 	private TransferableMessage incomingMessage;
 	private Node localNode;
 	private Map<String, Session> sessions;
@@ -31,6 +34,8 @@ public class MessageHandlerTask implements Runnable {
 			BlockingQueue<TransferableMessage> outQueue,
 			PrimaryTreeMap<Integer, RecordedSession> db) {
 		
+		this.logger = Logger.getLogger(MessageHandlerTask.class.getName());
+		
 		this.incomingMessage = incomingMessage;
 		this.sessions = sessions;
 		this.localNode = localNode;
@@ -41,6 +46,7 @@ public class MessageHandlerTask implements Runnable {
 	@Override
 	public void run() {
 		Message m = incomingMessage.getMessage();
+		logger.info("Receieved a message of type "+m.getType());
 		switch (m.getType()) {
 		case NEW:
 			this.createNewSession(true);
@@ -270,7 +276,7 @@ public class MessageHandlerTask implements Runnable {
 				valueToSend = execution.getCurrentValue() * n.getWeight();
 				switch (type) {
 				case INIT:
-					outMessage = MessageBuilder.buildNextMessage(nodeId, sessionId, 
+					outMessage = MessageBuilder.buildInitMessage(nodeId, sessionId, 
 							executionNumber, roundNumber, valueToSend);
 					break;
 				case NEXT:
