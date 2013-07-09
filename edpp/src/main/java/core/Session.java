@@ -199,20 +199,20 @@ public class Session implements Serializable{
 		}
 		
 		for (int j = 0; j < sizeOfArray; j++) {
-			int count = 1;
+			int count = 0;
 			double major = completeResults[0][j];
 			
 			for (i = 1; i < numberOfExecutions; i++) {
+				if (count == 0) {
+					major = completeResults[i][j];
+				}
 				if (major == completeResults[i][j]) {
 					count++;
-				} else if (count == 0) {
-					major = completeResults[i][j];
-					count = 1;
 				} else {
 					count--;
 				}
-				results[j] = major;
 			}
+			results[j] = major;
 		}
 		return results;
 	}
