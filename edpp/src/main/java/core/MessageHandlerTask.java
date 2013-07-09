@@ -186,7 +186,7 @@ public class MessageHandlerTask implements Runnable {
 				if (e.roundIsOver()) {
 					logger.info("Round "+e.getCurrentRound()+" is over");
 					e.setCurrentImpulseResponse(e.getCurrentValue());
-					logger.info("The impulse response of round "+e.getCurrentRound()+" is"+ e.getImpulseResponse(e.getCurrentRound()));
+					logger.info("The impulse response of round "+e.getCurrentRound()+" is "+ e.getImpulseResponse(e.getCurrentRound()));
 					//Check if we have terminated or for initiator round
 					if (e.hasAnotherRound()) {
 						logger.info("The session has another round");

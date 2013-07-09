@@ -351,7 +351,7 @@ public class Execution implements Serializable {
 	 */
 	public boolean setCurrentImpulseResponse(double response) {
 		if (round.get() <= numOfRounds) {
-			impulseResponse.set(round.addAndGet(-1), response);
+			impulseResponse.set(round.get()-1, response);
 			return true;
 		}
 		return false;
