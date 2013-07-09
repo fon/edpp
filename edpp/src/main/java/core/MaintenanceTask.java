@@ -91,7 +91,9 @@ public class MaintenanceTask implements Runnable {
 								if (remainingTime != TimedNeighbor.INF)
 									neighbor.decreaseTime(ProtocolController.TIMEOUT);
 								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
+									logger.info("Probing node to see if it is alive");
 									if (localNode.isAlive(neighbor)) {
+										logger.info("Node is still alive");
 										inNeighbors.renewTimer(neighbor);
 										endOfRound = false;
 									} else {
