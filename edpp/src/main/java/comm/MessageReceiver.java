@@ -39,5 +39,14 @@ public class MessageReceiver implements Runnable {
 		}
 
 	}
+	
+	public void stopService() {
+		try {
+			ss.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

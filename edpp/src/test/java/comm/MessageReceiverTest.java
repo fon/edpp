@@ -25,6 +25,7 @@ public class MessageReceiverTest {
 	static BlockingQueue<TransferableMessage> queue;
 	static Thread receiverThread;
 	static ExecutorService executor;
+	static MessageReceiver mr;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -36,7 +37,8 @@ public class MessageReceiverTest {
 		        return t;
 		    }
 		});
-		executor.execute(new MessageReceiver(queue));
+		mr = new MessageReceiver(queue);
+		executor.execute(mr);
 	}
 
 	@Test
