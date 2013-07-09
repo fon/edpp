@@ -1,5 +1,6 @@
 package io;
 
+import java.io.Console;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -17,6 +18,9 @@ import rice.pastry.socket.SocketPastryNodeFactory;
 import rice.pastry.standard.RandomNodeIdFactory;
 
 public class TestPastryNode {
+	
+	private ProtocolEngine pe;
+	private PastryNode node;
 
 	public TestPastryNode(int bindport, InetSocketAddress bootaddress, Environment env) throws Exception {
 
@@ -27,11 +31,11 @@ public class TestPastryNode {
 			    PastryNodeFactory factory = new SocketPastryNodeFactory(nidFactory, bindport, env);
 
 			    // construct a node
-			    PastryNode node = factory.newNode();
+			    node = factory.newNode();
 
 			    // construct a new MyApp
 			    PastryOverlayNode pon = new PastryOverlayNode(node, 2);
-			    ProtocolEngine pe = new ProtocolEngine(pon);
+			    pe = new ProtocolEngine(pon);
 			    node.boot(bootaddress);
 
 			    // the node may require sending several messages to fully boot into the ring
@@ -48,17 +52,21 @@ public class TestPastryNode {
 			    }
 			   
 			    System.out.println("Finished creating new node "+node);
-			    Session s = pe.requestSessionData();
-			   
-			    System.out.println("I know about session "+s.getSessionId());
-		
-		   
-			   
+			    System.out.println("Wait to properly join pastry overlay");
 			    // wait 10 seconds
 			    env.getTimeSource().sleep(10000);
+			    System.out.println("Application ready");
 	}
-			   
-			     
+	
+	public void terminate() {
+		pe.terminate();
+		node.destroy();
+	}
+	
+	public Session requestSamplingData() {
+		return pe.requestSessionData();
+	}
+	
 		
 	/**
 	 * Usage:
@@ -83,6 +91,26 @@ public class TestPastryNode {
 
 			// launch our node!
 			TestPastryNode dt = new TestPastryNode(bindport, bootaddress, env);
+			
+			Console c = System.console();
+			if (c == null) {
+				System.err.println("No console.");
+				System.err.println("Running in support mode");
+			} else {
+				while (true) {
+					String command = c.readLine("Command:");
+					if (command.equals("sample")) {
+						Session s = dt.requestSamplingData();
+						System.out.println("I know about session "+s.getSessionId());
+					} else if (command.equals("exit")) {
+						dt.terminate();
+						System.out.println("Exiting...");
+						System.exit(0);
+					} else {
+						System.out.println("Accepted commands are sample and exit...");
+					}
+				}
+			}
 		} catch (Exception e) {
 			// remind user how to use
 			System.out.println("Usage:"); 
@@ -91,4 +119,6 @@ public class TestPastryNode {
 			throw e; 
 		}
 	}
+
+	
 }

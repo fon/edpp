@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import jdbm.PrimaryTreeMap;
 import jdbm.RecordManager;
@@ -39,6 +40,18 @@ public class ProtocolEngine {
 		
 		executor = Executors.newCachedThreadPool();
 		
+	}
+	
+	public void terminate() {
+			try {
+				executor.awaitTermination(10, TimeUnit.SECONDS);
+				recMan.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InterruptedException e) {
+				executor.shutdownNow();
+			}
 	}
 	
 	public Session requestSessionData() {
