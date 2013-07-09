@@ -108,7 +108,7 @@ public class TestPastryNode {
 						Session s = dt.requestSamplingData();
 						System.out.println("I know about session "+s.getSessionId());
 					} else if (command.equals("exit")) {
-						dt.terminate();
+//						dt.terminate();
 						System.out.println("Exiting...");
 						System.exit(0);
 					} else {

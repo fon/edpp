@@ -49,7 +49,6 @@ public class ProtocolEngine {
 	
 	public void terminate() {
 			logger.info("Terminating the sampling engine gracefully");
-			executor.shutdownNow();
 			try {
 				recMan.commit();
 				recMan.close();
@@ -57,6 +56,7 @@ public class ProtocolEngine {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			executor.shutdownNow();
 	}
 	
 	public Session requestSessionData() {
