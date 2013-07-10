@@ -274,8 +274,12 @@ public class MessageHandlerTask implements Runnable {
 					if (s.hasTerminated()) {
 						logger.info("Session "+s.getSessionId()+" terminated.");
 						synchronized (db) {
-							db.put(db.size()+1, new RecordedSession(s));
+							int size = db.size()+1;
+							RecordedSession recSes = new RecordedSession(s);
+							System.out.println(recSes.getRecordedSession().getSessionId());
+							db.put(new Integer(size+1), recSes);
 						}
+						sessions.remove(s.getSessionId());
 					}
 				}
 			}
