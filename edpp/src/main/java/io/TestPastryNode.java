@@ -107,6 +107,12 @@ public class TestPastryNode {
 					if (command.equals("sample")) {
 						Session s = dt.requestSamplingData();
 						System.out.println("I know about session "+s.getSessionId());
+						double [] eigs = s.getComputedEigenvalues();
+						System.out.println("Computed eigenvals are: ");
+						for (int i = 0; i < eigs.length; i++) {
+							System.out.print(eigs[i]+" ");
+						}
+						System.out.println("");
 					} else if (command.equals("exit")) {
 //						dt.terminate();
 						System.out.println("Exiting...");
