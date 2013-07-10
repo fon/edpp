@@ -57,7 +57,6 @@ public class ProtocolController implements Runnable {
 		        return t;
 		    }
 		});
-		
 		sessions = new ConcurrentHashMap<String, Session>();
 	}
 

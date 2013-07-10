@@ -52,6 +52,7 @@ public class Execution implements Serializable {
 	private double [] eigenvalues;
 	private double [] medianEigenvalues;
 	private transient GossipData gossip;
+	private Map<String, double[]> pendingGossip;
 	
 	public Execution(final int executionNumber,final int numOfRounds, final Node localNode) {
 		this.executionNumber = executionNumber;
@@ -70,6 +71,7 @@ public class Execution implements Serializable {
 		this.hasComputedMatrix = false;
 		gossip = new GossipData();
 		computedMedian = false;
+		pendingGossip = new ConcurrentHashMap<String, double[]>();
 	}
 
 	/**
@@ -130,6 +132,19 @@ public class Execution implements Serializable {
 			return 0;
 		} else {
 			return roundVals.get(round);
+		}
+	}
+	
+	//TODO must add test
+	public void addPendingGossipMessage(String nodeId, double [] eigenvalues) {
+		pendingGossip.put(nodeId, eigenvalues);
+	}
+	
+	//TODO must add test
+	public void transferPendingGossipMessages() {
+		for (Map.Entry<String, double []> entry : pendingGossip.entrySet()) {
+			this.addGossipEigenvalues(entry.getKey(), entry.getValue());
+			this.setTimerToInf(entry.getKey());
 		}
 	}
 	

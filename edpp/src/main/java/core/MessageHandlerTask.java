@@ -89,11 +89,11 @@ public class MessageHandlerTask implements Runnable {
 			//to be stored in round 2
 			initExecution.addValToRound(m.getVal(), 2);
 		}
+		sessions.put(s.getSessionId(), s);
 		
 		sendOutMessage(MessageType.INIT, s, initExecution, 
 				numberOfExecutions, numberOfRounds);
 		
-		sessions.put(s.getSessionId(), s);
 		return s;
 	}
 
@@ -254,7 +254,8 @@ public class MessageHandlerTask implements Runnable {
 			if (e != null) {
 				logger.info("Execution "+executionNumber+" was located");
 				if (e.getPhase() != Phase.GOSSIP) {
-					logger.warning("The execution was not in the gossip phase. Discarding message");
+					logger.warning("The execution was not in the gossip phase");
+					e.addPendingGossipMessage(m.getNodeId(), eigenvals);
 					return;
 				}
 				//Add the collected gossip round values
