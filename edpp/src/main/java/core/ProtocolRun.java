@@ -67,7 +67,9 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 		synchronized (lock) {
 			lock.wait();
 		}
-		this.db.removeRecordListener(this);
+		synchronized (db) {
+			this.db.removeRecordListener(this);
+		}
 		return s;
 		
 	}
