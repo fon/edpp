@@ -320,6 +320,7 @@ public class MessageHandlerTask implements Runnable {
 				switch (type) {
 				case INIT:
 					logger.info("Sending INIT message to "+n.getId()+" with address "+address);
+					logger.info("The current node is "+nodeId);
 					outMessage = MessageBuilder.buildInitMessage(nodeId, sessionId, 
 							executionNumber, roundNumber, valueToSend);
 					break;
