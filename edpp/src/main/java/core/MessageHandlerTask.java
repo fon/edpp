@@ -267,6 +267,7 @@ public class MessageHandlerTask implements Runnable {
 				//If the round is over, the execution finished
 				if (e.roundIsOver()) {
 					logger.info("Gossip round is now over");
+					e.computeMedianEigenvalues();
 					e.setPhase(Phase.TERMINATED);
 					s.addCompletedExecution();
 					//If the session finished, compute the final eigenvalues
