@@ -43,8 +43,7 @@ public class PastryOverlayNode implements Node {
 				TransportLayerNodeHandle<MultiInetSocketAddress> nh =
 						(TransportLayerNodeHandle<MultiInetSocketAddress>) remoteNode;
 				
-				byte [] nodeId = SerializationUtils.serialize(nh);
-				Neighbor n = new Neighbor(nodeId, 
+				Neighbor n = new Neighbor(nh.getId().toByteArray(), 
 						nh.getAddress().getInnermostAddress().getAddress());
 				outNeighbors.add(n);
 			}
@@ -55,26 +54,19 @@ public class PastryOverlayNode implements Node {
 		List<rice.pastry.NodeHandle> leafSetNodes = ls.asList();
 		
 		for (rice.pastry.NodeHandle remoteNode : leafSetNodes) {
-			if (remoteNode instanceof TransportLayerNodeHandle<?>) {
-				TransportLayerNodeHandle<MultiInetSocketAddress> nh =
-						(TransportLayerNodeHandle<MultiInetSocketAddress>) remoteNode;
-				byte[] nodeId;
-				try {
-					nodeId = PastryOverlayNode.serialize(remoteNode);
-					Neighbor n = new Neighbor(nodeId, 
-							nh.getAddress().getInnermostAddress().getAddress());
-					System.out.println("Generated node id "+n.getId());
-					outNeighbors.add(n);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
+			TransportLayerNodeHandle<MultiInetSocketAddress> nh =
+					(TransportLayerNodeHandle<MultiInetSocketAddress>) remoteNode;
+			byte[] nodeId = nh.getId().toByteArray();
+			Neighbor n = new Neighbor(nodeId, 
+					nh.getAddress().getInnermostAddress().getAddress());
+			System.out.println("Generated node id "+n.getId());
+			outNeighbors.add(n);
+			
 		}
 		return outNeighbors;
 	}
 
-	@SuppressWarnings("unchecked")
+	/*@SuppressWarnings("unchecked")
 	@Override
 	public boolean isAlive(Neighbor n) {
 		Id edppId = n.getId();
@@ -94,7 +86,7 @@ public class PastryOverlayNode implements Node {
 			e.printStackTrace();
 		}
 		return false;
-	}
+	}*/
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -102,13 +94,7 @@ public class PastryOverlayNode implements Node {
 		Id localId = null;
 		TransportLayerNodeHandle<MultiInetSocketAddress> nh = 
 				(TransportLayerNodeHandle<MultiInetSocketAddress>) localNode.getLocalNodeHandle();
-		try {
-			byte [] id = serialize(nh);
-			localId = new Id(id);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		localId = new Id(nh.getId().toByteArray());
 		return localId;
 	}
 

@@ -10,6 +10,7 @@ message Message {
 		INIT = 1;
 		NEXT = 2;
 		GOSSIP = 3;
+		LIVENESS_CHECK = 4;
 	} 
 	
 	required MessageType type = 1;

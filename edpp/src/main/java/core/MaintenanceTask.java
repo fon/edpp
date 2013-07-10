@@ -18,6 +18,7 @@ import util.TimedNeighbor;
 import util.TimedNeighborsTable;
 
 import comm.MessageBuilder;
+import comm.MessageSender;
 import comm.TransferableMessage;
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.MessageType;
@@ -92,7 +93,7 @@ public class MaintenanceTask implements Runnable {
 									neighbor.decreaseTime(ProtocolController.TIMEOUT);
 								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
 									logger.info("Probing node to see if it is alive");
-									if (localNode.isAlive(neighbor)) {
+									if (isAlive(neighbor)) {
 										logger.info("Node is still alive");
 										inNeighbors.renewTimer(neighbor);
 										endOfRound = false;
@@ -144,7 +145,7 @@ public class MaintenanceTask implements Runnable {
 								if (remainingTime != TimedNeighbor.INF)
 									neighbor.decreaseTime(ProtocolController.TIMEOUT);
 								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
-									if (localNode.isAlive(neighbor)) {
+									if (isAlive(neighbor)) {
 										inNeighbors.renewTimer(neighbor);
 										endOfRound = false;
 									} else {
@@ -175,6 +176,12 @@ public class MaintenanceTask implements Runnable {
 		}
 	}
 	
+	private boolean isAlive(TimedNeighbor neighbor) {
+		Message m = MessageBuilder.buildLivenessMessage();
+		return MessageSender.makeLivenessCheck(
+				new TransferableMessage(m, neighbor.getAddress()));
+	}
+
 	private void sendGossipMessage(Message m, Execution e) {
 		InetAddress address;
 		PlainNeighborsTable pnt = e.getOutNeighbors();

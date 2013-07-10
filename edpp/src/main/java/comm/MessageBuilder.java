@@ -63,4 +63,12 @@ public class MessageBuilder {
 		return builder.build();
 	}
 	
+	public static Message buildLivenessMessage() {
+		Message m =
+				Message.newBuilder()
+				.setType(MessageType.LIVENESS_CHECK)
+				.build();
+		return m;
+	}
+	
 }

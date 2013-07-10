@@ -11,7 +11,7 @@ public interface Node {
 	
 	public Id getLocalId();
 	
-	public boolean isAlive(Neighbor n);
+//	public boolean isAlive(Neighbor n);
 	
 	public int getDiameter();
 	

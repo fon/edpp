@@ -41,7 +41,6 @@ public class FakeNode implements Node {
 		return outNeighbors;
 	}
 
-	@Override
 	public boolean isAlive(Neighbor n) {
 		return isAlive;
 	}

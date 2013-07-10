@@ -1,12 +1,14 @@
 package comm;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
 import comm.ProtocolMessage.Message;
+import comm.ProtocolMessage.Message.MessageType;
 
 import core.ProtocolController;
 
@@ -23,6 +25,7 @@ public class MessageReceiver implements Runnable {
 	@Override
 	public void run() {
 		InetAddress address;
+		PrintWriter out = null;
 		try {
 			ss = new ServerSocket(ProtocolController.PROTOCOL_PORT);
 			while (true) {
@@ -30,7 +33,12 @@ public class MessageReceiver implements Runnable {
 				address = incomingSocket.getInetAddress();
 				Message pm = Message.parseFrom(
 						incomingSocket.getInputStream());
-				incomingQueue.add(new TransferableMessage(pm, address));
+				if (pm.getType() == MessageType.LIVENESS_CHECK) {
+					out = new PrintWriter(incomingSocket.getOutputStream(), true);
+					out.println("alive");
+				} else {
+					incomingQueue.add(new TransferableMessage(pm, address));
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
