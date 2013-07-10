@@ -1,5 +1,10 @@
 package network;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,14 +58,18 @@ public class PastryOverlayNode implements Node {
 			if (remoteNode instanceof TransportLayerNodeHandle<?>) {
 				TransportLayerNodeHandle<MultiInetSocketAddress> nh =
 						(TransportLayerNodeHandle<MultiInetSocketAddress>) remoteNode;
-				
-				byte [] nodeId = SerializationUtils.serialize(nh);
-				Neighbor n = new Neighbor(nodeId, 
-						nh.getAddress().getInnermostAddress().getAddress());
-				outNeighbors.add(n);
+				byte[] nodeId;
+				try {
+					nodeId = PastryOverlayNode.serialize(remoteNode);
+					Neighbor n = new Neighbor(nodeId, 
+							nh.getAddress().getInnermostAddress().getAddress());
+					outNeighbors.add(n);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
-		
 		return outNeighbors;
 	}
 
@@ -68,9 +77,21 @@ public class PastryOverlayNode implements Node {
 	@Override
 	public boolean isAlive(Neighbor n) {
 		Id edppId = n.getId();
-		TransportLayerNodeHandle<MultiInetSocketAddress> nh = 
-				(TransportLayerNodeHandle<MultiInetSocketAddress>) SerializationUtils.deserialize(edppId.getByteRepresentation());
-		return localNode.isAlive(nh);
+		Object o;
+		try {
+			o = deserialize(edppId.getByteRepresentation());
+			TransportLayerNodeHandle<MultiInetSocketAddress> nh = 
+					(TransportLayerNodeHandle<MultiInetSocketAddress>) o;
+			System.out.println("Probing now....");
+			return localNode.isAlive(nh);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
@@ -84,4 +105,17 @@ public class PastryOverlayNode implements Node {
 		return (int) Math.ceil(Math.log(networkSize));
 	}
 
+	private static byte[] serialize(Object obj) throws IOException {
+	    ByteArrayOutputStream out = new ByteArrayOutputStream();
+	    ObjectOutputStream os = new ObjectOutputStream(out);
+	    os.writeObject(obj);
+	    return out.toByteArray();
+	}
+	
+	private static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
+	    ByteArrayInputStream in = new ByteArrayInputStream(data);
+	    ObjectInputStream is = new ObjectInputStream(in);
+	    return is.readObject();
+	}
+	
 }
