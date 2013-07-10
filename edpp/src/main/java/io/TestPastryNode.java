@@ -35,6 +35,7 @@ public class TestPastryNode {
 
 			    // construct a new MyApp
 			    PastryOverlayNode pon = new PastryOverlayNode(node, 2);
+			    System.out.println("This node is "+pon.getLocalId());
 			    pe = new ProtocolEngine(pon);
 			    node.boot(bootaddress);
 
