@@ -63,6 +63,7 @@ public class PastryOverlayNode implements Node {
 					nodeId = PastryOverlayNode.serialize(remoteNode);
 					Neighbor n = new Neighbor(nodeId, 
 							nh.getAddress().getInnermostAddress().getAddress());
+					System.out.println("Generated node id "+n.getId());
 					outNeighbors.add(n);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -79,6 +80,7 @@ public class PastryOverlayNode implements Node {
 		Id edppId = n.getId();
 		Object o;
 		try {
+			System.out.println("time to deserialize "+edppId.toString());
 			o = deserialize(edppId.getByteRepresentation());
 			TransportLayerNodeHandle<MultiInetSocketAddress> nh = 
 					(TransportLayerNodeHandle<MultiInetSocketAddress>) o;
@@ -94,9 +96,19 @@ public class PastryOverlayNode implements Node {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Id getLocalId() {
-		Id localId = new Id(localNode.getId().toByteArray());
+		Id localId = null;
+		TransportLayerNodeHandle<MultiInetSocketAddress> nh = 
+				(TransportLayerNodeHandle<MultiInetSocketAddress>) localNode.getLocalNodeHandle();
+		try {
+			byte [] id = serialize(nh);
+			localId = new Id(id);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return localId;
 	}
 
@@ -105,14 +117,15 @@ public class PastryOverlayNode implements Node {
 		return (int) Math.ceil(Math.log(networkSize));
 	}
 
-	private static byte[] serialize(Object obj) throws IOException {
+	public static byte[] serialize(Object obj) throws IOException {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
 	    ObjectOutputStream os = new ObjectOutputStream(out);
 	    os.writeObject(obj);
+	    os.close();
 	    return out.toByteArray();
 	}
 	
-	private static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
+	public static Object deserialize(byte[] data) throws IOException, ClassNotFoundException {
 	    ByteArrayInputStream in = new ByteArrayInputStream(data);
 	    ObjectInputStream is = new ObjectInputStream(in);
 	    return is.readObject();
