@@ -202,7 +202,7 @@ public class MaintenanceTask implements Runnable {
 				valueToSend = execution.getCurrentValue() * n.getWeight();
 				switch (type) {
 				case INIT:
-					outMessage = MessageBuilder.buildNextMessage(nodeId, sessionId, 
+					outMessage = MessageBuilder.buildInitMessage(nodeId, sessionId, 
 							executionNumber, roundNumber, valueToSend);
 					break;
 				case NEXT:
