@@ -1,6 +1,8 @@
 package core;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -53,6 +55,7 @@ public class Execution implements Serializable {
 	private double [] medianEigenvalues;
 	private transient GossipData gossip;
 	private Map<String, double[]> pendingGossip;
+	private Map<Integer, List<String>> pendingData;
 	
 	public Execution(final int executionNumber,final int numOfRounds, final Node localNode) {
 		this.executionNumber = executionNumber;
@@ -72,6 +75,7 @@ public class Execution implements Serializable {
 		gossip = new GossipData();
 		computedMedian = false;
 		pendingGossip = new ConcurrentHashMap<String, double[]>();
+		pendingData = new ConcurrentHashMap<Integer, List<String>>();
 	}
 
 	/**
@@ -105,6 +109,12 @@ public class Execution implements Serializable {
 		} else {
 			this.setCurrentValue(d);
 		}
+		List<String> nodes = pendingData.get(round);
+		if (nodes != null) {
+			for (String node : nodes) {
+				inNeighbors.setTimerToInf(node);
+			}
+		}
 	}
 	
 	/**
@@ -119,6 +129,18 @@ public class Execution implements Serializable {
 			double newVal = roundVals.get(round);
 			newVal += val;
 			roundVals.put(round, newVal);
+		}
+	}
+	
+	//TODO must do tests
+	public void addNeighborToRound(String nodeId, int round) {
+		List<String> nodes = pendingData.get(round);
+		if (nodes == null) {
+			nodes = new ArrayList<>();
+			nodes.add(nodeId);
+			pendingData.put(round, nodes);
+		} else {
+			nodes.add(nodeId);
 		}
 	}
 	
