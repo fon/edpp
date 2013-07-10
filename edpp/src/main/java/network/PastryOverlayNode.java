@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.SerializationUtils;
 import org.mpisws.p2p.transport.multiaddress.MultiInetSocketAddress;
 
 import rice.pastry.PastryNode;

@@ -3,6 +3,7 @@ package comm;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -60,6 +61,38 @@ public class MessageSenderTest {
 		ss.close();
 		
 		assertEquals(testMessage, pm);
+	}
+	
+	@Test
+	public void checkThatNodeIsAlive() throws IOException {
+		Thread t = new Thread(new Runnable() {
+			Socket incomingSocket;
+			ServerSocket ss = new ServerSocket(ProtocolController.PROTOCOL_PORT);
+			PrintWriter out = null;
+			@Override
+			public void run() {
+				try {
+					incomingSocket = ss.accept();
+					Message pm = Message.parseFrom(
+							incomingSocket.getInputStream());
+					if (pm.getType() == MessageType.LIVENESS_CHECK) {
+						out = new PrintWriter(incomingSocket.getOutputStream(), true);
+						out.println("alive");
+						out.close();
+						incomingSocket.close();
+						ss.close();
+					}
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		t.start();
+		Message m = MessageBuilder.buildLivenessMessage();
+
+		assertTrue(MessageSender.makeLivenessCheck(new TransferableMessage(m, InetAddress.getLocalHost())));
 	}
 	
 	@AfterClass

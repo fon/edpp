@@ -40,16 +40,16 @@ public class MessageSender implements Runnable {
 		try {
 			Socket s = new Socket(tm.getAddress(), ProtocolController.PROTOCOL_PORT);
 			tm.getMessage().writeTo(s.getOutputStream());
+			s.shutdownOutput();
 			in = new BufferedReader(new InputStreamReader(
                     s.getInputStream()));
 			String reply = in.readLine();
 			in.close();
 			s.close();
-			if (reply != null) 
+			if (reply.equals("alive")); 
 				return true;
 		} catch (IOException e) {
 			e.printStackTrace();
-			return false;
 		}
 		return false;
 	}

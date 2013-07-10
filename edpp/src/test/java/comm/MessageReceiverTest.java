@@ -48,7 +48,6 @@ public class MessageReceiverTest {
 				.setExecution(100)
 				.setRound(200)
 				.build();
-		
 		Socket s = new Socket(InetAddress.getLocalHost(), ProtocolController.PROTOCOL_PORT);
 		testMessage.writeTo(s.getOutputStream());
 		s.close();
