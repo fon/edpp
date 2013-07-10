@@ -36,6 +36,8 @@ public class MessageReceiver implements Runnable {
 				if (pm.getType() == MessageType.LIVENESS_CHECK) {
 					out = new PrintWriter(incomingSocket.getOutputStream(), true);
 					out.println("alive");
+					out.close();
+					incomingSocket.close();
 				} else {
 					incomingQueue.add(new TransferableMessage(pm, address));
 				}

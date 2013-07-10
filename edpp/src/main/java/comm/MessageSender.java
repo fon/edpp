@@ -43,6 +43,8 @@ public class MessageSender implements Runnable {
 			in = new BufferedReader(new InputStreamReader(
                     s.getInputStream()));
 			String reply = in.readLine();
+			in.close();
+			s.close();
 			if (reply != null) 
 				return true;
 		} catch (IOException e) {
