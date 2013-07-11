@@ -181,7 +181,7 @@ public class MessageHandlerTask implements Runnable {
 					//Reset the clock. The node is still alive (just an optimization)
 					logger.info("The message was for a future round. Node "+m.getNodeId()+" is still alive");
 					e.addNeighborToRound(m.getNodeId(), round);
-					e.resetTimer(m.getNodeId());
+//					e.resetTimer(m.getNodeId());
 				}
 				// Check if all clocks are INF
 				if (e.roundIsOver()) {
