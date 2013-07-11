@@ -208,9 +208,9 @@ public class MessageHandlerTask implements Runnable {
 						//send GOSSIP message to out-neighbors
 						sendGossipMessage(msg, e);
 					}
-					e.setRound(e.getCurrentRound()+1);
 					logger.info("Renewing the timers of all the in-neighbors");
 					e.getInNeighbors().renewTimers();
+					e.setRound(e.getCurrentRound()+1);
 
 					//Check whether a new execution should be initiated
 					//The initial execution must be currently altered to proceed to create a new execution

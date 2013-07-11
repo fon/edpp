@@ -113,8 +113,8 @@ public class MaintenanceTask implements Runnable {
 								logger.fine("This has another round");
 								sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound()+1);
 								e.recomputeWeight();
-								e.setRound(e.getCurrentRound() + 1);
 								e.getInNeighbors().renewTimers();
+								e.setRound(e.getCurrentRound() + 1);
 							} else {
 								logger.fine("This was the last round");
 								e.setPhase(Phase.GOSSIP);
