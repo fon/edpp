@@ -192,7 +192,7 @@ public class MessageHandlerTask implements Runnable {
 					if (e.hasAnotherRound()) {
 						logger.info("The session has another round");
 						//Send message to out neighbors
-						sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound());
+						sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound()+1);
 						logger.info("Recomputing the weights of out-neighbors");
 						e.recomputeWeight();								
 					} else {
@@ -336,7 +336,7 @@ public class MessageHandlerTask implements Runnable {
 					//using the value of the previous round
 					logger.info("Sending NEXT message to "+n.getId()+" with address "+address);
 					outMessage = MessageBuilder.buildNextMessage(nodeId,
-							sessionId, executionNumber, roundNumber+1, valueToSend);
+							sessionId, executionNumber, roundNumber, valueToSend);
 					break;
 				}
 				outQueue.add(new TransferableMessage(outMessage, address));

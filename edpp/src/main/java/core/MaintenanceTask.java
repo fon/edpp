@@ -73,7 +73,7 @@ public class MaintenanceTask implements Runnable {
 							e.setPhase(Phase.DATA_EXCHANGE);
 							logger.info("Stage is now "+Phase.DATA_EXCHANGE);
 							logger.info("The current round is "+e.getCurrentRound());
-							sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound());
+							sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound()+1);
 							e.recomputeWeight();
 							e.setRound(2);
 							logger.info("Recomputed weights and set round to "+e.getCurrentRound());
@@ -111,7 +111,7 @@ public class MaintenanceTask implements Runnable {
 							// If it is the end of the round check if we have another round
 							if (e.hasAnotherRound()) {
 								logger.fine("This has another round");
-								sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound());
+								sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound()+1);
 								e.recomputeWeight();
 								e.setRound(e.getCurrentRound() + 1);
 								e.getInNeighbors().renewTimers();
@@ -217,7 +217,7 @@ public class MaintenanceTask implements Runnable {
 					//round number + 1, because we send the message for a round
 					//using the value of the previous round
 					outMessage = MessageBuilder.buildNextMessage(nodeId,
-							sessionId, executionNumber, roundNumber+1, valueToSend);
+							sessionId, executionNumber, roundNumber, valueToSend);
 					break;
 				}
 				outgoingQueue.add(new TransferableMessage(outMessage, address));
