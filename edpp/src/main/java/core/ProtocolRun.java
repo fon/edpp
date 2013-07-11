@@ -49,7 +49,7 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 		if(rs == null) {
 			logger.info("No previous recorded session data found\nMaking a new request");
 			//make a new request
-			Message m = MessageBuilder.buildNewMessage(1, 2);
+			Message m = MessageBuilder.buildNewMessage(2, 10);
 			TransferableMessage tm = new TransferableMessage(m, InetAddress.getLocalHost());
 			pc.putMessageToInQueue(tm);
 		} else if (System.currentTimeMillis() - rs.getTimestamp() <= TIME_THRESHOLD) {
@@ -58,7 +58,7 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 			return s;
 		} else {
 			logger.info("Found a recorded session, but it is outdated. Will make a new request");
-			Message m = MessageBuilder.buildNewMessage(1, 2);
+			Message m = MessageBuilder.buildNewMessage(2, 10);
 			TransferableMessage tm = new TransferableMessage(m, InetAddress.getLocalHost());
 			pc.putMessageToInQueue(tm);
 		}

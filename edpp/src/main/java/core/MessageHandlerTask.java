@@ -92,7 +92,7 @@ public class MessageHandlerTask implements Runnable {
 		sessions.put(s.getSessionId(), s);
 		
 		sendOutMessage(MessageType.INIT, s, initExecution, 
-				numberOfExecutions, numberOfRounds);
+				initExecution.getExecutionNumber(), numberOfRounds);
 		
 		return s;
 	}
