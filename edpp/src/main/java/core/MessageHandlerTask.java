@@ -273,13 +273,13 @@ public class MessageHandlerTask implements Runnable {
 					//If the session finished, compute the final eigenvalues
 					if (s.hasTerminated()) {
 						logger.info("Session "+s.getSessionId()+" terminated.");
+						sessions.remove(s.getSessionId());
 						synchronized (db) {
 							int size = db.size();
 							RecordedSession recSes = new RecordedSession(s);
 							System.out.println(recSes.getRecordedSession().getSessionId());
-							db.put(new Integer(size), recSes);
+							db.put(size, recSes);
 						}
-						sessions.remove(s.getSessionId());
 					}
 				}
 			}

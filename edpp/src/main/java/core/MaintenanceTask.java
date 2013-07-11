@@ -161,13 +161,13 @@ public class MaintenanceTask implements Runnable {
 							e.setPhase(Phase.TERMINATED);
 							s.addCompletedExecution();
 							if (s.hasTerminated()) {
+								System.out.println("Update database");
+								sessionIter.remove();
 								synchronized (db) {
 									int size = db.size();
 									RecordedSession recSes = new RecordedSession(s);
-									System.out.println(recSes.getRecordedSession().getSessionId());
-									db.put(new Integer(size), recSes);
+									db.put(size, recSes);
 								}
-								sessionIter.remove();
 							}
 						}
 					}
