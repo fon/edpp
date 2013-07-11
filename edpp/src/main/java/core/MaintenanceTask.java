@@ -162,10 +162,10 @@ public class MaintenanceTask implements Runnable {
 							s.addCompletedExecution();
 							if (s.hasTerminated()) {
 								synchronized (db) {
-									int size = db.size()+1;
+									int size = db.size();
 									RecordedSession recSes = new RecordedSession(s);
 									System.out.println(recSes.getRecordedSession().getSessionId());
-									db.put(new Integer(size+1), recSes);
+									db.put(new Integer(size), recSes);
 								}
 								sessionIter.remove();
 							}
