@@ -4,6 +4,8 @@ import java.io.Console;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
+import java.util.List;
 
 import network.PastryOverlayNode;
 
@@ -16,6 +18,7 @@ import rice.pastry.PastryNode;
 import rice.pastry.PastryNodeFactory;
 import rice.pastry.socket.SocketPastryNodeFactory;
 import rice.pastry.standard.RandomNodeIdFactory;
+import util.SamplingParameters;
 
 public class TestPastryNode {
 	
@@ -68,8 +71,9 @@ public class TestPastryNode {
 		node.destroy();
 	}
 	
-	public Session requestSamplingData() {
-		return pe.requestSessionData();
+	public Session requestSamplingData(int numberOfExecutions, int numberOfRounds) {
+		SamplingParameters sp = new SamplingParameters(numberOfExecutions, numberOfRounds);
+		return pe.requestSessionData(sp);
 	}
 	
 		
@@ -104,8 +108,15 @@ public class TestPastryNode {
 			} else {
 				while (true) {
 					String command = c.readLine("Command:");
-					if (command.equals("sample")) {
-						Session s = dt.requestSamplingData();
+					List<String> items = Arrays.asList(command.split("\\s+"));
+					if (items.get(0).equals("sample")) {
+						if (items.size() != 3) {
+							System.out.println("Must give two arguments - (sample numOfExecutions numOfRounds)");
+							continue;
+						}
+						int numberOfExecutions = Integer.parseInt(items.get(1));
+						int numberOfRounds = Integer.parseInt(items.get(2));
+						Session s = dt.requestSamplingData(numberOfExecutions, numberOfRounds);
 						System.out.println("I know about session "+s.getSessionId());
 						double [] eigs = s.getComputedEigenvalues();
 						System.out.println("Computed eigenvals are: ");
@@ -113,7 +124,7 @@ public class TestPastryNode {
 							System.out.print(eigs[i]+" ");
 						}
 						System.out.println("");
-					} else if (command.equals("exit")) {
+					} else if (items.get(0).equals("exit")) {
 //						dt.terminate();
 						System.out.println("Exiting...");
 						System.exit(0);

@@ -5,6 +5,8 @@ import java.net.InetAddress;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
+import util.SamplingParameters;
+
 import comm.MessageBuilder;
 import comm.ProtocolMessage.Message;
 import comm.TransferableMessage;
@@ -23,13 +25,16 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 	private Session s;
 	private PrimaryTreeMap<Integer, RecordedSession> db;
 	private ProtocolController pc;
+	private SamplingParameters sp;
 	
-	public ProtocolRun(PrimaryTreeMap<Integer, RecordedSession> db, ProtocolController pc) {
+	public ProtocolRun(PrimaryTreeMap<Integer, RecordedSession> db, ProtocolController pc,
+			SamplingParameters sp) {
 		logger = Logger.getLogger(ProtocolRun.class.getName());
 		
 		lock = new Object();
 		s = null;
 		this.pc = pc;
+		this.sp = sp;
 		this.db = db;
 		synchronized (this.db) {
 			this.db.addRecordListener(this);
@@ -50,7 +55,7 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 		if(rs == null) {
 			logger.info("No previous recorded session data found\nMaking a new request");
 			//make a new request
-			Message m = MessageBuilder.buildNewMessage(2, 10);
+			Message m = MessageBuilder.buildNewMessage(sp.getNumberOfExecutions(), sp.getNumberOfRounds());
 			TransferableMessage tm = new TransferableMessage(m, InetAddress.getLocalHost());
 			pc.putMessageToInQueue(tm);
 		} else if (System.currentTimeMillis() - rs.getTimestamp() <= TIME_THRESHOLD) {
@@ -59,7 +64,7 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 			return s;
 		} else {
 			logger.info("Found a recorded session, but it is outdated. Will make a new request");
-			Message m = MessageBuilder.buildNewMessage(2, 10);
+			Message m = MessageBuilder.buildNewMessage(sp.getNumberOfExecutions(), sp.getNumberOfRounds());
 			TransferableMessage tm = new TransferableMessage(m, InetAddress.getLocalHost());
 			pc.putMessageToInQueue(tm);
 		}

@@ -7,6 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
+import util.SamplingParameters;
+
 import jdbm.PrimaryTreeMap;
 import jdbm.RecordManager;
 import jdbm.RecordManagerFactory;
@@ -59,9 +61,9 @@ public class ProtocolEngine {
 			executor.shutdownNow();
 	}
 	
-	public Session requestSessionData() {
+	public Session requestSessionData(SamplingParameters sp) {
 		logger.info("Submitting a request for a new protocol run");
-		Future<Session> future = executor.submit(new ProtocolRun(db, pc));
+		Future<Session> future = executor.submit(new ProtocolRun(db, pc, sp));
 		Session s = null;
 		
 		try {
