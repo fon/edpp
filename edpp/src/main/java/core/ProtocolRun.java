@@ -42,8 +42,9 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 		RecordedSession rs = null;
 		
 		synchronized (db) {
-			int lastRecord = db.size();
-			rs = db.get(lastRecord);
+			int lastRecord = db.lastKey();
+			System.out.println("The size is: "+lastRecord);
+			rs = db.find(new Integer(lastRecord));
 		}
 			
 		if(rs == null) {

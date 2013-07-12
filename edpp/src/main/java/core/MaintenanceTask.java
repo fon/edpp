@@ -164,9 +164,9 @@ public class MaintenanceTask implements Runnable {
 								System.out.println("Update database");
 								sessionIter.remove();
 								synchronized (db) {
-									int size = db.size();
+									int size = db.lastKey()+1;
 									RecordedSession recSes = new RecordedSession(s);
-									db.put(size, recSes);
+									db.put(new Integer(size), recSes);
 								}
 							}
 						}
