@@ -10,21 +10,22 @@ public class MessageBuilder {
 		Message m =
 				Message.newBuilder()
 				.setType(MessageType.NEW)
-				.setExecution(numOfExecutions)
+				.setTotalNumberOfExecutions(numOfExecutions)
 				.setRound(numOfRounds)
 				.build();
 		
 		return m;
 	}
 	
-	public static Message buildInitMessage(String nodeId, String sessionId, 
-			int numOfExecutions, int numOfRounds, double value) {
+	public static Message buildInitMessage(String nodeId, String sessionId, int currentExecution,
+			int totalNumOfExecutions, int numOfRounds, double value) {
 		Message m = 
 				Message.newBuilder()
 				.setNodeId(nodeId)
 				.setType(MessageType.INIT)
 				.setSession(sessionId)
-				.setExecution(numOfExecutions)
+				.setExecution(currentExecution)
+				.setTotalNumberOfExecutions(totalNumOfExecutions)
 				.setRound(numOfRounds)
 				.setVal(value)
 				.build();

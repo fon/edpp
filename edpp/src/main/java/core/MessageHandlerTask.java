@@ -71,7 +71,7 @@ public class MessageHandlerTask implements Runnable {
 		Session s;
 		Message m = incomingMessage.getMessage();
 		
-		int numberOfExecutions = m.getExecution();
+		int numberOfExecutions = m.getTotalNumberOfExecutions();
 		int numberOfRounds = m.getRound();
 		logger.info("Created new Session");
 		if (isInitiator) {
@@ -91,8 +91,7 @@ public class MessageHandlerTask implements Runnable {
 		}
 		sessions.put(s.getSessionId(), s);
 		
-		sendOutMessage(MessageType.INIT, s, initExecution, 
-				initExecution.getExecutionNumber(), numberOfRounds);
+		sendOutMessage(MessageType.INIT, s, initExecution);
 		
 		return s;
 	}
@@ -192,7 +191,7 @@ public class MessageHandlerTask implements Runnable {
 					if (e.hasAnotherRound()) {
 						logger.info("The session has another round");
 						//Send message to out neighbors
-						sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound()+1);
+						sendOutMessage(MessageType.NEXT, s, e);
 						logger.info("Recomputing the weights of out-neighbors");
 						e.recomputeWeight();								
 					} else {
@@ -220,8 +219,7 @@ public class MessageHandlerTask implements Runnable {
 						logger.info("Initiating a new execution");
 						Execution newExecution;
 						newExecution = s.createNewExecution();
-						sendOutMessage(MessageType.INIT, s, newExecution, 
-								newExecution.getExecutionNumber(), s.getNumberOfRounds());
+						sendOutMessage(MessageType.INIT, s, newExecution);
 					}
 				}
 			} else {
@@ -310,8 +308,7 @@ public class MessageHandlerTask implements Runnable {
 		}
 	}
 	
-	private void sendOutMessage(MessageType type, Session session, Execution execution,
-			int executionNumber, int roundNumber) {
+	private void sendOutMessage(MessageType type, Session session, Execution execution) {
 		InetAddress address;
 		double valueToSend;
 		Message outMessage;
@@ -328,7 +325,8 @@ public class MessageHandlerTask implements Runnable {
 					logger.info("Sending INIT message to "+n.getId()+" with address "+address);
 					logger.info("The current node is "+nodeId);
 					outMessage = MessageBuilder.buildInitMessage(nodeId, sessionId, 
-							executionNumber, roundNumber, valueToSend);
+							execution.getExecutionNumber(), session.getNumberOfExecutions(),
+							session.getNumberOfRounds(), valueToSend);
 					break;
 				case NEXT:
 				default:
@@ -336,7 +334,8 @@ public class MessageHandlerTask implements Runnable {
 					//using the value of the previous round
 					logger.info("Sending NEXT message to "+n.getId()+" with address "+address);
 					outMessage = MessageBuilder.buildNextMessage(nodeId,
-							sessionId, executionNumber, roundNumber, valueToSend);
+							sessionId, execution.getExecutionNumber(),
+							execution.getCurrentRound() + 1, valueToSend);
 					break;
 				}
 				outQueue.add(new TransferableMessage(outMessage, address));

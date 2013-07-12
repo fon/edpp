@@ -19,7 +19,7 @@ public class MessageBuilderTest {
 		
 		//These values should be set on the message
 		assertEquals(MessageType.NEW, m.getType());
-		assertEquals(3, m.getExecution());
+		assertEquals(3, m.getTotalNumberOfExecutions());
 		assertEquals(4, m.getRound());
 		
 		//The rest of the message contents should
@@ -32,7 +32,7 @@ public class MessageBuilderTest {
 	
 	@Test
 	public void initMessageIsBuiltProperly() {
-		Message m = MessageBuilder.buildInitMessage("testNode", "testSession", 3, 4, 10.0);
+		Message m = MessageBuilder.buildInitMessage("testNode", "testSession", 3, 1, 4, 10.0);
 		
 		//These values should be set on the message
 		assertEquals(MessageType.INIT, m.getType());
@@ -41,6 +41,7 @@ public class MessageBuilderTest {
 		assertEquals(10.0, m.getVal(), 0.0);
 		assertEquals("testSession",m.getSession());
 		assertEquals("testNode", m.getNodeId());
+		assertEquals(1, m.getTotalNumberOfExecutions());
 		
 		//The rest of the message contents should
 		//be initialized to 0

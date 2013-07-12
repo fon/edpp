@@ -19,10 +19,11 @@ message Message {
 	
 	optional string session = 3;
 	optional int32 execution = 4;
-	optional int32 round = 5;
+	optional int32 totalNumberOfExecutions = 5;
+	optional int32 round = 6;
 	
-	optional double val = 6;
-	repeated double eigenvals = 7 [packed=true];
+	optional double val = 7;
+	repeated double eigenvals = 8 [packed=true];
 	
 }
 	

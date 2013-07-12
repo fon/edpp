@@ -61,37 +61,47 @@ public final class ProtocolMessage {
      */
     int getExecution();
 
-    // optional int32 round = 5;
+    // optional int32 totalNumberOfExecutions = 5;
     /**
-     * <code>optional int32 round = 5;</code>
+     * <code>optional int32 totalNumberOfExecutions = 5;</code>
+     */
+    boolean hasTotalNumberOfExecutions();
+    /**
+     * <code>optional int32 totalNumberOfExecutions = 5;</code>
+     */
+    int getTotalNumberOfExecutions();
+
+    // optional int32 round = 6;
+    /**
+     * <code>optional int32 round = 6;</code>
      */
     boolean hasRound();
     /**
-     * <code>optional int32 round = 5;</code>
+     * <code>optional int32 round = 6;</code>
      */
     int getRound();
 
-    // optional double val = 6;
+    // optional double val = 7;
     /**
-     * <code>optional double val = 6;</code>
+     * <code>optional double val = 7;</code>
      */
     boolean hasVal();
     /**
-     * <code>optional double val = 6;</code>
+     * <code>optional double val = 7;</code>
      */
     double getVal();
 
-    // repeated double eigenvals = 7 [packed = true];
+    // repeated double eigenvals = 8 [packed = true];
     /**
-     * <code>repeated double eigenvals = 7 [packed = true];</code>
+     * <code>repeated double eigenvals = 8 [packed = true];</code>
      */
     java.util.List<java.lang.Double> getEigenvalsList();
     /**
-     * <code>repeated double eigenvals = 7 [packed = true];</code>
+     * <code>repeated double eigenvals = 8 [packed = true];</code>
      */
     int getEigenvalsCount();
     /**
-     * <code>repeated double eigenvals = 7 [packed = true];</code>
+     * <code>repeated double eigenvals = 8 [packed = true];</code>
      */
     double getEigenvals(int index);
   }
@@ -174,28 +184,33 @@ public final class ProtocolMessage {
             }
             case 40: {
               bitField0_ |= 0x00000010;
+              totalNumberOfExecutions_ = input.readInt32();
+              break;
+            }
+            case 48: {
+              bitField0_ |= 0x00000020;
               round_ = input.readInt32();
               break;
             }
-            case 49: {
-              bitField0_ |= 0x00000020;
+            case 57: {
+              bitField0_ |= 0x00000040;
               val_ = input.readDouble();
               break;
             }
-            case 57: {
-              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+            case 65: {
+              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
                 eigenvals_ = new java.util.ArrayList<java.lang.Double>();
-                mutable_bitField0_ |= 0x00000040;
+                mutable_bitField0_ |= 0x00000080;
               }
               eigenvals_.add(input.readDouble());
               break;
             }
-            case 58: {
+            case 66: {
               int length = input.readRawVarint32();
               int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000040) == 0x00000040) && input.getBytesUntilLimit() > 0) {
+              if (!((mutable_bitField0_ & 0x00000080) == 0x00000080) && input.getBytesUntilLimit() > 0) {
                 eigenvals_ = new java.util.ArrayList<java.lang.Double>();
-                mutable_bitField0_ |= 0x00000040;
+                mutable_bitField0_ |= 0x00000080;
               }
               while (input.getBytesUntilLimit() > 0) {
                 eigenvals_.add(input.readDouble());
@@ -211,7 +226,7 @@ public final class ProtocolMessage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000040) == 0x00000040)) {
+        if (((mutable_bitField0_ & 0x00000080) == 0x00000080)) {
           eigenvals_ = java.util.Collections.unmodifiableList(eigenvals_);
         }
         this.unknownFields = unknownFields.build();
@@ -473,56 +488,72 @@ public final class ProtocolMessage {
       return execution_;
     }
 
-    // optional int32 round = 5;
-    public static final int ROUND_FIELD_NUMBER = 5;
-    private int round_;
+    // optional int32 totalNumberOfExecutions = 5;
+    public static final int TOTALNUMBEROFEXECUTIONS_FIELD_NUMBER = 5;
+    private int totalNumberOfExecutions_;
     /**
-     * <code>optional int32 round = 5;</code>
+     * <code>optional int32 totalNumberOfExecutions = 5;</code>
      */
-    public boolean hasRound() {
+    public boolean hasTotalNumberOfExecutions() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
-     * <code>optional int32 round = 5;</code>
+     * <code>optional int32 totalNumberOfExecutions = 5;</code>
+     */
+    public int getTotalNumberOfExecutions() {
+      return totalNumberOfExecutions_;
+    }
+
+    // optional int32 round = 6;
+    public static final int ROUND_FIELD_NUMBER = 6;
+    private int round_;
+    /**
+     * <code>optional int32 round = 6;</code>
+     */
+    public boolean hasRound() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional int32 round = 6;</code>
      */
     public int getRound() {
       return round_;
     }
 
-    // optional double val = 6;
-    public static final int VAL_FIELD_NUMBER = 6;
+    // optional double val = 7;
+    public static final int VAL_FIELD_NUMBER = 7;
     private double val_;
     /**
-     * <code>optional double val = 6;</code>
+     * <code>optional double val = 7;</code>
      */
     public boolean hasVal() {
-      return ((bitField0_ & 0x00000020) == 0x00000020);
+      return ((bitField0_ & 0x00000040) == 0x00000040);
     }
     /**
-     * <code>optional double val = 6;</code>
+     * <code>optional double val = 7;</code>
      */
     public double getVal() {
       return val_;
     }
 
-    // repeated double eigenvals = 7 [packed = true];
-    public static final int EIGENVALS_FIELD_NUMBER = 7;
+    // repeated double eigenvals = 8 [packed = true];
+    public static final int EIGENVALS_FIELD_NUMBER = 8;
     private java.util.List<java.lang.Double> eigenvals_;
     /**
-     * <code>repeated double eigenvals = 7 [packed = true];</code>
+     * <code>repeated double eigenvals = 8 [packed = true];</code>
      */
     public java.util.List<java.lang.Double>
         getEigenvalsList() {
       return eigenvals_;
     }
     /**
-     * <code>repeated double eigenvals = 7 [packed = true];</code>
+     * <code>repeated double eigenvals = 8 [packed = true];</code>
      */
     public int getEigenvalsCount() {
       return eigenvals_.size();
     }
     /**
-     * <code>repeated double eigenvals = 7 [packed = true];</code>
+     * <code>repeated double eigenvals = 8 [packed = true];</code>
      */
     public double getEigenvals(int index) {
       return eigenvals_.get(index);
@@ -534,6 +565,7 @@ public final class ProtocolMessage {
       nodeId_ = "";
       session_ = "";
       execution_ = 0;
+      totalNumberOfExecutions_ = 0;
       round_ = 0;
       val_ = 0D;
       eigenvals_ = java.util.Collections.emptyList();
@@ -567,13 +599,16 @@ public final class ProtocolMessage {
         output.writeInt32(4, execution_);
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
-        output.writeInt32(5, round_);
+        output.writeInt32(5, totalNumberOfExecutions_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
-        output.writeDouble(6, val_);
+        output.writeInt32(6, round_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeDouble(7, val_);
       }
       if (getEigenvalsList().size() > 0) {
-        output.writeRawVarint32(58);
+        output.writeRawVarint32(66);
         output.writeRawVarint32(eigenvalsMemoizedSerializedSize);
       }
       for (int i = 0; i < eigenvals_.size(); i++) {
@@ -606,11 +641,15 @@ public final class ProtocolMessage {
       }
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(5, round_);
+          .computeInt32Size(5, totalNumberOfExecutions_);
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeDoubleSize(6, val_);
+          .computeInt32Size(6, round_);
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeDoubleSize(7, val_);
       }
       {
         int dataSize = 0;
@@ -747,12 +786,14 @@ public final class ProtocolMessage {
         bitField0_ = (bitField0_ & ~0x00000004);
         execution_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
-        round_ = 0;
+        totalNumberOfExecutions_ = 0;
         bitField0_ = (bitField0_ & ~0x00000010);
-        val_ = 0D;
+        round_ = 0;
         bitField0_ = (bitField0_ & ~0x00000020);
-        eigenvals_ = java.util.Collections.emptyList();
+        val_ = 0D;
         bitField0_ = (bitField0_ & ~0x00000040);
+        eigenvals_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -800,14 +841,18 @@ public final class ProtocolMessage {
         if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
           to_bitField0_ |= 0x00000010;
         }
-        result.round_ = round_;
+        result.totalNumberOfExecutions_ = totalNumberOfExecutions_;
         if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
           to_bitField0_ |= 0x00000020;
         }
+        result.round_ = round_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
         result.val_ = val_;
-        if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        if (((bitField0_ & 0x00000080) == 0x00000080)) {
           eigenvals_ = java.util.Collections.unmodifiableList(eigenvals_);
-          bitField0_ = (bitField0_ & ~0x00000040);
+          bitField0_ = (bitField0_ & ~0x00000080);
         }
         result.eigenvals_ = eigenvals_;
         result.bitField0_ = to_bitField0_;
@@ -842,6 +887,9 @@ public final class ProtocolMessage {
         if (other.hasExecution()) {
           setExecution(other.getExecution());
         }
+        if (other.hasTotalNumberOfExecutions()) {
+          setTotalNumberOfExecutions(other.getTotalNumberOfExecutions());
+        }
         if (other.hasRound()) {
           setRound(other.getRound());
         }
@@ -851,7 +899,7 @@ public final class ProtocolMessage {
         if (!other.eigenvals_.isEmpty()) {
           if (eigenvals_.isEmpty()) {
             eigenvals_ = other.eigenvals_;
-            bitField0_ = (bitField0_ & ~0x00000040);
+            bitField0_ = (bitField0_ & ~0x00000080);
           } else {
             ensureEigenvalsIsMutable();
             eigenvals_.addAll(other.eigenvals_);
@@ -1106,101 +1154,134 @@ public final class ProtocolMessage {
         return this;
       }
 
-      // optional int32 round = 5;
-      private int round_ ;
+      // optional int32 totalNumberOfExecutions = 5;
+      private int totalNumberOfExecutions_ ;
       /**
-       * <code>optional int32 round = 5;</code>
+       * <code>optional int32 totalNumberOfExecutions = 5;</code>
        */
-      public boolean hasRound() {
+      public boolean hasTotalNumberOfExecutions() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
-       * <code>optional int32 round = 5;</code>
+       * <code>optional int32 totalNumberOfExecutions = 5;</code>
+       */
+      public int getTotalNumberOfExecutions() {
+        return totalNumberOfExecutions_;
+      }
+      /**
+       * <code>optional int32 totalNumberOfExecutions = 5;</code>
+       */
+      public Builder setTotalNumberOfExecutions(int value) {
+        bitField0_ |= 0x00000010;
+        totalNumberOfExecutions_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional int32 totalNumberOfExecutions = 5;</code>
+       */
+      public Builder clearTotalNumberOfExecutions() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        totalNumberOfExecutions_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // optional int32 round = 6;
+      private int round_ ;
+      /**
+       * <code>optional int32 round = 6;</code>
+       */
+      public boolean hasRound() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional int32 round = 6;</code>
        */
       public int getRound() {
         return round_;
       }
       /**
-       * <code>optional int32 round = 5;</code>
+       * <code>optional int32 round = 6;</code>
        */
       public Builder setRound(int value) {
-        bitField0_ |= 0x00000010;
+        bitField0_ |= 0x00000020;
         round_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 round = 5;</code>
+       * <code>optional int32 round = 6;</code>
        */
       public Builder clearRound() {
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         round_ = 0;
         onChanged();
         return this;
       }
 
-      // optional double val = 6;
+      // optional double val = 7;
       private double val_ ;
       /**
-       * <code>optional double val = 6;</code>
+       * <code>optional double val = 7;</code>
        */
       public boolean hasVal() {
-        return ((bitField0_ & 0x00000020) == 0x00000020);
+        return ((bitField0_ & 0x00000040) == 0x00000040);
       }
       /**
-       * <code>optional double val = 6;</code>
+       * <code>optional double val = 7;</code>
        */
       public double getVal() {
         return val_;
       }
       /**
-       * <code>optional double val = 6;</code>
+       * <code>optional double val = 7;</code>
        */
       public Builder setVal(double value) {
-        bitField0_ |= 0x00000020;
+        bitField0_ |= 0x00000040;
         val_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional double val = 6;</code>
+       * <code>optional double val = 7;</code>
        */
       public Builder clearVal() {
-        bitField0_ = (bitField0_ & ~0x00000020);
+        bitField0_ = (bitField0_ & ~0x00000040);
         val_ = 0D;
         onChanged();
         return this;
       }
 
-      // repeated double eigenvals = 7 [packed = true];
+      // repeated double eigenvals = 8 [packed = true];
       private java.util.List<java.lang.Double> eigenvals_ = java.util.Collections.emptyList();
       private void ensureEigenvalsIsMutable() {
-        if (!((bitField0_ & 0x00000040) == 0x00000040)) {
+        if (!((bitField0_ & 0x00000080) == 0x00000080)) {
           eigenvals_ = new java.util.ArrayList<java.lang.Double>(eigenvals_);
-          bitField0_ |= 0x00000040;
+          bitField0_ |= 0x00000080;
          }
       }
       /**
-       * <code>repeated double eigenvals = 7 [packed = true];</code>
+       * <code>repeated double eigenvals = 8 [packed = true];</code>
        */
       public java.util.List<java.lang.Double>
           getEigenvalsList() {
         return java.util.Collections.unmodifiableList(eigenvals_);
       }
       /**
-       * <code>repeated double eigenvals = 7 [packed = true];</code>
+       * <code>repeated double eigenvals = 8 [packed = true];</code>
        */
       public int getEigenvalsCount() {
         return eigenvals_.size();
       }
       /**
-       * <code>repeated double eigenvals = 7 [packed = true];</code>
+       * <code>repeated double eigenvals = 8 [packed = true];</code>
        */
       public double getEigenvals(int index) {
         return eigenvals_.get(index);
       }
       /**
-       * <code>repeated double eigenvals = 7 [packed = true];</code>
+       * <code>repeated double eigenvals = 8 [packed = true];</code>
        */
       public Builder setEigenvals(
           int index, double value) {
@@ -1210,7 +1291,7 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated double eigenvals = 7 [packed = true];</code>
+       * <code>repeated double eigenvals = 8 [packed = true];</code>
        */
       public Builder addEigenvals(double value) {
         ensureEigenvalsIsMutable();
@@ -1219,7 +1300,7 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated double eigenvals = 7 [packed = true];</code>
+       * <code>repeated double eigenvals = 8 [packed = true];</code>
        */
       public Builder addAllEigenvals(
           java.lang.Iterable<? extends java.lang.Double> values) {
@@ -1229,11 +1310,11 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated double eigenvals = 7 [packed = true];</code>
+       * <code>repeated double eigenvals = 8 [packed = true];</code>
        */
       public Builder clearEigenvals() {
         eigenvals_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000040);
+        bitField0_ = (bitField0_ & ~0x00000080);
         onChanged();
         return this;
       }
@@ -1264,13 +1345,14 @@ public final class ProtocolMessage {
   static {
     java.lang.String[] descriptorData = {
       "\n src/main/resources/message.proto\022\004comm" +
-      "\"\345\001\n\007Message\022\'\n\004type\030\001 \002(\0162\031.comm.Messag" +
+      "\"\206\002\n\007Message\022\'\n\004type\030\001 \002(\0162\031.comm.Messag" +
       "e.MessageType\022\016\n\006nodeId\030\002 \001(\t\022\017\n\007session" +
-      "\030\003 \001(\t\022\021\n\texecution\030\004 \001(\005\022\r\n\005round\030\005 \001(\005" +
-      "\022\013\n\003val\030\006 \001(\001\022\025\n\teigenvals\030\007 \003(\001B\002\020\001\"J\n\013" +
-      "MessageType\022\007\n\003NEW\020\000\022\010\n\004INIT\020\001\022\010\n\004NEXT\020\002" +
-      "\022\n\n\006GOSSIP\020\003\022\022\n\016LIVENESS_CHECK\020\004B\027\n\004comm" +
-      "B\017ProtocolMessage"
+      "\030\003 \001(\t\022\021\n\texecution\030\004 \001(\005\022\037\n\027totalNumber" +
+      "OfExecutions\030\005 \001(\005\022\r\n\005round\030\006 \001(\005\022\013\n\003val" +
+      "\030\007 \001(\001\022\025\n\teigenvals\030\010 \003(\001B\002\020\001\"J\n\013Message" +
+      "Type\022\007\n\003NEW\020\000\022\010\n\004INIT\020\001\022\010\n\004NEXT\020\002\022\n\n\006GOS" +
+      "SIP\020\003\022\022\n\016LIVENESS_CHECK\020\004B\027\n\004commB\017Proto" +
+      "colMessage"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1282,7 +1364,7 @@ public final class ProtocolMessage {
           internal_static_comm_Message_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_comm_Message_descriptor,
-              new java.lang.String[] { "Type", "NodeId", "Session", "Execution", "Round", "Val", "Eigenvals", });
+              new java.lang.String[] { "Type", "NodeId", "Session", "Execution", "TotalNumberOfExecutions", "Round", "Val", "Eigenvals", });
           return null;
         }
       };

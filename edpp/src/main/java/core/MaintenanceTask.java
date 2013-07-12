@@ -73,7 +73,7 @@ public class MaintenanceTask implements Runnable {
 							e.setPhase(Phase.DATA_EXCHANGE);
 							logger.info("Stage is now "+Phase.DATA_EXCHANGE);
 							logger.info("The current round is "+e.getCurrentRound());
-							sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound()+1);
+							sendOutNextMessage(MessageType.NEXT, s, e);
 							e.recomputeWeight();
 							e.setRound(2);
 							logger.info("Recomputed weights and set round to "+e.getCurrentRound());
@@ -111,7 +111,7 @@ public class MaintenanceTask implements Runnable {
 							// If it is the end of the round check if we have another round
 							if (e.hasAnotherRound()) {
 								logger.fine("This has another round");
-								sendOutMessage(MessageType.NEXT, s, e, e.getExecutionNumber(), e.getCurrentRound()+1);
+								sendOutNextMessage(MessageType.NEXT, s, e);
 								e.recomputeWeight();
 								e.getInNeighbors().renewTimers();
 								e.setRound(e.getCurrentRound() + 1);
@@ -194,8 +194,7 @@ public class MaintenanceTask implements Runnable {
 		}
 	}
 	
-	private void sendOutMessage(MessageType type, Session session, Execution execution,
-			int executionNumber, int roundNumber) {
+	private void sendOutNextMessage(MessageType type, Session session, Execution execution) {
 		InetAddress address;
 		double valueToSend;
 		Message outMessage;
@@ -207,19 +206,11 @@ public class MaintenanceTask implements Runnable {
 			for (PlainNeighbor n : pnt) {
 				address = n.getAddress();
 				valueToSend = execution.getCurrentValue() * n.getWeight();
-				switch (type) {
-				case INIT:
-					outMessage = MessageBuilder.buildInitMessage(nodeId, sessionId, 
-							executionNumber, roundNumber, valueToSend);
-					break;
-				case NEXT:
-				default:
-					//round number + 1, because we send the message for a round
-					//using the value of the previous round
-					outMessage = MessageBuilder.buildNextMessage(nodeId,
-							sessionId, executionNumber, roundNumber, valueToSend);
-					break;
-				}
+				//round number + 1, because we send the message for a round
+				//using the value of the previous round
+				outMessage = MessageBuilder.buildNextMessage(nodeId,
+						sessionId, execution.getExecutionNumber(), 
+						execution.getCurrentRound() + 1, valueToSend);
 				outgoingQueue.add(new TransferableMessage(outMessage, address));
 			}
 		}
