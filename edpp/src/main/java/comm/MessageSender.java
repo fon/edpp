@@ -8,11 +8,21 @@ import java.util.concurrent.BlockingQueue;
 
 import core.ProtocolController;
 
+/**
+ * Class that is responsible for forwarding protocol messages from the protocol controller
+ * to remote nodes
+ * @author Xenofon Foukas
+ *
+ */
 public class MessageSender implements Runnable {
 
 	private BlockingQueue<TransferableMessage> outgoingQueue;
 	private Socket s;
 	
+	/**
+	 * Constructor class
+	 * @param outgoigQueue the queue, where the incoming messages will be placed
+	 */
 	public MessageSender(BlockingQueue<TransferableMessage> outgoigQueue) {
 		this.outgoingQueue = outgoigQueue;
 	}
@@ -35,6 +45,11 @@ public class MessageSender implements Runnable {
 		}
 	}
 	
+	/**
+	 * Checks whether a remote node is alive
+	 * @param tm a liveness check message for a remote node
+	 * @return true if the remote node is alive
+	 */
 	public static boolean makeLivenessCheck(TransferableMessage tm) {
 		BufferedReader in = null;
 		try {
