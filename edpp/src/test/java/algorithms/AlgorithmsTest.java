@@ -19,6 +19,10 @@ public class AlgorithmsTest {
 			{0.1192, -0.1619, 0.7605, -0.4553},
 			{0.0065, 0.1915, 0.4553, 0.3925}
 	};
+	
+	/*double [] newImpulses = {
+			0.0, 1.0, 1.0
+	};*/
 
 	@Test
 	public void computesSystemMatrixACorrectly() {
@@ -28,8 +32,17 @@ public class AlgorithmsTest {
 		for (int i = 0; i < dim; i++) {
 			assertArrayEquals(expectedMatrixA[i], results[i], 0.05);
 		}
-		
 	}
+	
+	/*@Test
+	public void checkValues() {
+		double [][] results;
+		results = Algorithms.systemMatrixAToArray(newImpulses, 1);
+		double [] eigens = Algorithms.computeEigenvalues(results);
+		for (int i=0; i<eigens.length; i++) {
+			System.out.println(eigens[i]);
+		}
+	}*/
 	
 	@Test
 	public void computeMatrixUsingZeroImpulseResponses() {
