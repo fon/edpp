@@ -12,15 +12,26 @@ import comm.ProtocolMessage.Message.MessageType;
 
 import core.ProtocolController;
 
+/**
+ * Class that is responsible for receiving incoming protocol messages and forwarding
+ * them to the protocol controller
+ * @author Xenofon Foukas
+ *
+ */
 public class MessageReceiver implements Runnable {
 
 	private BlockingQueue<TransferableMessage> incomingQueue;
 	private ServerSocket ss;
 	private Socket incomingSocket;
 	
+	/**
+	 * Class constructor
+	 * @param incomingQueue the queue, where the incoming messages will be placed
+	 */
 	public MessageReceiver(BlockingQueue<TransferableMessage> incomingQueue) {
 		this.incomingQueue = incomingQueue;
 	}
+	
 	
 	@Override
 	public void run() {
@@ -49,6 +60,9 @@ public class MessageReceiver implements Runnable {
 
 	}
 	
+	/**
+	 * Stops the message receiving service, by closing the server socket
+	 */
 	public void stopService() {
 		try {
 			ss.close();
