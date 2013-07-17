@@ -1,6 +1,8 @@
 package core;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
@@ -28,6 +30,8 @@ public class MessageHandlerTask implements Runnable {
 	private Map<String, Session> sessions;
 	private BlockingQueue<TransferableMessage> outQueue;
 	private PrimaryTreeMap<Integer, RecordedSession> db;
+	
+	private static List<SessionListener> sessionListeners = new ArrayList<SessionListener>();
 	
 	public MessageHandlerTask(TransferableMessage incomingMessage, 
 			Map<String, Session> sessions, Node localNode,
@@ -66,6 +70,16 @@ public class MessageHandlerTask implements Runnable {
 		}
 	}
 	
+	//TODO must add test
+	public static void addSessionListener(SessionListener listener) {
+		sessionListeners.add(listener);
+	}
+	
+	//TODO must add test
+	public static boolean removeSessionListener(SessionListener listener) {
+		return sessionListeners.remove(listener);
+	}
+	
 	private Session createNewSession(boolean isInitiator) {
 		Execution initExecution;
 		Session s;
@@ -92,6 +106,10 @@ public class MessageHandlerTask implements Runnable {
 		sessions.put(s.getSessionId(), s);
 		
 		sendOutMessage(MessageType.INIT, s, initExecution);
+		
+		for (SessionListener sl : sessionListeners) {
+			sl.sessionInitiated(s);
+		}
 		
 		return s;
 	}
@@ -277,6 +295,10 @@ public class MessageHandlerTask implements Runnable {
 							RecordedSession recSes = new RecordedSession(s);
 							System.out.println(recSes.getRecordedSession().getSessionId());
 							db.put(new Integer(size), recSes);
+						}
+						//Notify for the session completion event
+						for (SessionListener sl : sessionListeners) {
+							sl.sessionCompleted(s);
 						}
 					}
 				}

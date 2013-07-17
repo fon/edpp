@@ -84,4 +84,13 @@ public class ProtocolEngine {
 		return s;
 	}
 	
+	public void addSessionListener(SessionListener listener) {
+		MessageHandlerTask.addSessionListener(listener);
+		MaintenanceTask.addSessionListener(listener);
+	}
+	
+	public void removeSessionListener(SessionListener listener) {
+		MessageHandlerTask.removeSessionListener(listener);
+		MaintenanceTask.removeSessionListener(listener);
+	}
 }

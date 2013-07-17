@@ -3,6 +3,8 @@ package core;
 import java.net.InetAddress;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
@@ -31,6 +33,7 @@ public class MaintenanceTask implements Runnable {
 	private BlockingQueue<TransferableMessage> outgoingQueue;
 	private Node localNode;
 	private PrimaryTreeMap<Integer, RecordedSession> db;
+	private static List<SessionListener> sessionListeners = new LinkedList<SessionListener>();
 
 	public MaintenanceTask(Map<String, Session> sessions,
 			BlockingQueue<TransferableMessage> outgoingQueue,
@@ -168,12 +171,27 @@ public class MaintenanceTask implements Runnable {
 									RecordedSession recSes = new RecordedSession(s);
 									db.put(new Integer(size), recSes);
 								}
+								
+								//Notify all listeners
+								for (SessionListener sl : sessionListeners) {
+									sl.sessionCompleted(s);
+								}
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	//TODO must add test
+	public static void addSessionListener(SessionListener listener) {
+		sessionListeners.add(listener);
+	}
+	
+	//TODO must add test
+	public static boolean removeSessionListener(SessionListener listener) {
+		return sessionListeners.remove(listener);
 	}
 	
 	private boolean isAlive(TimedNeighbor neighbor) {
