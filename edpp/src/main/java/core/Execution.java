@@ -19,6 +19,7 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.google.common.util.concurrent.AtomicDoubleArray;
 
 import util.GossipData;
+import util.Id;
 import util.Neighbor;
 import util.Phase;
 import util.PlainNeighbor;
@@ -32,9 +33,6 @@ import network.Node;
 
 public class Execution implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6505271319331510315L;
 	
 	private final int executionNumber;
@@ -57,6 +55,12 @@ public class Execution implements Serializable {
 	private Map<String, double[]> pendingGossip;
 	private Map<Integer, List<String>> pendingData;
 	
+	/**
+	 * Class constructor
+	 * @param executionNumber the id of the current execution
+	 * @param numOfRounds the total number of rounds for the execution
+	 * @param localNode the local underlying network node
+	 */
 	public Execution(final int executionNumber,final int numOfRounds, final Node localNode) {
 		this.executionNumber = executionNumber;
 		this.numOfRounds = numOfRounds;
@@ -80,7 +84,7 @@ public class Execution implements Serializable {
 
 	/**
 	 * 
-	 * @return The number of the current execution
+	 * @return the number of the current execution
 	 */
 	public int getExecutionNumber() {
 		return executionNumber;
@@ -88,7 +92,7 @@ public class Execution implements Serializable {
 
 	/**
 	 * 
-	 * @return Returns the current round of the execution
+	 * @return the current round of the execution
 	 */
 	public int getCurrentRound() {
 		return round.get();
@@ -98,7 +102,7 @@ public class Execution implements Serializable {
 	 * Sets the current round of the execution. This also
 	 * changes the current computing value to the value of
 	 * the proper round
-	 * @param round The new round number
+	 * @param round the new round number
 	 */
 	public void setRound(int round) {
 		setImpulseResponse(this.round.get(), nodeVal.get());
@@ -119,8 +123,8 @@ public class Execution implements Serializable {
 	
 	/**
 	 * Adds a received value to a specific round
-	 * @param val The value to be added
-	 * @param round The round to which the value corresponds
+	 * @param val the value to be added
+	 * @param round the round to which the value corresponds
 	 */
 	public void addValToRound(double val, int round) {
 		if (roundVals.get(round) == null) {
@@ -146,8 +150,8 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @param round
-	 * @return Returns the sum of the currently received values for some round
+	 * @param round the round to be checked
+	 * @return the sum of the currently received values for some round
 	 */
 	public double getValsOfRound(int round) {
 		if (roundVals.get(round) == null) {
@@ -173,7 +177,7 @@ public class Execution implements Serializable {
 	/**
 	 * Computes the remaining time in the current execution's timer, by
 	 * subtractiong the time since the last sampling
-	 * @return The remaining time  of the execution's timer
+	 * @return the remaining time of the execution's timer
 	 */
 	public synchronized long remainingInitTime() {
 		long interval = System.nanoTime() - snapshot.get();
@@ -186,7 +190,7 @@ public class Execution implements Serializable {
 	/**
 	 * Runs Kung's realization algorithm to compute the approximate matrix A and its eigenvalues
 	 * @param networkDiameter the diameter of the network or some approximation
-	 * @return The approximation of matrix A, if we had gathered all the required impulse responses, otherwise null
+	 * @return the approximation of matrix A, if we had gathered all the required impulse responses, otherwise null
 	 */
 	public synchronized DoubleMatrix computeRealizationMatrix(int networkDiameter) {
 		if (this.hasAnotherRound() || hasComputedMatrix) {
@@ -207,7 +211,7 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @return The approximation matrix, if the computation has already been performed, otherwise null
+	 * @return the approximation matrix, if the computation has already been performed, otherwise {@value null}
 	 */
 	public DoubleMatrix getRealizationMatrix() {
 		if (hasComputedMatrix) {
@@ -219,7 +223,7 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @return A double array with the eigenvalues of the approximation matrix
+	 * @return a double array with the eigenvalues of the approximation matrix
 	 * or null if the approximation matrix has not been computed yet
 	 */
 	public double [] getMatrixAEigenvalues() {
@@ -234,7 +238,7 @@ public class Execution implements Serializable {
 	 * Changes the values of the eigenvalue array. This method should be used if the
 	 * approximation matrix has already been computed and we are in the GOSSIP round,
 	 * otherwise no change will be made to the eigenvalues array
-	 * @param newValues An array with the new values the eigenvalues array should get
+	 * @param newValues an array with the new values the eigenvalues array should get
 	 * @return {@value true} if the values were updated successfully, {@value false} otherwise
 	 */
 	public boolean setMatrixAEigenvalues(double [] newValues) {
@@ -247,10 +251,10 @@ public class Execution implements Serializable {
 	}
 	
 	/**
-	 * Addes an array of eigenvalues for a node. If the node has already
+	 * adds an array of eigenvalues for a node. If the node has already
 	 * proposed some values, they will be overwritten
-	 * @param nodeId The Id of the node that proposed eigenvalues
-	 * @param array The proposed eigenvalues
+	 * @param nodeId the {@link Id} of the node that proposed the eigenvalues
+	 * @param array an array containing the proposed eigenvalues
 	 */
 	public void addGossipEigenvalues(String nodeId, double [] array) {
 		gossip.setNewProposal(nodeId, array);
@@ -259,7 +263,7 @@ public class Execution implements Serializable {
 	/**
 	 * Computes the median of the eigenvalues based on the local node and the
 	 * proposals if its in-neighbors
-	 * @return An array containing the median of the eigenvalues, or null
+	 * @return an array containing the median of the eigenvalues, or null
 	 * if the execution has not reached the gossip phase and has not computed the required matrix
 	 */
 	public double [] computeMedianEigenvalues() {
@@ -273,7 +277,7 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @return An array with the final eigenvalues if they have been computed, null otherwise
+	 * @return an array with the final eigenvalues if they have been computed, null otherwise
 	 */
 	public double [] getMedianEigenvalues() {
 		if (computedMedian) {
@@ -284,7 +288,7 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @return A table with all the out-neighbors along with
+	 * @return a {@link PlainNeighborsTable} with all the out-neighbors along with
 	 * their weights
 	 */
 	public PlainNeighborsTable getOutNeighbors() {
@@ -293,7 +297,7 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @return A table with all the in-neighbors along with 
+	 * @return a {@link TimedNeighborsTable} with all the in-neighbors along with 
 	 * their remaining alive time
 	 */
 	public TimedNeighborsTable getInNeighbors() {
@@ -302,24 +306,23 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @return The total number of rounds of this execution
+	 * @return the total number of rounds of this execution
 	 */
 	public int getNumOfRounds() {
 		return numOfRounds;
 	}
 	
 	/**
-	 * Gives the phase that the execution is in
-	 * @return  An enum with values 
-	 *  INIT, DATA_EXCHANGE, GOSSIP depending on the current phase
+	 * 
+	 * @return the {@link Phase} the execution is currently at
 	 */
 	public synchronized Phase getPhase() {
 		return phase;
 	}
 
 	/**
-	 * Change the current phase of the execution
-	 * @param phase
+	 * change the current phase of the execution
+	 * @param phase the new {@link Phase} the execution will be at
 	 */
 	public synchronized void setPhase(Phase phase) {
 		this.phase = phase;
@@ -327,8 +330,8 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @param round
-	 * @return The impulse response of a round
+	 * @param round the round wanted
+	 * @return the impulse response of a round
 	 */
 	public double getImpulseResponse(int round) {
 		return impulseResponse.get(round-1);
@@ -336,7 +339,7 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @return Get the current value that will be
+	 * @return the current value that will be
 	 * used to compute the value sent to all
 	 * out-neighbors
 	 */
@@ -346,7 +349,7 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @param nodeVal Set the current value that will be
+	 * @param nodeVal the current value that will be
 	 * used to compute the value sent to all
 	 * out-neighbors
 	 */
@@ -356,7 +359,7 @@ public class Execution implements Serializable {
 
 	/**
 	 * 
-	 * @return An array of all the impulse responses
+	 * @return an array of all the impulse responses
 	 * in the current execution
 	 */
 	public double [] getImpulseResponses() {
@@ -368,10 +371,10 @@ public class Execution implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @param round
-	 * @param response
-	 * @return Set the impulse response of a particular round
+	 * Stores to the defined round a new impulse response
+	 * @param round the round to set the impulse response
+	 * @param response the new impulse response
+	 * @return <code>true</code> if the impulse response is properly set, <code>false</code> otherwise
 	 */
 	public boolean setImpulseResponse(int round, double response) {
 		if (round <= numOfRounds) {
@@ -382,9 +385,9 @@ public class Execution implements Serializable {
 	}
 	
 	/**
-	 * 
-	 * @param response
-	 * @return Set the impulse response of the current round
+	 * Sets the impulse response of the current round
+	 * @param response the new impulse response
+	 * @return <code>true</code> if the impulse response was set properly, <code>false</code> otherwise
 	 */
 	public boolean setCurrentImpulseResponse(double response) {
 		if (round.get() <= numOfRounds) {
@@ -396,14 +399,14 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @return True if the execution has terminated
+	 * @return <code>true</code> if the execution has terminated, <code>false</code> otherwise
 	 */
 	public boolean hasTerminated() {
 		return round.get() == this.numOfRounds+1;
 	}
 	
 	/**
-	 * 
+	 * Checks whether the current execution has another round
 	 * @return true if this is not the last round of execution
 	 */
 	public boolean hasAnotherRound() {
@@ -412,8 +415,8 @@ public class Execution implements Serializable {
 	
 	/**
 	 * Adds a new in-neighbor to the in-neighbors list
-	 * @param tn The TimedNeighbor to be added to the list
-	 * @return true if the neighbor was successfully added, false if the neighbor already existed
+	 * @param tn the {@link TimedNeighbor} to be added to the list
+	 * @return <code>true</code> if the neighbor was successfully added, <code>false</code> if the neighbor already existed
 	 */
 	public boolean addInNeighbor(TimedNeighbor tn) {
 		if (inNeighbors.getNeighbor(tn.getId()) == null) {
@@ -437,18 +440,35 @@ public class Execution implements Serializable {
 		}
 	}
 	
+	/**
+	 * Sets the timer of a node to INF, denoting, that the value expected from that node has been received
+	 * @param nodeId the string representation of the remote node
+	 * @return <code>true</code> if the remote node's timer is set to INF, <code>false</code> otherwise
+	 */
 	public boolean setTimerToInf(String nodeId) {
 		return inNeighbors.setTimerToInf(nodeId);
 	}
 	
+	/**
+	 * Resets the timer of all the in-neighbors
+	 */
 	public void resetTimers() {
 		inNeighbors.renewTimers();
 	}
 
+	/**
+	 * Resets the timer of an in-neighbor
+	 * @param nodeId the string representation of the remote node's Id
+	 * @return <code>true</code> if the timer was renewed or <code>false</code> if the remote node was not found
+	 */
 	public boolean resetTimer(String nodeId) {
 		return inNeighbors.renewTimer(nodeId);
 	}
 
+	/**
+	 * Checks whether the current round of the Execution is over
+	 * @return <code>true</code> if the round is over, <code>false</code> otherwise
+	 */
 	public boolean roundIsOver() {
 		synchronized (inNeighbors) {
 			for (TimedNeighbor tn : inNeighbors) {
