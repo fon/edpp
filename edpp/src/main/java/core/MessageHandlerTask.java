@@ -108,7 +108,7 @@ public class MessageHandlerTask implements Runnable {
 		sendOutMessage(MessageType.INIT, s, initExecution);
 		
 		for (SessionListener sl : sessionListeners) {
-			sl.sessionInitiated(new SessionEvent(s, localNode.getLocalId()));
+			sl.sessionInitiated(new SessionEvent(s, localNode));
 		}
 		
 		return s;
@@ -298,7 +298,7 @@ public class MessageHandlerTask implements Runnable {
 						}
 						//Notify for the session completion event
 						for (SessionListener sl : sessionListeners) {
-							sl.sessionCompleted(new SessionEvent(s, localNode.getLocalId()));
+							sl.sessionCompleted(new SessionEvent(s, localNode));
 						}
 					}
 				}

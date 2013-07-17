@@ -174,7 +174,7 @@ public class MaintenanceTask implements Runnable {
 								
 								//Notify all listeners
 								for (SessionListener sl : sessionListeners) {
-									sl.sessionCompleted(new SessionEvent(s, localNode.getLocalId()));
+									sl.sessionCompleted(new SessionEvent(s, localNode));
 								}
 							}
 						}
