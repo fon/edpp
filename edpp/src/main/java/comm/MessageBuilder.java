@@ -1,8 +1,17 @@
 package comm;
 
+import java.util.Date;
+import java.util.Set;
+
+import util.Neighbor;
+
+import network.Node;
+
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.Builder;
 import comm.ProtocolMessage.Message.MessageType;
+import comm.ProtocolMessage.SessionEvent;
+import core.Session;
 
 /**
  * Class for producing messages used by the decetralized protocol
@@ -117,6 +126,24 @@ public class MessageBuilder {
 				.setType(MessageType.LIVENESS_CHECK)
 				.build();
 		return m;
+	}
+	
+	
+	//TODO must add tests
+	public static SessionEvent buildNewSessionEvent(Session s, Node localNode) {
+		comm.ProtocolMessage.SessionEvent.Builder builder = 
+				SessionEvent.newBuilder()
+				.setDate(new Date().getTime())
+				.setSessionId(s.getSessionId())
+				.setLocalNodeId(localNode.getLocalId().toString());
+		
+		Set<Neighbor> outNeighbors = localNode.getOutNeighbors();
+		
+		for (Neighbor n : outNeighbors) {
+			builder = builder.addOutNeighbors(n.getId().toString());
+		}
+		
+		return builder.build();
 	}
 	
 }

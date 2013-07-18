@@ -26,4 +26,14 @@ message Message {
 	repeated double eigenvals = 8 [packed=true];
 	
 }
+
+message SessionEvent {
+
+	required string localNodeId = 1;
+	required string sessionId = 2;
+	required int64 date = 3;
+	
+	repeated string outNeighbors = 4;
+
+}
 	

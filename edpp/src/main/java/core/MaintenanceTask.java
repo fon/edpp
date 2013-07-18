@@ -21,6 +21,7 @@ import util.TimedNeighborsTable;
 
 import comm.MessageBuilder;
 import comm.MessageSender;
+import comm.ProtocolMessage.SessionEvent;
 import comm.TransferableMessage;
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.MessageType;
@@ -174,7 +175,8 @@ public class MaintenanceTask implements Runnable {
 								
 								//Notify all listeners
 								for (SessionListener sl : sessionListeners) {
-									sl.sessionCompleted(new SessionEvent(s, localNode));
+									SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode);
+									sl.sessionCompleted(se);
 								}
 							}
 						}

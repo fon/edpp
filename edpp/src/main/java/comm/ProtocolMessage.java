@@ -1330,11 +1330,933 @@ public final class ProtocolMessage {
     // @@protoc_insertion_point(class_scope:comm.Message)
   }
 
+  public interface SessionEventOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+
+    // required string localNodeId = 1;
+    /**
+     * <code>required string localNodeId = 1;</code>
+     */
+    boolean hasLocalNodeId();
+    /**
+     * <code>required string localNodeId = 1;</code>
+     */
+    java.lang.String getLocalNodeId();
+    /**
+     * <code>required string localNodeId = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getLocalNodeIdBytes();
+
+    // required string sessionId = 2;
+    /**
+     * <code>required string sessionId = 2;</code>
+     */
+    boolean hasSessionId();
+    /**
+     * <code>required string sessionId = 2;</code>
+     */
+    java.lang.String getSessionId();
+    /**
+     * <code>required string sessionId = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getSessionIdBytes();
+
+    // required int64 date = 3;
+    /**
+     * <code>required int64 date = 3;</code>
+     */
+    boolean hasDate();
+    /**
+     * <code>required int64 date = 3;</code>
+     */
+    long getDate();
+
+    // repeated string outNeighbors = 4;
+    /**
+     * <code>repeated string outNeighbors = 4;</code>
+     */
+    java.util.List<java.lang.String>
+    getOutNeighborsList();
+    /**
+     * <code>repeated string outNeighbors = 4;</code>
+     */
+    int getOutNeighborsCount();
+    /**
+     * <code>repeated string outNeighbors = 4;</code>
+     */
+    java.lang.String getOutNeighbors(int index);
+    /**
+     * <code>repeated string outNeighbors = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getOutNeighborsBytes(int index);
+  }
+  /**
+   * Protobuf type {@code comm.SessionEvent}
+   */
+  public static final class SessionEvent extends
+      com.google.protobuf.GeneratedMessage
+      implements SessionEventOrBuilder {
+    // Use SessionEvent.newBuilder() to construct.
+    private SessionEvent(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private SessionEvent(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final SessionEvent defaultInstance;
+    public static SessionEvent getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public SessionEvent getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private SessionEvent(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              bitField0_ |= 0x00000001;
+              localNodeId_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              sessionId_ = input.readBytes();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              date_ = input.readInt64();
+              break;
+            }
+            case 34: {
+              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+                outNeighbors_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000008;
+              }
+              outNeighbors_.add(input.readBytes());
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+          outNeighbors_ = new com.google.protobuf.UnmodifiableLazyStringList(outNeighbors_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return comm.ProtocolMessage.internal_static_comm_SessionEvent_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return comm.ProtocolMessage.internal_static_comm_SessionEvent_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              comm.ProtocolMessage.SessionEvent.class, comm.ProtocolMessage.SessionEvent.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<SessionEvent> PARSER =
+        new com.google.protobuf.AbstractParser<SessionEvent>() {
+      public SessionEvent parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new SessionEvent(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<SessionEvent> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    // required string localNodeId = 1;
+    public static final int LOCALNODEID_FIELD_NUMBER = 1;
+    private java.lang.Object localNodeId_;
+    /**
+     * <code>required string localNodeId = 1;</code>
+     */
+    public boolean hasLocalNodeId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string localNodeId = 1;</code>
+     */
+    public java.lang.String getLocalNodeId() {
+      java.lang.Object ref = localNodeId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          localNodeId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string localNodeId = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getLocalNodeIdBytes() {
+      java.lang.Object ref = localNodeId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        localNodeId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required string sessionId = 2;
+    public static final int SESSIONID_FIELD_NUMBER = 2;
+    private java.lang.Object sessionId_;
+    /**
+     * <code>required string sessionId = 2;</code>
+     */
+    public boolean hasSessionId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string sessionId = 2;</code>
+     */
+    public java.lang.String getSessionId() {
+      java.lang.Object ref = sessionId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          sessionId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string sessionId = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSessionIdBytes() {
+      java.lang.Object ref = sessionId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sessionId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // required int64 date = 3;
+    public static final int DATE_FIELD_NUMBER = 3;
+    private long date_;
+    /**
+     * <code>required int64 date = 3;</code>
+     */
+    public boolean hasDate() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int64 date = 3;</code>
+     */
+    public long getDate() {
+      return date_;
+    }
+
+    // repeated string outNeighbors = 4;
+    public static final int OUTNEIGHBORS_FIELD_NUMBER = 4;
+    private com.google.protobuf.LazyStringList outNeighbors_;
+    /**
+     * <code>repeated string outNeighbors = 4;</code>
+     */
+    public java.util.List<java.lang.String>
+        getOutNeighborsList() {
+      return outNeighbors_;
+    }
+    /**
+     * <code>repeated string outNeighbors = 4;</code>
+     */
+    public int getOutNeighborsCount() {
+      return outNeighbors_.size();
+    }
+    /**
+     * <code>repeated string outNeighbors = 4;</code>
+     */
+    public java.lang.String getOutNeighbors(int index) {
+      return outNeighbors_.get(index);
+    }
+    /**
+     * <code>repeated string outNeighbors = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getOutNeighborsBytes(int index) {
+      return outNeighbors_.getByteString(index);
+    }
+
+    private void initFields() {
+      localNodeId_ = "";
+      sessionId_ = "";
+      date_ = 0L;
+      outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      if (!hasLocalNodeId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasSessionId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasDate()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getLocalNodeIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getSessionIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt64(3, date_);
+      }
+      for (int i = 0; i < outNeighbors_.size(); i++) {
+        output.writeBytes(4, outNeighbors_.getByteString(i));
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getLocalNodeIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getSessionIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(3, date_);
+      }
+      {
+        int dataSize = 0;
+        for (int i = 0; i < outNeighbors_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeBytesSizeNoTag(outNeighbors_.getByteString(i));
+        }
+        size += dataSize;
+        size += 1 * getOutNeighborsList().size();
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static comm.ProtocolMessage.SessionEvent parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static comm.ProtocolMessage.SessionEvent parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static comm.ProtocolMessage.SessionEvent parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static comm.ProtocolMessage.SessionEvent parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static comm.ProtocolMessage.SessionEvent parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static comm.ProtocolMessage.SessionEvent parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static comm.ProtocolMessage.SessionEvent parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static comm.ProtocolMessage.SessionEvent parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static comm.ProtocolMessage.SessionEvent parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static comm.ProtocolMessage.SessionEvent parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(comm.ProtocolMessage.SessionEvent prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code comm.SessionEvent}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements comm.ProtocolMessage.SessionEventOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return comm.ProtocolMessage.internal_static_comm_SessionEvent_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return comm.ProtocolMessage.internal_static_comm_SessionEvent_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                comm.ProtocolMessage.SessionEvent.class, comm.ProtocolMessage.SessionEvent.Builder.class);
+      }
+
+      // Construct using comm.ProtocolMessage.SessionEvent.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        localNodeId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        sessionId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        date_ = 0L;
+        bitField0_ = (bitField0_ & ~0x00000004);
+        outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return comm.ProtocolMessage.internal_static_comm_SessionEvent_descriptor;
+      }
+
+      public comm.ProtocolMessage.SessionEvent getDefaultInstanceForType() {
+        return comm.ProtocolMessage.SessionEvent.getDefaultInstance();
+      }
+
+      public comm.ProtocolMessage.SessionEvent build() {
+        comm.ProtocolMessage.SessionEvent result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public comm.ProtocolMessage.SessionEvent buildPartial() {
+        comm.ProtocolMessage.SessionEvent result = new comm.ProtocolMessage.SessionEvent(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.localNodeId_ = localNodeId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.sessionId_ = sessionId_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.date_ = date_;
+        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+          outNeighbors_ = new com.google.protobuf.UnmodifiableLazyStringList(
+              outNeighbors_);
+          bitField0_ = (bitField0_ & ~0x00000008);
+        }
+        result.outNeighbors_ = outNeighbors_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof comm.ProtocolMessage.SessionEvent) {
+          return mergeFrom((comm.ProtocolMessage.SessionEvent)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(comm.ProtocolMessage.SessionEvent other) {
+        if (other == comm.ProtocolMessage.SessionEvent.getDefaultInstance()) return this;
+        if (other.hasLocalNodeId()) {
+          bitField0_ |= 0x00000001;
+          localNodeId_ = other.localNodeId_;
+          onChanged();
+        }
+        if (other.hasSessionId()) {
+          bitField0_ |= 0x00000002;
+          sessionId_ = other.sessionId_;
+          onChanged();
+        }
+        if (other.hasDate()) {
+          setDate(other.getDate());
+        }
+        if (!other.outNeighbors_.isEmpty()) {
+          if (outNeighbors_.isEmpty()) {
+            outNeighbors_ = other.outNeighbors_;
+            bitField0_ = (bitField0_ & ~0x00000008);
+          } else {
+            ensureOutNeighborsIsMutable();
+            outNeighbors_.addAll(other.outNeighbors_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasLocalNodeId()) {
+          
+          return false;
+        }
+        if (!hasSessionId()) {
+          
+          return false;
+        }
+        if (!hasDate()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        comm.ProtocolMessage.SessionEvent parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (comm.ProtocolMessage.SessionEvent) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // required string localNodeId = 1;
+      private java.lang.Object localNodeId_ = "";
+      /**
+       * <code>required string localNodeId = 1;</code>
+       */
+      public boolean hasLocalNodeId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string localNodeId = 1;</code>
+       */
+      public java.lang.String getLocalNodeId() {
+        java.lang.Object ref = localNodeId_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          localNodeId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string localNodeId = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLocalNodeIdBytes() {
+        java.lang.Object ref = localNodeId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          localNodeId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string localNodeId = 1;</code>
+       */
+      public Builder setLocalNodeId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        localNodeId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string localNodeId = 1;</code>
+       */
+      public Builder clearLocalNodeId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        localNodeId_ = getDefaultInstance().getLocalNodeId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string localNodeId = 1;</code>
+       */
+      public Builder setLocalNodeIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        localNodeId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required string sessionId = 2;
+      private java.lang.Object sessionId_ = "";
+      /**
+       * <code>required string sessionId = 2;</code>
+       */
+      public boolean hasSessionId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string sessionId = 2;</code>
+       */
+      public java.lang.String getSessionId() {
+        java.lang.Object ref = sessionId_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          sessionId_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string sessionId = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSessionIdBytes() {
+        java.lang.Object ref = sessionId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sessionId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string sessionId = 2;</code>
+       */
+      public Builder setSessionId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        sessionId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string sessionId = 2;</code>
+       */
+      public Builder clearSessionId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        sessionId_ = getDefaultInstance().getSessionId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string sessionId = 2;</code>
+       */
+      public Builder setSessionIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        sessionId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // required int64 date = 3;
+      private long date_ ;
+      /**
+       * <code>required int64 date = 3;</code>
+       */
+      public boolean hasDate() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int64 date = 3;</code>
+       */
+      public long getDate() {
+        return date_;
+      }
+      /**
+       * <code>required int64 date = 3;</code>
+       */
+      public Builder setDate(long value) {
+        bitField0_ |= 0x00000004;
+        date_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int64 date = 3;</code>
+       */
+      public Builder clearDate() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        date_ = 0L;
+        onChanged();
+        return this;
+      }
+
+      // repeated string outNeighbors = 4;
+      private com.google.protobuf.LazyStringList outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureOutNeighborsIsMutable() {
+        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+          outNeighbors_ = new com.google.protobuf.LazyStringArrayList(outNeighbors_);
+          bitField0_ |= 0x00000008;
+         }
+      }
+      /**
+       * <code>repeated string outNeighbors = 4;</code>
+       */
+      public java.util.List<java.lang.String>
+          getOutNeighborsList() {
+        return java.util.Collections.unmodifiableList(outNeighbors_);
+      }
+      /**
+       * <code>repeated string outNeighbors = 4;</code>
+       */
+      public int getOutNeighborsCount() {
+        return outNeighbors_.size();
+      }
+      /**
+       * <code>repeated string outNeighbors = 4;</code>
+       */
+      public java.lang.String getOutNeighbors(int index) {
+        return outNeighbors_.get(index);
+      }
+      /**
+       * <code>repeated string outNeighbors = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getOutNeighborsBytes(int index) {
+        return outNeighbors_.getByteString(index);
+      }
+      /**
+       * <code>repeated string outNeighbors = 4;</code>
+       */
+      public Builder setOutNeighbors(
+          int index, java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutNeighborsIsMutable();
+        outNeighbors_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outNeighbors = 4;</code>
+       */
+      public Builder addOutNeighbors(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutNeighborsIsMutable();
+        outNeighbors_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outNeighbors = 4;</code>
+       */
+      public Builder addAllOutNeighbors(
+          java.lang.Iterable<java.lang.String> values) {
+        ensureOutNeighborsIsMutable();
+        super.addAll(values, outNeighbors_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outNeighbors = 4;</code>
+       */
+      public Builder clearOutNeighbors() {
+        outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated string outNeighbors = 4;</code>
+       */
+      public Builder addOutNeighborsBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  ensureOutNeighborsIsMutable();
+        outNeighbors_.add(value);
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:comm.SessionEvent)
+    }
+
+    static {
+      defaultInstance = new SessionEvent(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:comm.SessionEvent)
+  }
+
   private static com.google.protobuf.Descriptors.Descriptor
     internal_static_comm_Message_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_comm_Message_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_comm_SessionEvent_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_comm_SessionEvent_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -1351,8 +2273,10 @@ public final class ProtocolMessage {
       "OfExecutions\030\005 \001(\005\022\r\n\005round\030\006 \001(\005\022\013\n\003val" +
       "\030\007 \001(\001\022\025\n\teigenvals\030\010 \003(\001B\002\020\001\"J\n\013Message" +
       "Type\022\007\n\003NEW\020\000\022\010\n\004INIT\020\001\022\010\n\004NEXT\020\002\022\n\n\006GOS" +
-      "SIP\020\003\022\022\n\016LIVENESS_CHECK\020\004B\027\n\004commB\017Proto" +
-      "colMessage"
+      "SIP\020\003\022\022\n\016LIVENESS_CHECK\020\004\"Z\n\014SessionEven" +
+      "t\022\023\n\013localNodeId\030\001 \002(\t\022\021\n\tsessionId\030\002 \002(" +
+      "\t\022\014\n\004date\030\003 \002(\003\022\024\n\014outNeighbors\030\004 \003(\tB\027\n",
+      "\004commB\017ProtocolMessage"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -1365,6 +2289,12 @@ public final class ProtocolMessage {
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_comm_Message_descriptor,
               new java.lang.String[] { "Type", "NodeId", "Session", "Execution", "TotalNumberOfExecutions", "Round", "Val", "Eigenvals", });
+          internal_static_comm_SessionEvent_descriptor =
+            getDescriptor().getMessageTypes().get(1);
+          internal_static_comm_SessionEvent_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_comm_SessionEvent_descriptor,
+              new java.lang.String[] { "LocalNodeId", "SessionId", "Date", "OutNeighbors", });
           return null;
         }
       };
