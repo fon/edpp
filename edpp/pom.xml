@@ -71,7 +71,12 @@
   <groupId>org.jblas</groupId>
   <artifactId>jblas</artifactId>
   <version>1.2.3</version>
-</dependency>    
+</dependency>
+<dependency>
+	<groupId>jgrapht</groupId>
+	<artifactId>jgrapht</artifactId>
+	<version>0.7.3</version>
+</dependency>  
 <dependency>
 	<groupId>org.apache.commons</groupId>
 	<artifactId>commons-math</artifactId>
