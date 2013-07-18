@@ -17,6 +17,7 @@ import util.TimedNeighbor;
 import comm.MessageBuilder;
 import comm.ProtocolMessage.Message.MessageType;
 import comm.ProtocolMessage.SessionEvent;
+import comm.ProtocolMessage.SessionEvent.EventType;
 import comm.TransferableMessage;
 import comm.ProtocolMessage.Message;
 
@@ -109,7 +110,7 @@ public class MessageHandlerTask implements Runnable {
 		sendOutMessage(MessageType.INIT, s, initExecution);
 		
 		for (SessionListener sl : sessionListeners) {
-			SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode);
+			SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode, EventType.INITIAL);
 			sl.sessionInitiated(se);
 		}
 		
@@ -300,7 +301,7 @@ public class MessageHandlerTask implements Runnable {
 						}
 						//Notify for the session completion event
 						for (SessionListener sl : sessionListeners) {
-							SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode);
+							SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode, EventType.TERMINAL);
 							sl.sessionCompleted(se);
 						}
 					}

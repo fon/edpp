@@ -25,6 +25,7 @@ import comm.ProtocolMessage.SessionEvent;
 import comm.TransferableMessage;
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.MessageType;
+import comm.ProtocolMessage.SessionEvent.EventType;
 
 public class MaintenanceTask implements Runnable {
 	
@@ -175,7 +176,7 @@ public class MaintenanceTask implements Runnable {
 								
 								//Notify all listeners
 								for (SessionListener sl : sessionListeners) {
-									SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode);
+									SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode, EventType.TERMINAL);
 									sl.sessionCompleted(se);
 								}
 							}

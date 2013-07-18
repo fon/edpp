@@ -11,6 +11,7 @@ import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.Builder;
 import comm.ProtocolMessage.Message.MessageType;
 import comm.ProtocolMessage.SessionEvent;
+import comm.ProtocolMessage.SessionEvent.EventType;
 import core.Session;
 
 /**
@@ -130,9 +131,10 @@ public class MessageBuilder {
 	
 	
 	//TODO must add tests
-	public static SessionEvent buildNewSessionEvent(Session s, Node localNode) {
+	public static SessionEvent buildNewSessionEvent(Session s, Node localNode, EventType type) {
 		comm.ProtocolMessage.SessionEvent.Builder builder = 
 				SessionEvent.newBuilder()
+				.setType(type)
 				.setDate(new Date().getTime())
 				.setSessionId(s.getSessionId())
 				.setLocalNodeId(localNode.getLocalId().toString());

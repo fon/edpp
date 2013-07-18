@@ -1333,62 +1333,72 @@ public final class ProtocolMessage {
   public interface SessionEventOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
-    // required string localNodeId = 1;
+    // required .comm.SessionEvent.EventType type = 1;
     /**
-     * <code>required string localNodeId = 1;</code>
+     * <code>required .comm.SessionEvent.EventType type = 1;</code>
+     */
+    boolean hasType();
+    /**
+     * <code>required .comm.SessionEvent.EventType type = 1;</code>
+     */
+    comm.ProtocolMessage.SessionEvent.EventType getType();
+
+    // required string localNodeId = 2;
+    /**
+     * <code>required string localNodeId = 2;</code>
      */
     boolean hasLocalNodeId();
     /**
-     * <code>required string localNodeId = 1;</code>
+     * <code>required string localNodeId = 2;</code>
      */
     java.lang.String getLocalNodeId();
     /**
-     * <code>required string localNodeId = 1;</code>
+     * <code>required string localNodeId = 2;</code>
      */
     com.google.protobuf.ByteString
         getLocalNodeIdBytes();
 
-    // required string sessionId = 2;
+    // required string sessionId = 3;
     /**
-     * <code>required string sessionId = 2;</code>
+     * <code>required string sessionId = 3;</code>
      */
     boolean hasSessionId();
     /**
-     * <code>required string sessionId = 2;</code>
+     * <code>required string sessionId = 3;</code>
      */
     java.lang.String getSessionId();
     /**
-     * <code>required string sessionId = 2;</code>
+     * <code>required string sessionId = 3;</code>
      */
     com.google.protobuf.ByteString
         getSessionIdBytes();
 
-    // required int64 date = 3;
+    // required int64 date = 4;
     /**
-     * <code>required int64 date = 3;</code>
+     * <code>required int64 date = 4;</code>
      */
     boolean hasDate();
     /**
-     * <code>required int64 date = 3;</code>
+     * <code>required int64 date = 4;</code>
      */
     long getDate();
 
-    // repeated string outNeighbors = 4;
+    // repeated string outNeighbors = 5;
     /**
-     * <code>repeated string outNeighbors = 4;</code>
+     * <code>repeated string outNeighbors = 5;</code>
      */
     java.util.List<java.lang.String>
     getOutNeighborsList();
     /**
-     * <code>repeated string outNeighbors = 4;</code>
+     * <code>repeated string outNeighbors = 5;</code>
      */
     int getOutNeighborsCount();
     /**
-     * <code>repeated string outNeighbors = 4;</code>
+     * <code>repeated string outNeighbors = 5;</code>
      */
     java.lang.String getOutNeighbors(int index);
     /**
-     * <code>repeated string outNeighbors = 4;</code>
+     * <code>repeated string outNeighbors = 5;</code>
      */
     com.google.protobuf.ByteString
         getOutNeighborsBytes(int index);
@@ -1444,25 +1454,36 @@ public final class ProtocolMessage {
               }
               break;
             }
-            case 10: {
-              bitField0_ |= 0x00000001;
-              localNodeId_ = input.readBytes();
+            case 8: {
+              int rawValue = input.readEnum();
+              comm.ProtocolMessage.SessionEvent.EventType value = comm.ProtocolMessage.SessionEvent.EventType.valueOf(rawValue);
+              if (value == null) {
+                unknownFields.mergeVarintField(1, rawValue);
+              } else {
+                bitField0_ |= 0x00000001;
+                type_ = value;
+              }
               break;
             }
             case 18: {
               bitField0_ |= 0x00000002;
+              localNodeId_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
               sessionId_ = input.readBytes();
               break;
             }
-            case 24: {
-              bitField0_ |= 0x00000004;
+            case 32: {
+              bitField0_ |= 0x00000008;
               date_ = input.readInt64();
               break;
             }
-            case 34: {
-              if (!((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+            case 42: {
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
                 outNeighbors_ = new com.google.protobuf.LazyStringArrayList();
-                mutable_bitField0_ |= 0x00000008;
+                mutable_bitField0_ |= 0x00000010;
               }
               outNeighbors_.add(input.readBytes());
               break;
@@ -1475,7 +1496,7 @@ public final class ProtocolMessage {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000008) == 0x00000008)) {
+        if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
           outNeighbors_ = new com.google.protobuf.UnmodifiableLazyStringList(outNeighbors_);
         }
         this.unknownFields = unknownFields.build();
@@ -1509,18 +1530,116 @@ public final class ProtocolMessage {
       return PARSER;
     }
 
-    private int bitField0_;
-    // required string localNodeId = 1;
-    public static final int LOCALNODEID_FIELD_NUMBER = 1;
-    private java.lang.Object localNodeId_;
     /**
-     * <code>required string localNodeId = 1;</code>
+     * Protobuf enum {@code comm.SessionEvent.EventType}
      */
-    public boolean hasLocalNodeId() {
+    public enum EventType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>INITIAL = 0;</code>
+       */
+      INITIAL(0, 0),
+      /**
+       * <code>TERMINAL = 1;</code>
+       */
+      TERMINAL(1, 1),
+      ;
+
+      /**
+       * <code>INITIAL = 0;</code>
+       */
+      public static final int INITIAL_VALUE = 0;
+      /**
+       * <code>TERMINAL = 1;</code>
+       */
+      public static final int TERMINAL_VALUE = 1;
+
+
+      public final int getNumber() { return value; }
+
+      public static EventType valueOf(int value) {
+        switch (value) {
+          case 0: return INITIAL;
+          case 1: return TERMINAL;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<EventType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static com.google.protobuf.Internal.EnumLiteMap<EventType>
+          internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<EventType>() {
+              public EventType findValueByNumber(int number) {
+                return EventType.valueOf(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(index);
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return comm.ProtocolMessage.SessionEvent.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final EventType[] VALUES = values();
+
+      public static EventType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int index;
+      private final int value;
+
+      private EventType(int index, int value) {
+        this.index = index;
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:comm.SessionEvent.EventType)
+    }
+
+    private int bitField0_;
+    // required .comm.SessionEvent.EventType type = 1;
+    public static final int TYPE_FIELD_NUMBER = 1;
+    private comm.ProtocolMessage.SessionEvent.EventType type_;
+    /**
+     * <code>required .comm.SessionEvent.EventType type = 1;</code>
+     */
+    public boolean hasType() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>required string localNodeId = 1;</code>
+     * <code>required .comm.SessionEvent.EventType type = 1;</code>
+     */
+    public comm.ProtocolMessage.SessionEvent.EventType getType() {
+      return type_;
+    }
+
+    // required string localNodeId = 2;
+    public static final int LOCALNODEID_FIELD_NUMBER = 2;
+    private java.lang.Object localNodeId_;
+    /**
+     * <code>required string localNodeId = 2;</code>
+     */
+    public boolean hasLocalNodeId() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string localNodeId = 2;</code>
      */
     public java.lang.String getLocalNodeId() {
       java.lang.Object ref = localNodeId_;
@@ -1537,7 +1656,7 @@ public final class ProtocolMessage {
       }
     }
     /**
-     * <code>required string localNodeId = 1;</code>
+     * <code>required string localNodeId = 2;</code>
      */
     public com.google.protobuf.ByteString
         getLocalNodeIdBytes() {
@@ -1553,17 +1672,17 @@ public final class ProtocolMessage {
       }
     }
 
-    // required string sessionId = 2;
-    public static final int SESSIONID_FIELD_NUMBER = 2;
+    // required string sessionId = 3;
+    public static final int SESSIONID_FIELD_NUMBER = 3;
     private java.lang.Object sessionId_;
     /**
-     * <code>required string sessionId = 2;</code>
+     * <code>required string sessionId = 3;</code>
      */
     public boolean hasSessionId() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
-     * <code>required string sessionId = 2;</code>
+     * <code>required string sessionId = 3;</code>
      */
     public java.lang.String getSessionId() {
       java.lang.Object ref = sessionId_;
@@ -1580,7 +1699,7 @@ public final class ProtocolMessage {
       }
     }
     /**
-     * <code>required string sessionId = 2;</code>
+     * <code>required string sessionId = 3;</code>
      */
     public com.google.protobuf.ByteString
         getSessionIdBytes() {
@@ -1596,46 +1715,46 @@ public final class ProtocolMessage {
       }
     }
 
-    // required int64 date = 3;
-    public static final int DATE_FIELD_NUMBER = 3;
+    // required int64 date = 4;
+    public static final int DATE_FIELD_NUMBER = 4;
     private long date_;
     /**
-     * <code>required int64 date = 3;</code>
+     * <code>required int64 date = 4;</code>
      */
     public boolean hasDate() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
-     * <code>required int64 date = 3;</code>
+     * <code>required int64 date = 4;</code>
      */
     public long getDate() {
       return date_;
     }
 
-    // repeated string outNeighbors = 4;
-    public static final int OUTNEIGHBORS_FIELD_NUMBER = 4;
+    // repeated string outNeighbors = 5;
+    public static final int OUTNEIGHBORS_FIELD_NUMBER = 5;
     private com.google.protobuf.LazyStringList outNeighbors_;
     /**
-     * <code>repeated string outNeighbors = 4;</code>
+     * <code>repeated string outNeighbors = 5;</code>
      */
     public java.util.List<java.lang.String>
         getOutNeighborsList() {
       return outNeighbors_;
     }
     /**
-     * <code>repeated string outNeighbors = 4;</code>
+     * <code>repeated string outNeighbors = 5;</code>
      */
     public int getOutNeighborsCount() {
       return outNeighbors_.size();
     }
     /**
-     * <code>repeated string outNeighbors = 4;</code>
+     * <code>repeated string outNeighbors = 5;</code>
      */
     public java.lang.String getOutNeighbors(int index) {
       return outNeighbors_.get(index);
     }
     /**
-     * <code>repeated string outNeighbors = 4;</code>
+     * <code>repeated string outNeighbors = 5;</code>
      */
     public com.google.protobuf.ByteString
         getOutNeighborsBytes(int index) {
@@ -1643,6 +1762,7 @@ public final class ProtocolMessage {
     }
 
     private void initFields() {
+      type_ = comm.ProtocolMessage.SessionEvent.EventType.INITIAL;
       localNodeId_ = "";
       sessionId_ = "";
       date_ = 0L;
@@ -1653,6 +1773,10 @@ public final class ProtocolMessage {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
+      if (!hasType()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasLocalNodeId()) {
         memoizedIsInitialized = 0;
         return false;
@@ -1673,16 +1797,19 @@ public final class ProtocolMessage {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getLocalNodeIdBytes());
+        output.writeEnum(1, type_.getNumber());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getSessionIdBytes());
+        output.writeBytes(2, getLocalNodeIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt64(3, date_);
+        output.writeBytes(3, getSessionIdBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt64(4, date_);
       }
       for (int i = 0; i < outNeighbors_.size(); i++) {
-        output.writeBytes(4, outNeighbors_.getByteString(i));
+        output.writeBytes(5, outNeighbors_.getByteString(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -1695,15 +1822,19 @@ public final class ProtocolMessage {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getLocalNodeIdBytes());
+          .computeEnumSize(1, type_.getNumber());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getSessionIdBytes());
+          .computeBytesSize(2, getLocalNodeIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, date_);
+          .computeBytesSize(3, getSessionIdBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt64Size(4, date_);
       }
       {
         int dataSize = 0;
@@ -1830,14 +1961,16 @@ public final class ProtocolMessage {
 
       public Builder clear() {
         super.clear();
-        localNodeId_ = "";
+        type_ = comm.ProtocolMessage.SessionEvent.EventType.INITIAL;
         bitField0_ = (bitField0_ & ~0x00000001);
-        sessionId_ = "";
+        localNodeId_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
-        date_ = 0L;
+        sessionId_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
-        outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        date_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
+        outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -1869,19 +2002,23 @@ public final class ProtocolMessage {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.localNodeId_ = localNodeId_;
+        result.type_ = type_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.sessionId_ = sessionId_;
+        result.localNodeId_ = localNodeId_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
+        result.sessionId_ = sessionId_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
         result.date_ = date_;
-        if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        if (((bitField0_ & 0x00000010) == 0x00000010)) {
           outNeighbors_ = new com.google.protobuf.UnmodifiableLazyStringList(
               outNeighbors_);
-          bitField0_ = (bitField0_ & ~0x00000008);
+          bitField0_ = (bitField0_ & ~0x00000010);
         }
         result.outNeighbors_ = outNeighbors_;
         result.bitField0_ = to_bitField0_;
@@ -1900,13 +2037,16 @@ public final class ProtocolMessage {
 
       public Builder mergeFrom(comm.ProtocolMessage.SessionEvent other) {
         if (other == comm.ProtocolMessage.SessionEvent.getDefaultInstance()) return this;
+        if (other.hasType()) {
+          setType(other.getType());
+        }
         if (other.hasLocalNodeId()) {
-          bitField0_ |= 0x00000001;
+          bitField0_ |= 0x00000002;
           localNodeId_ = other.localNodeId_;
           onChanged();
         }
         if (other.hasSessionId()) {
-          bitField0_ |= 0x00000002;
+          bitField0_ |= 0x00000004;
           sessionId_ = other.sessionId_;
           onChanged();
         }
@@ -1916,7 +2056,7 @@ public final class ProtocolMessage {
         if (!other.outNeighbors_.isEmpty()) {
           if (outNeighbors_.isEmpty()) {
             outNeighbors_ = other.outNeighbors_;
-            bitField0_ = (bitField0_ & ~0x00000008);
+            bitField0_ = (bitField0_ & ~0x00000010);
           } else {
             ensureOutNeighborsIsMutable();
             outNeighbors_.addAll(other.outNeighbors_);
@@ -1928,6 +2068,10 @@ public final class ProtocolMessage {
       }
 
       public final boolean isInitialized() {
+        if (!hasType()) {
+          
+          return false;
+        }
         if (!hasLocalNodeId()) {
           
           return false;
@@ -1962,16 +2106,52 @@ public final class ProtocolMessage {
       }
       private int bitField0_;
 
-      // required string localNodeId = 1;
-      private java.lang.Object localNodeId_ = "";
+      // required .comm.SessionEvent.EventType type = 1;
+      private comm.ProtocolMessage.SessionEvent.EventType type_ = comm.ProtocolMessage.SessionEvent.EventType.INITIAL;
       /**
-       * <code>required string localNodeId = 1;</code>
+       * <code>required .comm.SessionEvent.EventType type = 1;</code>
        */
-      public boolean hasLocalNodeId() {
+      public boolean hasType() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>required string localNodeId = 1;</code>
+       * <code>required .comm.SessionEvent.EventType type = 1;</code>
+       */
+      public comm.ProtocolMessage.SessionEvent.EventType getType() {
+        return type_;
+      }
+      /**
+       * <code>required .comm.SessionEvent.EventType type = 1;</code>
+       */
+      public Builder setType(comm.ProtocolMessage.SessionEvent.EventType value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        bitField0_ |= 0x00000001;
+        type_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required .comm.SessionEvent.EventType type = 1;</code>
+       */
+      public Builder clearType() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        type_ = comm.ProtocolMessage.SessionEvent.EventType.INITIAL;
+        onChanged();
+        return this;
+      }
+
+      // required string localNodeId = 2;
+      private java.lang.Object localNodeId_ = "";
+      /**
+       * <code>required string localNodeId = 2;</code>
+       */
+      public boolean hasLocalNodeId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string localNodeId = 2;</code>
        */
       public java.lang.String getLocalNodeId() {
         java.lang.Object ref = localNodeId_;
@@ -1985,7 +2165,7 @@ public final class ProtocolMessage {
         }
       }
       /**
-       * <code>required string localNodeId = 1;</code>
+       * <code>required string localNodeId = 2;</code>
        */
       public com.google.protobuf.ByteString
           getLocalNodeIdBytes() {
@@ -2001,51 +2181,51 @@ public final class ProtocolMessage {
         }
       }
       /**
-       * <code>required string localNodeId = 1;</code>
+       * <code>required string localNodeId = 2;</code>
        */
       public Builder setLocalNodeId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         localNodeId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string localNodeId = 1;</code>
+       * <code>required string localNodeId = 2;</code>
        */
       public Builder clearLocalNodeId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         localNodeId_ = getDefaultInstance().getLocalNodeId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string localNodeId = 1;</code>
+       * <code>required string localNodeId = 2;</code>
        */
       public Builder setLocalNodeIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         localNodeId_ = value;
         onChanged();
         return this;
       }
 
-      // required string sessionId = 2;
+      // required string sessionId = 3;
       private java.lang.Object sessionId_ = "";
       /**
-       * <code>required string sessionId = 2;</code>
+       * <code>required string sessionId = 3;</code>
        */
       public boolean hasSessionId() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>required string sessionId = 2;</code>
+       * <code>required string sessionId = 3;</code>
        */
       public java.lang.String getSessionId() {
         java.lang.Object ref = sessionId_;
@@ -2059,7 +2239,7 @@ public final class ProtocolMessage {
         }
       }
       /**
-       * <code>required string sessionId = 2;</code>
+       * <code>required string sessionId = 3;</code>
        */
       public com.google.protobuf.ByteString
           getSessionIdBytes() {
@@ -2075,110 +2255,110 @@ public final class ProtocolMessage {
         }
       }
       /**
-       * <code>required string sessionId = 2;</code>
+       * <code>required string sessionId = 3;</code>
        */
       public Builder setSessionId(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         sessionId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required string sessionId = 2;</code>
+       * <code>required string sessionId = 3;</code>
        */
       public Builder clearSessionId() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         sessionId_ = getDefaultInstance().getSessionId();
         onChanged();
         return this;
       }
       /**
-       * <code>required string sessionId = 2;</code>
+       * <code>required string sessionId = 3;</code>
        */
       public Builder setSessionIdBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         sessionId_ = value;
         onChanged();
         return this;
       }
 
-      // required int64 date = 3;
+      // required int64 date = 4;
       private long date_ ;
       /**
-       * <code>required int64 date = 3;</code>
+       * <code>required int64 date = 4;</code>
        */
       public boolean hasDate() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
-       * <code>required int64 date = 3;</code>
+       * <code>required int64 date = 4;</code>
        */
       public long getDate() {
         return date_;
       }
       /**
-       * <code>required int64 date = 3;</code>
+       * <code>required int64 date = 4;</code>
        */
       public Builder setDate(long value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         date_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>required int64 date = 3;</code>
+       * <code>required int64 date = 4;</code>
        */
       public Builder clearDate() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         date_ = 0L;
         onChanged();
         return this;
       }
 
-      // repeated string outNeighbors = 4;
+      // repeated string outNeighbors = 5;
       private com.google.protobuf.LazyStringList outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
       private void ensureOutNeighborsIsMutable() {
-        if (!((bitField0_ & 0x00000008) == 0x00000008)) {
+        if (!((bitField0_ & 0x00000010) == 0x00000010)) {
           outNeighbors_ = new com.google.protobuf.LazyStringArrayList(outNeighbors_);
-          bitField0_ |= 0x00000008;
+          bitField0_ |= 0x00000010;
          }
       }
       /**
-       * <code>repeated string outNeighbors = 4;</code>
+       * <code>repeated string outNeighbors = 5;</code>
        */
       public java.util.List<java.lang.String>
           getOutNeighborsList() {
         return java.util.Collections.unmodifiableList(outNeighbors_);
       }
       /**
-       * <code>repeated string outNeighbors = 4;</code>
+       * <code>repeated string outNeighbors = 5;</code>
        */
       public int getOutNeighborsCount() {
         return outNeighbors_.size();
       }
       /**
-       * <code>repeated string outNeighbors = 4;</code>
+       * <code>repeated string outNeighbors = 5;</code>
        */
       public java.lang.String getOutNeighbors(int index) {
         return outNeighbors_.get(index);
       }
       /**
-       * <code>repeated string outNeighbors = 4;</code>
+       * <code>repeated string outNeighbors = 5;</code>
        */
       public com.google.protobuf.ByteString
           getOutNeighborsBytes(int index) {
         return outNeighbors_.getByteString(index);
       }
       /**
-       * <code>repeated string outNeighbors = 4;</code>
+       * <code>repeated string outNeighbors = 5;</code>
        */
       public Builder setOutNeighbors(
           int index, java.lang.String value) {
@@ -2191,7 +2371,7 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated string outNeighbors = 4;</code>
+       * <code>repeated string outNeighbors = 5;</code>
        */
       public Builder addOutNeighbors(
           java.lang.String value) {
@@ -2204,7 +2384,7 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated string outNeighbors = 4;</code>
+       * <code>repeated string outNeighbors = 5;</code>
        */
       public Builder addAllOutNeighbors(
           java.lang.Iterable<java.lang.String> values) {
@@ -2214,16 +2394,16 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated string outNeighbors = 4;</code>
+       * <code>repeated string outNeighbors = 5;</code>
        */
       public Builder clearOutNeighbors() {
         outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string outNeighbors = 4;</code>
+       * <code>repeated string outNeighbors = 5;</code>
        */
       public Builder addOutNeighborsBytes(
           com.google.protobuf.ByteString value) {
@@ -2273,10 +2453,12 @@ public final class ProtocolMessage {
       "OfExecutions\030\005 \001(\005\022\r\n\005round\030\006 \001(\005\022\013\n\003val" +
       "\030\007 \001(\001\022\025\n\teigenvals\030\010 \003(\001B\002\020\001\"J\n\013Message" +
       "Type\022\007\n\003NEW\020\000\022\010\n\004INIT\020\001\022\010\n\004NEXT\020\002\022\n\n\006GOS" +
-      "SIP\020\003\022\022\n\016LIVENESS_CHECK\020\004\"Z\n\014SessionEven" +
-      "t\022\023\n\013localNodeId\030\001 \002(\t\022\021\n\tsessionId\030\002 \002(" +
-      "\t\022\014\n\004date\030\003 \002(\003\022\024\n\014outNeighbors\030\004 \003(\tB\027\n",
-      "\004commB\017ProtocolMessage"
+      "SIP\020\003\022\022\n\016LIVENESS_CHECK\020\004\"\256\001\n\014SessionEve" +
+      "nt\022*\n\004type\030\001 \002(\0162\034.comm.SessionEvent.Eve" +
+      "ntType\022\023\n\013localNodeId\030\002 \002(\t\022\021\n\tsessionId",
+      "\030\003 \002(\t\022\014\n\004date\030\004 \002(\003\022\024\n\014outNeighbors\030\005 \003" +
+      "(\t\"&\n\tEventType\022\013\n\007INITIAL\020\000\022\014\n\010TERMINAL" +
+      "\020\001B\027\n\004commB\017ProtocolMessage"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2294,7 +2476,7 @@ public final class ProtocolMessage {
           internal_static_comm_SessionEvent_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_comm_SessionEvent_descriptor,
-              new java.lang.String[] { "LocalNodeId", "SessionId", "Date", "OutNeighbors", });
+              new java.lang.String[] { "Type", "LocalNodeId", "SessionId", "Date", "OutNeighbors", });
           return null;
         }
       };

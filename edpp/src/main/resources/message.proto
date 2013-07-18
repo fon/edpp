@@ -29,11 +29,17 @@ message Message {
 
 message SessionEvent {
 
-	required string localNodeId = 1;
-	required string sessionId = 2;
-	required int64 date = 3;
+	enum EventType {
+		INITIAL = 0;
+		TERMINAL = 1;
+	}
 	
-	repeated string outNeighbors = 4;
+	required EventType type = 1;
+	required string localNodeId = 2;
+	required string sessionId = 3;
+	required int64 date = 4;
+	
+	repeated string outNeighbors = 5;
 
 }
 	
