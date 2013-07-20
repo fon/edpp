@@ -132,6 +132,15 @@ public class MessageBuilder {
 	
 	//TODO must add tests
 	public static SessionEvent buildNewSessionEvent(Session s, Node localNode, EventType type) {
+		double [] eigenvalues; 
+		
+		//We will have eigenvalues only if this is terminal
+		if (type == EventType.TERMINAL) {
+			eigenvalues = s.getComputedEigenvalues();
+		} else {
+			eigenvalues = new double [0]; 
+		}
+		
 		comm.ProtocolMessage.SessionEvent.Builder builder = 
 				SessionEvent.newBuilder()
 				.setType(type)
@@ -143,6 +152,10 @@ public class MessageBuilder {
 		
 		for (Neighbor n : outNeighbors) {
 			builder = builder.addOutNeighbors(n.getId().toString());
+		}
+		
+		for (int i = 0 ; i < eigenvalues.length; i++) {
+			builder.addEigenvalues(eigenvalues[i]);
 		}
 		
 		return builder.build();

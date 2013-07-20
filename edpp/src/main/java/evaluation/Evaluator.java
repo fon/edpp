@@ -10,13 +10,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import algorithms.Algorithms;
+import analysis.Analyzer;
 
 import comm.ProtocolMessage.SessionEvent;
 import comm.ProtocolMessage.SessionEvent.EventType;
 
 import util.SamplingParameters;
 import core.ProtocolEngine;
-import core.Session;
 import core.SessionListener;
 
 public class Evaluator {
@@ -117,7 +117,8 @@ public class Evaluator {
 		
 		if (initiator) {
 			SamplingParameters sp = new SamplingParameters(numberOfExecutions, numberOfRounds);
-			Session s = pe.requestSessionData(sp);
+			EvaluationResults er = new EvaluationResults();
+			pe.requestSessionData(sp);
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
@@ -125,7 +126,6 @@ public class Evaluator {
 				e.printStackTrace();
 			}
 			
-			double [] computedEigenvals = s.getComputedEigenvalues();
 			//TODO must construct graphs and analyze returned data and data from graphs
 			NetworkGraph initialGraph = new NetworkGraph();
 			NetworkGraph terminalGraph = new NetworkGraph();
@@ -149,10 +149,17 @@ public class Evaluator {
 					terminalGraph.addNode(outNeighbor);
 					terminalGraph.addLinkWithWeight(se.getLocalNodeId(), outNeighbor, weight);
 				}
+				
+				//TODO
+				//Must get for each session its analysis and store it in the evaluation results
 			}
 			
 			double [] expectedEigenvals = Algorithms.computeEigenvalues(terminalGraph.getMatrixOfWeights());
-			//TODO analyze both the expected and the comoputed data and create the EvaluationResults
+			double expectedGap = Analyzer.computeSpectralGap(expectedEigenvals);
+			er.setExpectedSpectralGap(expectedGap);
+			double expectedMixingTime = Analyzer.computeMixingTime(expectedEigenvals, 0.001);
+			er.setExpectedMixingTime(expectedMixingTime);
+			return er;
 		}
 		return null;
 	}

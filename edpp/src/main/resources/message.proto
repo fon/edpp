@@ -38,8 +38,9 @@ message SessionEvent {
 	required string localNodeId = 2;
 	required string sessionId = 3;
 	required int64 date = 4;
-	
-	repeated string outNeighbors = 5;
+	repeated double eigenvalues = 5;	
+	repeated string outNeighbors = 6;
+
 
 }
 	

@@ -1383,22 +1383,36 @@ public final class ProtocolMessage {
      */
     long getDate();
 
-    // repeated string outNeighbors = 5;
+    // repeated double eigenvalues = 5;
     /**
-     * <code>repeated string outNeighbors = 5;</code>
+     * <code>repeated double eigenvalues = 5;</code>
+     */
+    java.util.List<java.lang.Double> getEigenvaluesList();
+    /**
+     * <code>repeated double eigenvalues = 5;</code>
+     */
+    int getEigenvaluesCount();
+    /**
+     * <code>repeated double eigenvalues = 5;</code>
+     */
+    double getEigenvalues(int index);
+
+    // repeated string outNeighbors = 6;
+    /**
+     * <code>repeated string outNeighbors = 6;</code>
      */
     java.util.List<java.lang.String>
     getOutNeighborsList();
     /**
-     * <code>repeated string outNeighbors = 5;</code>
+     * <code>repeated string outNeighbors = 6;</code>
      */
     int getOutNeighborsCount();
     /**
-     * <code>repeated string outNeighbors = 5;</code>
+     * <code>repeated string outNeighbors = 6;</code>
      */
     java.lang.String getOutNeighbors(int index);
     /**
-     * <code>repeated string outNeighbors = 5;</code>
+     * <code>repeated string outNeighbors = 6;</code>
      */
     com.google.protobuf.ByteString
         getOutNeighborsBytes(int index);
@@ -1480,10 +1494,31 @@ public final class ProtocolMessage {
               date_ = input.readInt64();
               break;
             }
-            case 42: {
+            case 41: {
               if (!((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
-                outNeighbors_ = new com.google.protobuf.LazyStringArrayList();
+                eigenvalues_ = new java.util.ArrayList<java.lang.Double>();
                 mutable_bitField0_ |= 0x00000010;
+              }
+              eigenvalues_.add(input.readDouble());
+              break;
+            }
+            case 42: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000010) == 0x00000010) && input.getBytesUntilLimit() > 0) {
+                eigenvalues_ = new java.util.ArrayList<java.lang.Double>();
+                mutable_bitField0_ |= 0x00000010;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                eigenvalues_.add(input.readDouble());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            case 50: {
+              if (!((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
+                outNeighbors_ = new com.google.protobuf.LazyStringArrayList();
+                mutable_bitField0_ |= 0x00000020;
               }
               outNeighbors_.add(input.readBytes());
               break;
@@ -1497,6 +1532,9 @@ public final class ProtocolMessage {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000010) == 0x00000010)) {
+          eigenvalues_ = java.util.Collections.unmodifiableList(eigenvalues_);
+        }
+        if (((mutable_bitField0_ & 0x00000020) == 0x00000020)) {
           outNeighbors_ = new com.google.protobuf.UnmodifiableLazyStringList(outNeighbors_);
         }
         this.unknownFields = unknownFields.build();
@@ -1731,30 +1769,53 @@ public final class ProtocolMessage {
       return date_;
     }
 
-    // repeated string outNeighbors = 5;
-    public static final int OUTNEIGHBORS_FIELD_NUMBER = 5;
+    // repeated double eigenvalues = 5;
+    public static final int EIGENVALUES_FIELD_NUMBER = 5;
+    private java.util.List<java.lang.Double> eigenvalues_;
+    /**
+     * <code>repeated double eigenvalues = 5;</code>
+     */
+    public java.util.List<java.lang.Double>
+        getEigenvaluesList() {
+      return eigenvalues_;
+    }
+    /**
+     * <code>repeated double eigenvalues = 5;</code>
+     */
+    public int getEigenvaluesCount() {
+      return eigenvalues_.size();
+    }
+    /**
+     * <code>repeated double eigenvalues = 5;</code>
+     */
+    public double getEigenvalues(int index) {
+      return eigenvalues_.get(index);
+    }
+
+    // repeated string outNeighbors = 6;
+    public static final int OUTNEIGHBORS_FIELD_NUMBER = 6;
     private com.google.protobuf.LazyStringList outNeighbors_;
     /**
-     * <code>repeated string outNeighbors = 5;</code>
+     * <code>repeated string outNeighbors = 6;</code>
      */
     public java.util.List<java.lang.String>
         getOutNeighborsList() {
       return outNeighbors_;
     }
     /**
-     * <code>repeated string outNeighbors = 5;</code>
+     * <code>repeated string outNeighbors = 6;</code>
      */
     public int getOutNeighborsCount() {
       return outNeighbors_.size();
     }
     /**
-     * <code>repeated string outNeighbors = 5;</code>
+     * <code>repeated string outNeighbors = 6;</code>
      */
     public java.lang.String getOutNeighbors(int index) {
       return outNeighbors_.get(index);
     }
     /**
-     * <code>repeated string outNeighbors = 5;</code>
+     * <code>repeated string outNeighbors = 6;</code>
      */
     public com.google.protobuf.ByteString
         getOutNeighborsBytes(int index) {
@@ -1766,6 +1827,7 @@ public final class ProtocolMessage {
       localNodeId_ = "";
       sessionId_ = "";
       date_ = 0L;
+      eigenvalues_ = java.util.Collections.emptyList();
       outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
     }
     private byte memoizedIsInitialized = -1;
@@ -1808,8 +1870,11 @@ public final class ProtocolMessage {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt64(4, date_);
       }
+      for (int i = 0; i < eigenvalues_.size(); i++) {
+        output.writeDouble(5, eigenvalues_.get(i));
+      }
       for (int i = 0; i < outNeighbors_.size(); i++) {
-        output.writeBytes(5, outNeighbors_.getByteString(i));
+        output.writeBytes(6, outNeighbors_.getByteString(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -1835,6 +1900,12 @@ public final class ProtocolMessage {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(4, date_);
+      }
+      {
+        int dataSize = 0;
+        dataSize = 8 * getEigenvaluesList().size();
+        size += dataSize;
+        size += 1 * getEigenvaluesList().size();
       }
       {
         int dataSize = 0;
@@ -1969,8 +2040,10 @@ public final class ProtocolMessage {
         bitField0_ = (bitField0_ & ~0x00000004);
         date_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000008);
-        outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        eigenvalues_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000010);
+        outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -2016,9 +2089,14 @@ public final class ProtocolMessage {
         }
         result.date_ = date_;
         if (((bitField0_ & 0x00000010) == 0x00000010)) {
+          eigenvalues_ = java.util.Collections.unmodifiableList(eigenvalues_);
+          bitField0_ = (bitField0_ & ~0x00000010);
+        }
+        result.eigenvalues_ = eigenvalues_;
+        if (((bitField0_ & 0x00000020) == 0x00000020)) {
           outNeighbors_ = new com.google.protobuf.UnmodifiableLazyStringList(
               outNeighbors_);
-          bitField0_ = (bitField0_ & ~0x00000010);
+          bitField0_ = (bitField0_ & ~0x00000020);
         }
         result.outNeighbors_ = outNeighbors_;
         result.bitField0_ = to_bitField0_;
@@ -2053,10 +2131,20 @@ public final class ProtocolMessage {
         if (other.hasDate()) {
           setDate(other.getDate());
         }
+        if (!other.eigenvalues_.isEmpty()) {
+          if (eigenvalues_.isEmpty()) {
+            eigenvalues_ = other.eigenvalues_;
+            bitField0_ = (bitField0_ & ~0x00000010);
+          } else {
+            ensureEigenvaluesIsMutable();
+            eigenvalues_.addAll(other.eigenvalues_);
+          }
+          onChanged();
+        }
         if (!other.outNeighbors_.isEmpty()) {
           if (outNeighbors_.isEmpty()) {
             outNeighbors_ = other.outNeighbors_;
-            bitField0_ = (bitField0_ & ~0x00000010);
+            bitField0_ = (bitField0_ & ~0x00000020);
           } else {
             ensureOutNeighborsIsMutable();
             outNeighbors_.addAll(other.outNeighbors_);
@@ -2323,42 +2411,108 @@ public final class ProtocolMessage {
         return this;
       }
 
-      // repeated string outNeighbors = 5;
-      private com.google.protobuf.LazyStringList outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-      private void ensureOutNeighborsIsMutable() {
+      // repeated double eigenvalues = 5;
+      private java.util.List<java.lang.Double> eigenvalues_ = java.util.Collections.emptyList();
+      private void ensureEigenvaluesIsMutable() {
         if (!((bitField0_ & 0x00000010) == 0x00000010)) {
-          outNeighbors_ = new com.google.protobuf.LazyStringArrayList(outNeighbors_);
+          eigenvalues_ = new java.util.ArrayList<java.lang.Double>(eigenvalues_);
           bitField0_ |= 0x00000010;
          }
       }
       /**
-       * <code>repeated string outNeighbors = 5;</code>
+       * <code>repeated double eigenvalues = 5;</code>
+       */
+      public java.util.List<java.lang.Double>
+          getEigenvaluesList() {
+        return java.util.Collections.unmodifiableList(eigenvalues_);
+      }
+      /**
+       * <code>repeated double eigenvalues = 5;</code>
+       */
+      public int getEigenvaluesCount() {
+        return eigenvalues_.size();
+      }
+      /**
+       * <code>repeated double eigenvalues = 5;</code>
+       */
+      public double getEigenvalues(int index) {
+        return eigenvalues_.get(index);
+      }
+      /**
+       * <code>repeated double eigenvalues = 5;</code>
+       */
+      public Builder setEigenvalues(
+          int index, double value) {
+        ensureEigenvaluesIsMutable();
+        eigenvalues_.set(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated double eigenvalues = 5;</code>
+       */
+      public Builder addEigenvalues(double value) {
+        ensureEigenvaluesIsMutable();
+        eigenvalues_.add(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated double eigenvalues = 5;</code>
+       */
+      public Builder addAllEigenvalues(
+          java.lang.Iterable<? extends java.lang.Double> values) {
+        ensureEigenvaluesIsMutable();
+        super.addAll(values, eigenvalues_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated double eigenvalues = 5;</code>
+       */
+      public Builder clearEigenvalues() {
+        eigenvalues_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000010);
+        onChanged();
+        return this;
+      }
+
+      // repeated string outNeighbors = 6;
+      private com.google.protobuf.LazyStringList outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
+      private void ensureOutNeighborsIsMutable() {
+        if (!((bitField0_ & 0x00000020) == 0x00000020)) {
+          outNeighbors_ = new com.google.protobuf.LazyStringArrayList(outNeighbors_);
+          bitField0_ |= 0x00000020;
+         }
+      }
+      /**
+       * <code>repeated string outNeighbors = 6;</code>
        */
       public java.util.List<java.lang.String>
           getOutNeighborsList() {
         return java.util.Collections.unmodifiableList(outNeighbors_);
       }
       /**
-       * <code>repeated string outNeighbors = 5;</code>
+       * <code>repeated string outNeighbors = 6;</code>
        */
       public int getOutNeighborsCount() {
         return outNeighbors_.size();
       }
       /**
-       * <code>repeated string outNeighbors = 5;</code>
+       * <code>repeated string outNeighbors = 6;</code>
        */
       public java.lang.String getOutNeighbors(int index) {
         return outNeighbors_.get(index);
       }
       /**
-       * <code>repeated string outNeighbors = 5;</code>
+       * <code>repeated string outNeighbors = 6;</code>
        */
       public com.google.protobuf.ByteString
           getOutNeighborsBytes(int index) {
         return outNeighbors_.getByteString(index);
       }
       /**
-       * <code>repeated string outNeighbors = 5;</code>
+       * <code>repeated string outNeighbors = 6;</code>
        */
       public Builder setOutNeighbors(
           int index, java.lang.String value) {
@@ -2371,7 +2525,7 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated string outNeighbors = 5;</code>
+       * <code>repeated string outNeighbors = 6;</code>
        */
       public Builder addOutNeighbors(
           java.lang.String value) {
@@ -2384,7 +2538,7 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated string outNeighbors = 5;</code>
+       * <code>repeated string outNeighbors = 6;</code>
        */
       public Builder addAllOutNeighbors(
           java.lang.Iterable<java.lang.String> values) {
@@ -2394,16 +2548,16 @@ public final class ProtocolMessage {
         return this;
       }
       /**
-       * <code>repeated string outNeighbors = 5;</code>
+       * <code>repeated string outNeighbors = 6;</code>
        */
       public Builder clearOutNeighbors() {
         outNeighbors_ = com.google.protobuf.LazyStringArrayList.EMPTY;
-        bitField0_ = (bitField0_ & ~0x00000010);
+        bitField0_ = (bitField0_ & ~0x00000020);
         onChanged();
         return this;
       }
       /**
-       * <code>repeated string outNeighbors = 5;</code>
+       * <code>repeated string outNeighbors = 6;</code>
        */
       public Builder addOutNeighborsBytes(
           com.google.protobuf.ByteString value) {
@@ -2453,12 +2607,13 @@ public final class ProtocolMessage {
       "OfExecutions\030\005 \001(\005\022\r\n\005round\030\006 \001(\005\022\013\n\003val" +
       "\030\007 \001(\001\022\025\n\teigenvals\030\010 \003(\001B\002\020\001\"J\n\013Message" +
       "Type\022\007\n\003NEW\020\000\022\010\n\004INIT\020\001\022\010\n\004NEXT\020\002\022\n\n\006GOS" +
-      "SIP\020\003\022\022\n\016LIVENESS_CHECK\020\004\"\256\001\n\014SessionEve" +
+      "SIP\020\003\022\022\n\016LIVENESS_CHECK\020\004\"\303\001\n\014SessionEve" +
       "nt\022*\n\004type\030\001 \002(\0162\034.comm.SessionEvent.Eve" +
       "ntType\022\023\n\013localNodeId\030\002 \002(\t\022\021\n\tsessionId",
-      "\030\003 \002(\t\022\014\n\004date\030\004 \002(\003\022\024\n\014outNeighbors\030\005 \003" +
-      "(\t\"&\n\tEventType\022\013\n\007INITIAL\020\000\022\014\n\010TERMINAL" +
-      "\020\001B\027\n\004commB\017ProtocolMessage"
+      "\030\003 \002(\t\022\014\n\004date\030\004 \002(\003\022\023\n\013eigenvalues\030\005 \003(" +
+      "\001\022\024\n\014outNeighbors\030\006 \003(\t\"&\n\tEventType\022\013\n\007" +
+      "INITIAL\020\000\022\014\n\010TERMINAL\020\001B\027\n\004commB\017Protoco" +
+      "lMessage"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -2476,7 +2631,7 @@ public final class ProtocolMessage {
           internal_static_comm_SessionEvent_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_comm_SessionEvent_descriptor,
-              new java.lang.String[] { "Type", "LocalNodeId", "SessionId", "Date", "OutNeighbors", });
+              new java.lang.String[] { "Type", "LocalNodeId", "SessionId", "Date", "Eigenvalues", "OutNeighbors", });
           return null;
         }
       };
