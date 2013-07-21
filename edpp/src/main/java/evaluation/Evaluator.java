@@ -60,8 +60,6 @@ public class Evaluator {
 	
 	public Evaluator(ProtocolEngine pe, final InetAddress evaluatorAddress, boolean init) {
 		
-		
-		
 		this.pe = pe;
 		this.initiator = init;
 		
@@ -112,6 +110,8 @@ public class Evaluator {
 	
 	public EvaluationResults evaluateEngine(int numberOfExecutions, int numberOfRounds) {
 		
+		initialEvents = new ArrayList<SessionEvent>();
+		terminationEvents = new ArrayList<SessionEvent>();
 		pe.addSessionListener(listener);
 		
 		
@@ -126,7 +126,6 @@ public class Evaluator {
 				e.printStackTrace();
 			}
 			
-			//TODO must construct graphs and analyze returned data and data from graphs
 			NetworkGraph initialGraph = new NetworkGraph();
 			NetworkGraph terminalGraph = new NetworkGraph();
 			
@@ -150,8 +149,13 @@ public class Evaluator {
 					terminalGraph.addLinkWithWeight(se.getLocalNodeId(), outNeighbor, weight);
 				}
 				
-				//TODO
-				//Must get for each session its analysis and store it in the evaluation results
+				List<Double> eigenvalues = se.getEigenvaluesList();
+				double [] computedEigenvals = toDoubleArray(eigenvalues);
+				double computedGap = Analyzer.computeSpectralGap(computedEigenvals);
+				er.addComputedSpectralGap(computedGap);
+				double computedMixingTime = Analyzer.computeMixingTime(computedEigenvals, 0.001);
+				er.addComputedMixningTime(computedMixingTime);
+				
 			}
 			
 			double [] expectedEigenvals = Algorithms.computeEigenvalues(terminalGraph.getMatrixOfWeights());
@@ -174,7 +178,12 @@ public class Evaluator {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
-	
+
+	private double[] toDoubleArray(List<Double> list){
+		double[] ret = new double[list.size()];
+		for(int i = 0;i < ret.length;i++)
+			ret[i] = list.get(i);
+		return ret;
+	}
 }
