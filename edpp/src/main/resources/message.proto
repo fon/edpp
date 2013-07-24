@@ -41,6 +41,5 @@ message SessionEvent {
 	repeated double eigenvalues = 5;	
 	repeated string outNeighbors = 6;
 
-
 }
 	

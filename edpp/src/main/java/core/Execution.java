@@ -211,7 +211,7 @@ public class Execution implements Serializable {
 	
 	/**
 	 * 
-	 * @return the approximation matrix, if the computation has already been performed, otherwise {@value null}
+	 * @return the approximation matrix, if the computation has already been performed, otherwise {@literal null}
 	 */
 	public DoubleMatrix getRealizationMatrix() {
 		if (hasComputedMatrix) {
@@ -239,7 +239,7 @@ public class Execution implements Serializable {
 	 * approximation matrix has already been computed and we are in the GOSSIP round,
 	 * otherwise no change will be made to the eigenvalues array
 	 * @param newValues an array with the new values the eigenvalues array should get
-	 * @return {@value true} if the values were updated successfully, {@value false} otherwise
+	 * @return {@literal true} if the values were updated successfully, {@literal false} otherwise
 	 */
 	public boolean setMatrixAEigenvalues(double [] newValues) {
 		if (hasComputedMatrix && this.getPhase() == Phase.GOSSIP) {
