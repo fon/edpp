@@ -11,6 +11,8 @@ import network.PastryOverlayNode;
 
 import core.ProtocolEngine;
 import core.Session;
+import evaluation.EvaluationResults;
+import evaluation.Evaluator;
 
 import rice.environment.Environment;
 import rice.pastry.NodeIdFactory;
@@ -25,12 +27,12 @@ import util.SamplingParameters;
  * @author Xenofon Foukas
  *
  */
-public class TestPastryNode {
+public class EvaluationPastryNode {
 	
 	private ProtocolEngine pe;
 	private PastryNode node;
 
-	public TestPastryNode(int bindport, InetSocketAddress bootaddress, Environment env) throws Exception {
+	public EvaluationPastryNode(int bindport, InetSocketAddress bootaddress, Environment env) throws Exception {
 
 			    // Generate the NodeIds Randomly
 			    NodeIdFactory nidFactory = new RandomNodeIdFactory(env);
@@ -67,13 +69,17 @@ public class TestPastryNode {
 			    System.out.println("Finished creating new node "+node);
 			    System.out.println("Wait to properly join pastry overlay");
 			    // wait 10 seconds
-			    env.getTimeSource().sleep(10000);
+			    env.getTimeSource().sleep(5000);
 			    System.out.println("Application ready");
 	}
 	
 	public void terminate() {
 		pe.terminate();
 		node.destroy();
+	}
+	
+	public ProtocolEngine getProtocolEngine() {
+		return this.pe;
 	}
 	
 	public Session requestSamplingData(int numberOfExecutions, int numberOfRounds) {
@@ -90,6 +96,7 @@ public class TestPastryNode {
 	public static void main(String[] args) throws Exception {
 	    // Loads pastry settings
 		Environment env = new Environment();
+		Evaluator eval;
 			
 		// disable the UPnP setting (in case you are testing this on a NATted LAN)
 		env.getParameters().setString("nat_search_policy","never");
@@ -104,7 +111,12 @@ public class TestPastryNode {
 			InetSocketAddress bootaddress = new InetSocketAddress(bootaddr,bootport);
 
 			// launch our node!
-			TestPastryNode dt = new TestPastryNode(bindport, bootaddress, env);
+			EvaluationPastryNode dt = new EvaluationPastryNode(bindport, bootaddress, env);
+			if (bootaddr.isAnyLocalAddress() || bootaddr.isLoopbackAddress()) {
+				eval = new Evaluator(dt.getProtocolEngine(), bootaddr, true);
+			} else {
+				eval = new Evaluator(dt.getProtocolEngine(), bootaddr, false);
+			}
 			
 			Console c = System.console();
 			if (c == null) {
@@ -114,27 +126,26 @@ public class TestPastryNode {
 				while (true) {
 					String command = c.readLine("Command:");
 					List<String> items = Arrays.asList(command.split("\\s+"));
-					if (items.get(0).equals("sample")) {
+					if (items.get(0).equals("evaluate")) {
 						if (items.size() != 3) {
-							System.out.println("Must give two arguments - (sample numOfExecutions numOfRounds)");
+							System.out.println("Must give two arguments - (evaluate numOfExecutions numOfRounds)");
 							continue;
 						}
 						int numberOfExecutions = Integer.parseInt(items.get(1));
 						int numberOfRounds = Integer.parseInt(items.get(2));
-						Session s = dt.requestSamplingData(numberOfExecutions, numberOfRounds);
-						System.out.println("I know about session "+s.getSessionId());
-						double [] eigs = s.getComputedEigenvalues();
-						System.out.println("Computed eigenvals are: ");
-						for (int i = 0; i < eigs.length; i++) {
-							System.out.print(eigs[i]+" ");
-						}
-						System.out.println("");
+						EvaluationResults results = eval.evaluateEngine(numberOfExecutions, numberOfRounds);
+						
+						System.out.println("Evaluation complete...");
+						System.out.println("The 50th percentile of the spectral gap percent error is "
+								+ results.getSpectralGapPercentError(50));
+						System.out.println("The 50th percentile of the mixing time percent error is "
+								+ results.getMixingTimePercentError(50));
 					} else if (items.get(0).equals("exit")) {
 //						dt.terminate();
 						System.out.println("Exiting...");
 						System.exit(0);
 					} else {
-						System.out.println("Accepted commands are sample and exit...");
+						System.out.println("Accepted commands are evaluate and exit...");
 					}
 				}
 			}
