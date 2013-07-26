@@ -7,6 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
 
+import analysis.Analyzer;
+
 
 public class GossipData implements Serializable{
 
@@ -22,7 +24,7 @@ public class GossipData implements Serializable{
 	}
 	
 	public void setNewProposal(String nodeId, double [] eigenvals) {
-		collectedEigenvalues.put(nodeId, eigenvals);
+		collectedEigenvalues.put(nodeId, Analyzer.sortEigenvalues(eigenvals));
 	}
 	
 	public double [] getProposal(String nodeId) {
