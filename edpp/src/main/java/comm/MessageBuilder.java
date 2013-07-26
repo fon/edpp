@@ -130,7 +130,6 @@ public class MessageBuilder {
 	}
 	
 	
-	//TODO must add tests
 	public static SessionEvent buildNewSessionEvent(Session s, Node localNode, EventType type) {
 		double [] eigenvalues; 
 		
