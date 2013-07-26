@@ -140,7 +140,7 @@ public class Execution implements Serializable {
 	public void addNeighborToRound(String nodeId, int round) {
 		List<String> nodes = pendingData.get(round);
 		if (nodes == null) {
-			nodes = new ArrayList<>();
+			nodes = new ArrayList<String>();
 			nodes.add(nodeId);
 			pendingData.put(round, nodes);
 		} else {
