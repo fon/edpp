@@ -108,7 +108,7 @@ public class Evaluator {
 		};
 	}
 	
-	public EvaluationResults evaluateEngine(int numberOfExecutions, int numberOfRounds) {
+	public EvaluationResults evaluateEngine(int numberOfExecutions, int numberOfRounds, double error) {
 		
 		initialEvents = new ArrayList<SessionEvent>();
 		terminationEvents = new ArrayList<SessionEvent>();
@@ -153,7 +153,7 @@ public class Evaluator {
 				double [] computedEigenvals = toDoubleArray(eigenvalues);
 				double computedGap = Analyzer.computeSpectralGap(computedEigenvals);
 				er.addComputedSpectralGap(computedGap);
-				double computedMixingTime = Analyzer.computeMixingTime(computedEigenvals, 0.001);
+				double computedMixingTime = Analyzer.computeMixingTime(computedEigenvals, error);
 				er.addComputedMixningTime(computedMixingTime);
 				
 			}
@@ -161,7 +161,7 @@ public class Evaluator {
 			double [] expectedEigenvals = Algorithms.computeEigenvalues(terminalGraph.getMatrixOfWeights());
 			double expectedGap = Analyzer.computeSpectralGap(expectedEigenvals);
 			er.setExpectedSpectralGap(expectedGap);
-			double expectedMixingTime = Analyzer.computeMixingTime(expectedEigenvals, 0.001);
+			double expectedMixingTime = Analyzer.computeMixingTime(expectedEigenvals, error);
 			er.setExpectedMixingTime(expectedMixingTime);
 			return er;
 		}

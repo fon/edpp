@@ -131,13 +131,14 @@ public class EvaluationPastryNode {
 					String command = c.readLine("Command:");
 					List<String> items = Arrays.asList(command.split("\\s+"));
 					if (items.get(0).equals("evaluate")) {
-						if (items.size() != 3) {
-							System.out.println("Must give two arguments - (evaluate numOfExecutions numOfRounds)");
+						if (items.size() != 4) {
+							System.out.println("Must give three arguments - (evaluate numOfExecutions numOfRounds error)");
 							continue;
 						}
 						int numberOfExecutions = Integer.parseInt(items.get(1));
 						int numberOfRounds = Integer.parseInt(items.get(2));
-						EvaluationResults results = eval.evaluateEngine(numberOfExecutions, numberOfRounds);
+						double error = Double.parseDouble(items.get(3));
+						EvaluationResults results = eval.evaluateEngine(numberOfExecutions, numberOfRounds, error);
 						
 						System.out.println("Evaluation complete...");
 						System.out.println("The 50th percentile of the spectral gap percent error is "
