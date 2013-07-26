@@ -99,7 +99,7 @@ public class PastryOverlayNode implements Node {
 
 	@Override
 	public int getDiameter() {
-		return (int) Math.ceil(Math.log(networkSize));
+		return (int) Math.ceil(Math.log(networkSize)/Math.log(2));
 	}
 
 	public static byte[] serialize(Object obj) throws IOException {

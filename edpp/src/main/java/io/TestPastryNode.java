@@ -30,7 +30,8 @@ public class TestPastryNode {
 	private ProtocolEngine pe;
 	private PastryNode node;
 
-	public TestPastryNode(int bindport, InetSocketAddress bootaddress, Environment env) throws Exception {
+	public TestPastryNode(int bindport, InetSocketAddress bootaddress, Environment env,
+			int totalNumOfNodes) throws Exception {
 
 			    // Generate the NodeIds Randomly
 			    NodeIdFactory nidFactory = new RandomNodeIdFactory(env);
@@ -42,7 +43,7 @@ public class TestPastryNode {
 			    node = factory.newNode();
 
 			    // construct a new MyApp
-			    PastryOverlayNode pon = new PastryOverlayNode(node, 2);
+			    PastryOverlayNode pon = new PastryOverlayNode(node, totalNumOfNodes);
 			    pe = new ProtocolEngine(pon);
 			    node.boot(bootaddress);
 
@@ -101,10 +102,11 @@ public class TestPastryNode {
 			// build the bootaddress from the command line args
 			InetAddress bootaddr = InetAddress.getByName(args[1]);
 			int bootport = Integer.parseInt(args[2]);
+			int totalNumOfNodes = Integer.parseInt(args[3]);
 			InetSocketAddress bootaddress = new InetSocketAddress(bootaddr,bootport);
 
 			// launch our node!
-			TestPastryNode dt = new TestPastryNode(bindport, bootaddress, env);
+			TestPastryNode dt = new TestPastryNode(bindport, bootaddress, env, totalNumOfNodes);
 			
 			Console c = System.console();
 			if (c == null) {
@@ -141,8 +143,8 @@ public class TestPastryNode {
 		} catch (Exception e) {
 			// remind user how to use
 			System.out.println("Usage:"); 
-			System.out.println("java [-cp FreePastry-<version>.jar] rice.tutorial.lesson3.DistTutorial localbindport bootIP bootPort");
-			System.out.println("example java rice.tutorial.DistTutorial 9001 pokey.cs.almamater.edu 9001");
+			System.out.println("java -jar edpp.jar localbindport bootIP bootPort totalNumOfNodes");
+			System.out.println("example java -jar edpp.jar 9001 planetlab-1.imperial.ac.uk 9001 100");
 			throw e; 
 		}
 	}
