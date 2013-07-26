@@ -30,7 +30,7 @@ public class SessionTest {
 	};
 	
 	double [] expectedEigenvals = {
-			 0.595,  0.595, 0.785, 0.785
+			 0.785, 0.785, 0.595,  0.595
 	};
 	
 	@Before

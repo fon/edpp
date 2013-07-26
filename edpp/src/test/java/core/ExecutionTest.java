@@ -13,6 +13,8 @@ import org.jblas.DoubleMatrix;
 import org.junit.Before;
 import org.junit.Test;
 
+import analysis.Analyzer;
+
 import util.Id;
 import util.Phase;
 import util.TimedNeighbor;
@@ -38,7 +40,7 @@ public class ExecutionTest {
 	};
 	
 	double [] expectedEigenvals = {
-			 0.595,  0.595, 0.785, 0.785
+			 0.785, 0.785, 0.595,  0.595
 	};
 	
 	@Before
