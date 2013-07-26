@@ -2,14 +2,23 @@ package comm;
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+
+import network.FakeNode;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 
+import util.Neighbor;
+
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.MessageType;
+import comm.ProtocolMessage.SessionEvent.EventType;
+import comm.ProtocolMessage.SessionEvent;
+import core.Session;
 
 public class MessageBuilderTest {
 
@@ -86,5 +95,27 @@ public class MessageBuilderTest {
 		assertEquals(0, m.getRound());
 		assertEquals(0.0, m.getVal(), 0.0);
 	}
-
+	
+	@Test
+	public void initialSessionEventIsConstructedProperly() throws Exception {
+		FakeNode fn = new FakeNode();
+		Session s = new Session(fn, 2, 3);
+		SessionEvent se = MessageBuilder.buildNewSessionEvent(s, fn, EventType.INITIAL);
+		
+		assertEquals(EventType.INITIAL, se.getType());
+		assertEquals(0, se.getEigenvaluesCount());
+		assertEquals(s.getSessionId(), se.getSessionId());
+		assertEquals(fn.getLocalId().toString(), se.getLocalNodeId());
+		assertEquals(fn.getOutNeighbors().size(), se.getOutNeighborsCount());
+		
+		Set<String> foundNeighbours = new HashSet<String>(se.getOutNeighborsList());
+		Set<String> expectedNeighbors = new HashSet<String>();
+		
+		for (Neighbor n : fn.getOutNeighbors()) {
+			expectedNeighbors.add(n.getId().toString());
+		}
+		
+		assertEquals(expectedNeighbors, foundNeighbours);
+	}
+	
 }
