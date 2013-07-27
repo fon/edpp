@@ -16,6 +16,16 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 
 	public static final long TIME_THRESHOLD = 10000;
 	
+	public static final long MIN_TIME_THRESHOLD = 100;
+	public static final long MAX_TIME_THRESHOLD = 60000;
+	
+	public static final double MIN_RATE = 0.05;
+	public static final double MAX_RATE = 1;
+
+	public static long CURRENT_THRESHOLD = MIN_TIME_THRESHOLD;
+	public static double CURRENT_INCREASE_RATE = MIN_RATE;
+	public static double CURRENT_DECREASE_RATE = MIN_RATE;
+	
 	final Object lock; 
 	
 	private Logger logger;
@@ -41,6 +51,7 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 	public Session call() throws Exception{
 		
 		RecordedSession rs = null;
+		Session previousSession = null;
 		
 		rs = db.getLastRecordedSession();
 			
@@ -50,7 +61,7 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 			Message m = MessageBuilder.buildNewMessage(sp.getNumberOfExecutions(), sp.getNumberOfRounds());
 			TransferableMessage tm = new TransferableMessage(m, InetAddress.getLocalHost());
 			pc.putMessageToInQueue(tm);
-		} else if (System.currentTimeMillis() - rs.getTimestamp() <= TIME_THRESHOLD) {
+		} else if (System.currentTimeMillis() - rs.getTimestamp() <= CURRENT_THRESHOLD) {
 			logger.info("A recent session exists. No new request will be made");
 			s = rs.getRecordedSession();
 			return s;
@@ -59,6 +70,7 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 			Message m = MessageBuilder.buildNewMessage(sp.getNumberOfExecutions(), sp.getNumberOfRounds());
 			TransferableMessage tm = new TransferableMessage(m, InetAddress.getLocalHost());
 			pc.putMessageToInQueue(tm);
+			previousSession = rs.getRecordedSession();
 		}
 		
 		//Wait to get a session through a record inserted event
@@ -66,6 +78,8 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 			lock.wait();
 		}
 		this.db.removeSessionListener(this);
+		// Adjust the threshold
+		adjustThreshold(previousSession.getComputedEigenvalues(), s.getComputedEigenvalues());
 		return s;
 		
 	}
@@ -87,6 +101,45 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 			s = rs.getRecordedSession();
 			lock.notify();
 		}
+	}
+	
+	public void adjustThreshold(double [] previousEigenvalues, double [] newEigenvalues) {
+		if (!eigenvaluesChanged(previousEigenvalues, newEigenvalues, 0.001)) {  //No changes were made
+			long increase = (long)CURRENT_INCREASE_RATE*CURRENT_THRESHOLD;
+			if (CURRENT_THRESHOLD + increase <= MAX_TIME_THRESHOLD) {
+				CURRENT_THRESHOLD += increase;
+			}
+			else {
+				CURRENT_THRESHOLD = MAX_TIME_THRESHOLD;
+			}
+			if (CURRENT_INCREASE_RATE < MAX_RATE) {
+				CURRENT_INCREASE_RATE += 0.05;
+			}
+			CURRENT_DECREASE_RATE = MIN_RATE;
+		} else { //If changes were observed
+			long decrease = (long)CURRENT_DECREASE_RATE*CURRENT_THRESHOLD;
+			if (CURRENT_THRESHOLD - decrease >= MIN_TIME_THRESHOLD) {
+				CURRENT_THRESHOLD -= decrease;
+			} else {
+				CURRENT_THRESHOLD = MIN_TIME_THRESHOLD;
+			}
+			if (CURRENT_DECREASE_RATE < MAX_RATE) {
+				CURRENT_DECREASE_RATE += 0.05;
+			}
+			CURRENT_INCREASE_RATE = MIN_RATE;
+		}
+	}
+	
+	private boolean eigenvaluesChanged(double [] previousEigenvalues, double [] newEigenvalues,
+			double errorThres) {
+		if (previousEigenvalues.length != newEigenvalues.length)
+			return true;
+		
+		for (int i = 0; i < previousEigenvalues.length; i++) {
+			if (Math.abs(previousEigenvalues[i] - newEigenvalues[i]) > errorThres)
+				return true;
+		}
+		return false;
 	}
 
 }
