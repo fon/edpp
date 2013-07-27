@@ -1,21 +1,18 @@
 package core;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import java.util.NoSuchElementException;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
+import storage.Database;
 import util.SamplingParameters;
 
 import comm.MessageBuilder;
 import comm.ProtocolMessage.Message;
+import comm.ProtocolMessage.SessionEvent;
 import comm.TransferableMessage;
 
-import jdbm.PrimaryTreeMap;
-import jdbm.RecordListener;
-
-public class ProtocolRun implements Callable<Session>, RecordListener<Integer, RecordedSession> {
+public class ProtocolRun implements Callable<Session>, SessionListener {
 
 	public static final long TIME_THRESHOLD = 10000;
 	
@@ -24,11 +21,11 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 	private Logger logger;
 	
 	private Session s;
-	private PrimaryTreeMap<Integer, RecordedSession> db;
+	private Database db;
 	private ProtocolController pc;
 	private SamplingParameters sp;
 	
-	public ProtocolRun(PrimaryTreeMap<Integer, RecordedSession> db, ProtocolController pc,
+	public ProtocolRun(Database db, ProtocolController pc,
 			SamplingParameters sp) {
 		logger = Logger.getLogger(ProtocolRun.class.getName());
 		
@@ -37,26 +34,15 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 		this.pc = pc;
 		this.sp = sp;
 		this.db = db;
-		synchronized (this.db) {
-			this.db.addRecordListener(this);
-		}
+		this.db.addSessionListener(this);
 	}
 	
 	@Override
 	public Session call() throws Exception{
 		
 		RecordedSession rs = null;
-		int lastRecord;
 		
-		synchronized (db) {
-			try {
-				lastRecord = db.lastKey();
-			} catch (NoSuchElementException e) {
-				lastRecord = 0;
-			}
-			System.out.println("The size is: "+lastRecord);
-			rs = db.find(new Integer(lastRecord));
-		}
+		rs = db.getLastRecordedSession();
 			
 		if(rs == null) {
 			logger.info("No previous recorded session data found\nMaking a new request");
@@ -79,31 +65,28 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 		synchronized (lock) {
 			lock.wait();
 		}
-		synchronized (db) {
-			this.db.removeRecordListener(this);
-		}
+		this.db.removeSessionListener(this);
 		return s;
 		
 	}
 
 	@Override
-	public void recordInserted(Integer arg0, RecordedSession arg1) throws IOException {
+	public void sessionInitiated(SessionEvent e) {
+		return;
+	}
+
+	@Override
+	public void sessionCompleted(SessionEvent e) {
+		return;
+	}
+
+	@Override
+	public void sessionStored(RecordedSession rs) {
 		logger.info("A new record was inserted to the database");
 		synchronized (lock) {
-			s = arg1.getRecordedSession();
+			s = rs.getRecordedSession();
 			lock.notify();
 		}
-	}
-
-	@Override
-	public void recordRemoved(Integer arg0, RecordedSession arg1) throws IOException {
-		return;
-	}
-
-	@Override
-	public void recordUpdated(Integer arg0, RecordedSession arg1, RecordedSession arg2)
-			throws IOException {
-		return;
 	}
 
 }

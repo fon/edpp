@@ -1,17 +1,14 @@
 package core;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
+import storage.Database;
+import storage.KeyValueDatabase;
 import util.SamplingParameters;
-
-import jdbm.PrimaryTreeMap;
-import jdbm.RecordManager;
-import jdbm.RecordManagerFactory;
 
 import network.Node;
 
@@ -23,23 +20,16 @@ public class ProtocolEngine {
 	private Logger logger;
 	
 	private ExecutorService executor;
-	private RecordManager recMan;
-	private PrimaryTreeMap<Integer, RecordedSession> db;
+	private Database sessionDB;
 	private ProtocolController pc;
 	
 	public ProtocolEngine(Node localNode) {
 		
 		logger = Logger.getLogger(ProtocolEngine.class.getName());
 		
-		try {
-			recMan = RecordManagerFactory.createRecordManager(DBNAME);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		db = recMan.treeMap(REC_NAME);
-		pc = new ProtocolController(localNode, db);
+		sessionDB = new KeyValueDatabase(DBNAME, REC_NAME);
+
+		pc = new ProtocolController(localNode, sessionDB);
 		Thread controllerThread = new Thread(pc);
 		controllerThread.setDaemon(true);
 		controllerThread.start();
@@ -51,33 +41,23 @@ public class ProtocolEngine {
 	
 	public void terminate() {
 			logger.info("Terminating the sampling engine gracefully");
-			try {
-				recMan.commit();
-				recMan.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			sessionDB.closeDatabase();
 			executor.shutdownNow();
 	}
 	
 	public Session requestSessionData(SamplingParameters sp) {
 		logger.info("Submitting a request for a new protocol run");
-		Future<Session> future = executor.submit(new ProtocolRun(db, pc, sp));
+		Future<Session> future = executor.submit(new ProtocolRun(sessionDB, pc, sp));
 		Session s = null;
 		
 		try {
 			logger.info("Awaiting for sampling data...");
 			s = future.get();
 			logger.info("Received sampling data for session "+s.getSessionId());
-			recMan.commit();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

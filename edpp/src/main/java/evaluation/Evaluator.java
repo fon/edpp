@@ -17,6 +17,7 @@ import comm.ProtocolMessage.SessionEvent.EventType;
 
 import util.SamplingParameters;
 import core.ProtocolEngine;
+import core.RecordedSession;
 import core.SessionListener;
 
 public class Evaluator {
@@ -104,6 +105,11 @@ public class Evaluator {
 						e1.printStackTrace();
 					}
 				}
+			}
+
+			@Override
+			public void sessionStored(RecordedSession rs) {
+				return;
 			}
 		};
 	}

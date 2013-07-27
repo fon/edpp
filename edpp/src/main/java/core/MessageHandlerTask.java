@@ -7,8 +7,7 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-import jdbm.PrimaryTreeMap;
-
+import storage.Database;
 import util.Phase;
 import util.PlainNeighbor;
 import util.PlainNeighborsTable;
@@ -31,14 +30,14 @@ public class MessageHandlerTask implements Runnable {
 	private Node localNode;
 	private Map<String, Session> sessions;
 	private BlockingQueue<TransferableMessage> outQueue;
-	private PrimaryTreeMap<Integer, RecordedSession> db;
+	private Database db;
 	
 	private static List<SessionListener> sessionListeners = new ArrayList<SessionListener>();
 	
 	public MessageHandlerTask(TransferableMessage incomingMessage, 
 			Map<String, Session> sessions, Node localNode,
 			BlockingQueue<TransferableMessage> outQueue,
-			PrimaryTreeMap<Integer, RecordedSession> db) {
+			Database db) {
 		
 		this.logger = Logger.getLogger(MessageHandlerTask.class.getName());
 		
@@ -293,12 +292,9 @@ public class MessageHandlerTask implements Runnable {
 					if (s.hasTerminated()) {
 						logger.info("Session "+s.getSessionId()+" terminated.");
 						sessions.remove(s.getSessionId());
-						synchronized (db) {
-							int size = db.lastKey()+1;
-							RecordedSession recSes = new RecordedSession(s);
-							System.out.println(recSes.getRecordedSession().getSessionId());
-							db.put(new Integer(size), recSes);
-						}
+						RecordedSession recSes = new RecordedSession(s);
+						db.addSession(recSes);
+						
 						//Notify for the session completion event
 						for (SessionListener sl : sessionListeners) {
 							SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode, EventType.TERMINAL);

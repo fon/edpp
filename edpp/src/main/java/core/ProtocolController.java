@@ -10,7 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-import jdbm.PrimaryTreeMap;
+import storage.Database;
 
 import comm.MessageReceiver;
 import comm.MessageSender;
@@ -35,10 +35,10 @@ public class ProtocolController implements Runnable {
 	private ExecutorService daemonExecutor;
 	private ScheduledExecutorService scheduledExecutor;
 	private Map<String, Session> sessions;
-	private PrimaryTreeMap<Integer, RecordedSession> db;
+	private Database db;
 	
 	public ProtocolController(Node localNode,
-			PrimaryTreeMap<Integer, RecordedSession> db) {
+			Database db) {
 		this.localNode = localNode;
 		this.db = db;
 		

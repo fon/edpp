@@ -6,14 +6,12 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-import jdbm.PrimaryTreeMap;
-
 import network.Node;
 
+import storage.Database;
 import util.Phase;
 import util.PlainNeighbor;
 import util.PlainNeighborsTable;
@@ -35,13 +33,13 @@ public class MaintenanceTask implements Runnable {
 	private Map<String, Session> sessions;
 	private BlockingQueue<TransferableMessage> outgoingQueue;
 	private Node localNode;
-	private PrimaryTreeMap<Integer, RecordedSession> db;
+	private Database db;
 	private static List<SessionListener> sessionListeners = new LinkedList<SessionListener>();
 
 	public MaintenanceTask(Map<String, Session> sessions,
 			BlockingQueue<TransferableMessage> outgoingQueue,
 			Node localNode,
-			PrimaryTreeMap<Integer, RecordedSession> db) {
+			Database db) {
 		logger = Logger.getLogger(MaintenanceTask.class.getName());
 		this.sessions = sessions;
 		this.outgoingQueue = outgoingQueue;
@@ -169,16 +167,8 @@ public class MaintenanceTask implements Runnable {
 							if (s.hasTerminated()) {
 								System.out.println("Update database");
 								sessionIter.remove();
-								int size;
-								synchronized (db) {
-									try {
-										size = db.lastKey()+1;
-									} catch (NoSuchElementException nse) {
-										size = 0;
-									}
-									RecordedSession recSes = new RecordedSession(s);
-									db.put(new Integer(size), recSes);
-								}
+								RecordedSession recSes = new RecordedSession(s);
+								db.addSession(recSes);
 								
 								//Notify all listeners
 								for (SessionListener sl : sessionListeners) {
