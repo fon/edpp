@@ -103,9 +103,9 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 		}
 	}
 	
-	public void adjustThreshold(double [] previousEigenvalues, double [] newEigenvalues) {
-		if (!eigenvaluesChanged(previousEigenvalues, newEigenvalues, 0.001)) {  //No changes were made
-			long increase = (long)CURRENT_INCREASE_RATE*CURRENT_THRESHOLD;
+	public static void adjustThreshold(double [] previousEigenvalues, double [] newEigenvalues) {
+		if (!eigenvaluesChanged(previousEigenvalues, newEigenvalues, 0.05)) {  //No changes were made
+			long increase = (long)(CURRENT_INCREASE_RATE*CURRENT_THRESHOLD);
 			if (CURRENT_THRESHOLD + increase <= MAX_TIME_THRESHOLD) {
 				CURRENT_THRESHOLD += increase;
 			}
@@ -117,7 +117,7 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 			}
 			CURRENT_DECREASE_RATE = MIN_RATE;
 		} else { //If changes were observed
-			long decrease = (long)CURRENT_DECREASE_RATE*CURRENT_THRESHOLD;
+			long decrease = (long)(CURRENT_DECREASE_RATE*CURRENT_THRESHOLD);
 			if (CURRENT_THRESHOLD - decrease >= MIN_TIME_THRESHOLD) {
 				CURRENT_THRESHOLD -= decrease;
 			} else {
@@ -130,7 +130,7 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 		}
 	}
 	
-	private boolean eigenvaluesChanged(double [] previousEigenvalues, double [] newEigenvalues,
+	private static boolean eigenvaluesChanged(double [] previousEigenvalues, double [] newEigenvalues,
 			double errorThres) {
 		if (previousEigenvalues.length != newEigenvalues.length)
 			return true;
