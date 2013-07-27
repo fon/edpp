@@ -2,6 +2,7 @@ package core;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.NoSuchElementException;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
@@ -42,12 +43,17 @@ public class ProtocolRun implements Callable<Session>, RecordListener<Integer, R
 	}
 	
 	@Override
-	public Session call() throws Exception {
+	public Session call() throws Exception{
 		
 		RecordedSession rs = null;
+		int lastRecord;
 		
 		synchronized (db) {
-			int lastRecord = db.lastKey();
+			try {
+				lastRecord = db.lastKey();
+			} catch (NoSuchElementException e) {
+				lastRecord = 0;
+			}
 			System.out.println("The size is: "+lastRecord);
 			rs = db.find(new Integer(lastRecord));
 		}

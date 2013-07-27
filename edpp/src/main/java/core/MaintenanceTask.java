@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
@@ -168,8 +169,13 @@ public class MaintenanceTask implements Runnable {
 							if (s.hasTerminated()) {
 								System.out.println("Update database");
 								sessionIter.remove();
+								int size;
 								synchronized (db) {
-									int size = db.lastKey()+1;
+									try {
+										size = db.lastKey()+1;
+									} catch (NoSuchElementException nse) {
+										size = 0;
+									}
 									RecordedSession recSes = new RecordedSession(s);
 									db.put(new Integer(size), recSes);
 								}
