@@ -81,6 +81,29 @@ public class MaintenanceTask implements Runnable {
 							e.recomputeWeight();
 							e.setRound(2);
 							logger.info("Recomputed weights and set round to "+e.getCurrentRound());
+							if (e.hasAnotherRound()) {
+								logger.fine("This has another round");
+								sendOutNextMessage(MessageType.NEXT, s, e);
+								e.recomputeWeight();
+								e.getInNeighbors().renewTimers();
+								e.setRound(e.getCurrentRound() + 1);
+							} else {
+								logger.fine("This was the last round");
+								e.setPhase(Phase.GOSSIP);
+								logger.info("Time to compute the realization matrix");
+								e.computeRealizationMatrix(localNode.getDiameter());
+								logger.info("Computed the matrix");
+								e.getRealizationMatrix().print();
+//								e.getRealizationMatrix().print(NumberFormat.FRACTION_FIELD, 5);
+								//compute the eigenvalues of the approximation matrix
+								//TODO probably should test this for null
+								double [] eigenvals = e.getMatrixAEigenvalues();
+								Message msg = MessageBuilder.buildGossipMessage(localNode.getLocalId().toString(),
+										s.getSessionId(), e.getExecutionNumber(), eigenvals);
+								//send GOSSIP message to out-neighbors
+								sendGossipMessage(msg, e);
+								logger.info("Sent the message to all the required nodes");
+							}
 						}
 					} else if (e.getPhase() == Phase.DATA_EXCHANGE) { /* Check for in-neighbors suspected of failure*/
 						inNeighbors = e.getInNeighbors();
