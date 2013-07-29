@@ -127,13 +127,13 @@ public class ExecutionTest {
 	public void setNewRoundProperly() {
 		execution = new Execution(1, NUM_OF_ROUNDS, localNode);
 		
-		execution.addValToRound(10, 1);
+		execution.addValToRound(10, 2);
 		execution.addValToRound(20, 3);
-		execution.addValToRound(30, 1);
+		execution.addValToRound(30, 2);
 		
-		execution.setRound(1);
-		assertEquals(40.0, execution.getCurrentValue(),0);
 		execution.setRound(2);
+		assertEquals(40.0, execution.getCurrentValue(),0);
+		execution.setRound(4);
 		assertEquals(0.0, execution.getCurrentValue(),0);
 		execution.setRound(3);
 		assertEquals(20.0, execution.getCurrentValue(), 0);

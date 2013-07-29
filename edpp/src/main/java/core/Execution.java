@@ -16,7 +16,6 @@ import org.jblas.DoubleMatrix;
 import algorithms.Algorithms;
 import analysis.Analyzer;
 
-import com.google.common.util.concurrent.AtomicDouble;
 import com.google.common.util.concurrent.AtomicDoubleArray;
 
 import util.GossipData;
@@ -44,7 +43,6 @@ public class Execution implements Serializable {
 	private transient TimedNeighborsTable inNeighbors;
 	private transient Phase phase;
 	private AtomicDoubleArray impulseResponse;
-	private transient AtomicDouble nodeVal;
 	private transient Map<Integer, Double> roundVals;	
 	private transient AtomicLong initTimeout;
 	private transient AtomicLong snapshot;
@@ -70,12 +68,12 @@ public class Execution implements Serializable {
 		inNeighbors = new TimedNeighborsTableSet();
 		setPhase(Phase.INIT);
 		impulseResponse = new AtomicDoubleArray(numOfRounds);
-		nodeVal = new AtomicDouble(chooseInitialValue());
-		impulseResponse.set(0, nodeVal.get());
+		roundVals = new ConcurrentHashMap<Integer, Double>();
+		roundVals.put(1, (double) chooseInitialValue());
+		impulseResponse.set(0, roundVals.get(1));
 		round = new AtomicInteger(1);
 		snapshot = new AtomicLong(System.nanoTime());
 		initTimeout = new AtomicLong(2*ProtocolController.TIMEOUT);
-		roundVals = new ConcurrentHashMap<Integer, Double>();
 		this.hasComputedMatrix = false;
 		gossip = new GossipData();
 		computedMedian = false;
@@ -106,7 +104,7 @@ public class Execution implements Serializable {
 	 * @param round the new round number
 	 */
 	public void setRound(int round) {
-		setImpulseResponse(this.round.get(), nodeVal.get());
+		setImpulseResponse(this.round.get(), roundVals.get(this.round.get()));
 		this.round.set(round);
 		Double d = roundVals.get(round);
 		if (d == null) {
@@ -345,7 +343,7 @@ public class Execution implements Serializable {
 	 * out-neighbors
 	 */
 	public double getCurrentValue() {
-		return nodeVal.get();
+		return roundVals.get(this.round.get());
 	}
 	
 	/**
@@ -355,7 +353,7 @@ public class Execution implements Serializable {
 	 * out-neighbors
 	 */
 	public void setCurrentValue(double nodeVal) {
-		this.nodeVal.set(nodeVal);
+		this.roundVals.put(this.round.get(), nodeVal);
 	}
 
 	/**
