@@ -5,15 +5,16 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jgrapht.graph.DefaultWeightedEdge;
-import org.jgrapht.graph.SimpleDirectedWeightedGraph;
+import org.jgrapht.graph.ListenableDirectedWeightedGraph;
 
 public class NetworkGraph {
 
-	private SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>  graph;
+	private ListenableDirectedWeightedGraph<String, DefaultWeightedEdge> graph;
 	
 	public NetworkGraph() {
-		graph = new SimpleDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
+		graph = new ListenableDirectedWeightedGraph<String, DefaultWeightedEdge>(DefaultWeightedEdge.class);
 	}
+	
 	
 	public boolean addNode(String nodeId) {
 		return graph.addVertex(nodeId);
@@ -81,6 +82,10 @@ public class NetworkGraph {
 			}
 		}
 		return weightedMatrix;
+	}
+	
+	public ListenableDirectedWeightedGraph<String, DefaultWeightedEdge> getGraph() {
+		return this.graph;
 	}
 	
 }

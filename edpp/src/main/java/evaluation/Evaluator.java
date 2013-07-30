@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/*import javax.swing.JFrame;
+
+import org.jgraph.JGraph;
+import org.jgrapht.ext.JGraphModelAdapter;*/
+
 import algorithms.Algorithms;
 import analysis.Analyzer;
 
@@ -136,6 +141,14 @@ public class Evaluator {
 			NetworkGraph initialGraph = new NetworkGraph();
 			NetworkGraph terminalGraph = new NetworkGraph();
 			
+			/*JGraph graph1 = new JGraph( new JGraphModelAdapter( initialGraph.getGraph() ) );
+			JGraph graph2 = new JGraph( new JGraphModelAdapter( terminalGraph.getGraph() ) );
+
+			JFrame frame = new JFrame();
+			frame.getContentPane().add(graph1);
+			frame.setSize(300, 200);
+		    frame.setVisible(true);*/
+		      
 			for (SessionEvent se : initialEvents) {
 				//Construct initial graph
 				initialGraph.addNode(se.getLocalNodeId());
@@ -193,4 +206,5 @@ public class Evaluator {
 			ret[i] = list.get(i);
 		return ret;
 	}
+	
 }
