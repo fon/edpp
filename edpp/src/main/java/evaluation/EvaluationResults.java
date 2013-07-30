@@ -13,16 +13,19 @@ public class EvaluationResults {
 	private List<Double> computedSpectralGaps;
 	private List<Double> computedMixingTimes;
 	
-	public EvaluationResults() {
+	private String sessionId;
+	
+	public EvaluationResults(String sessionId) {
 		this.setExpectedSpectralGap(0);
 		this.setExpectedMixingTime(0);
+		this.setSessionId(sessionId);
 		
 		computedSpectralGaps = new ArrayList<Double>();
 		computedMixingTimes = new ArrayList<Double>();
 	}
 	
-	public EvaluationResults(double expectedSpectralGap, double expectedMixingTime) {
-		this();
+	public EvaluationResults(String sessionId, double expectedSpectralGap, double expectedMixingTime) {
+		this(sessionId);
 		this.expectedMixingTime = expectedMixingTime;
 		this.expectedSpectralGap = expectedSpectralGap;
 	}
@@ -70,6 +73,18 @@ public class EvaluationResults {
 			stats.addValue(Math.abs((mtime - expectedMixingTime)/expectedMixingTime)*100);
 		}
 		return stats.getPercentile(percentile);
+	}
+	
+	public int getSampleSize() {
+		return computedSpectralGaps.size();
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
 	}
 	
 }

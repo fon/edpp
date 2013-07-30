@@ -13,7 +13,7 @@ public class EvaluationResultsTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		eval = new EvaluationResults(0.5, 0.1);
+		eval = new EvaluationResults("testId", 0.5, 0.1);
 		for (int i = 0; i < spectralGaps.length; i++) {
 			eval.addComputedMixningTime(mixingTimes[i]);
 			eval.addComputedSpectralGap(spectralGaps[i]);

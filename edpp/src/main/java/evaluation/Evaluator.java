@@ -18,6 +18,7 @@ import comm.ProtocolMessage.SessionEvent.EventType;
 import util.SamplingParameters;
 import core.ProtocolEngine;
 import core.RecordedSession;
+import core.Session;
 import core.SessionListener;
 
 public class Evaluator {
@@ -123,8 +124,8 @@ public class Evaluator {
 		
 		if (initiator) {
 			SamplingParameters sp = new SamplingParameters(numberOfExecutions, numberOfRounds);
-			EvaluationResults er = new EvaluationResults();
-			pe.requestSessionData(sp);
+			Session evalSession = pe.requestSessionData(sp);
+			EvaluationResults er = new EvaluationResults(evalSession.getSessionId());
 			try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
