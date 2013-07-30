@@ -164,7 +164,7 @@ public class Evaluator {
 				
 			}
 			
-			double [] expectedEigenvals = Algorithms.computeEigenvalues(terminalGraph.getMatrixOfWeights());
+			double [] expectedEigenvals = Algorithms.computeEigenvaluesModulus(terminalGraph.getMatrixOfWeights());
 			double expectedGap = Analyzer.computeSpectralGap(expectedEigenvals);
 			er.setExpectedSpectralGap(expectedGap);
 			double expectedMixingTime = Analyzer.computeMixingTime(expectedEigenvals, error);

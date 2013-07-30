@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.jblas.DoubleMatrix;
 
 import algorithms.Algorithms;
-import analysis.Analyzer;
 
 import com.google.common.util.concurrent.AtomicDoubleArray;
 
@@ -202,7 +201,7 @@ public class Execution implements Serializable {
 		}
 
 		this.matrixA = Algorithms.computeSystemMatrixA(responses, networkDiameter);
-		eigenvalues = Analyzer.sortEigenvalues(Algorithms.computeEigenvalues(matrixA));
+		eigenvalues = Algorithms.computeEigenvaluesModulus(matrixA);
 		gossip.setNewProposal(localNode.getLocalId().toString(), eigenvalues);
 		hasComputedMatrix = true;
 		return matrixA;

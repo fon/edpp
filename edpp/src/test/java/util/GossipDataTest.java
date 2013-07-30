@@ -4,20 +4,18 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import analysis.Analyzer;
-
 public class GossipDataTest {
 
 	double [] proposer1 = {
-			0.4, 0.2, 0.5
+			0.5, 0.4, 0.2
 	};
 	
 	double [] proposer2 = {
-			0.2, 0.3, 0.6
+			0.6, 0.3, 0.2
 	};
 	
 	double [] proposer3 = {
-			0.5, 0.9, 0.2
+			0.9, 0.5, 0.2
 	};
 	
 	double [] expectedMedianEigenvalues = {
@@ -41,6 +39,6 @@ public class GossipDataTest {
 		gd.setNewProposal("node2", proposer2);
 		gd.setNewProposal("node3", proposer3);
 		
-		assertArrayEquals(Analyzer.sortEigenvalues(proposer2), gd.getProposal("node2"), 0.0);
+		assertArrayEquals(proposer2, gd.getProposal("node2"), 0.0);
 	}
 }

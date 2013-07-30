@@ -1,5 +1,9 @@
 package algorithms;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
+import org.jblas.ComplexDoubleMatrix;
 import org.jblas.DoubleMatrix;
 import org.jblas.Eigen;
 import org.jblas.Singular;
@@ -41,9 +45,24 @@ public class Algorithms {
 	 * @param matrix the matrix that will be analyzed
 	 * @return an array of the computed eigenvalues
 	 */
-	public static double [] computeEigenvalues(double [][] matrix) {
+	public static double [] computeEigenvaluesModulus(double [][] matrix) {
 		DoubleMatrix m = new DoubleMatrix(matrix);
-		return Eigen.eigenvalues(m).real().data;
+		ComplexDoubleMatrix cdm = Eigen.eigenvalues(m);
+		double [] realPart = cdm.real().data;
+		double [] imagPart = cdm.imag().data;
+		Double [] modulus = new Double[realPart.length];
+		double [] eigenvalues = new double[realPart.length];
+		for (int i = 0; i < realPart.length; i++) {
+			modulus[i] = Math.sqrt(Math.pow(realPart[i],2)+Math.pow(imagPart[i], 2));
+		}
+		Algorithms a = new Algorithms();
+		ArrayIndexComparator comparator = a.new ArrayIndexComparator(modulus);
+		Integer[] indexes = comparator.createIndexArray();
+		Arrays.sort(indexes, comparator);
+		for (int i = 0; i < indexes.length; i++) {
+			eigenvalues[i] = realPart[indexes[i]];
+		}
+		return eigenvalues;
 	}
 	
 	/**
@@ -51,8 +70,23 @@ public class Algorithms {
 	 * @param matrix the matrix that will be analyzed in a DoubleMatrix form
 	 * @return an array of the computed eigenvalues
 	 */
-	public static double [] computeEigenvalues(DoubleMatrix matrix) {
-		return Eigen.eigenvalues(matrix).real().data;
+	public static double [] computeEigenvaluesModulus(DoubleMatrix matrix) {
+		ComplexDoubleMatrix cdm = Eigen.eigenvalues(matrix);
+		double [] realPart = cdm.real().data;
+		double [] imagPart = cdm.imag().data;
+		Double [] modulus = new Double[realPart.length];
+		double [] eigenvalues = new double[realPart.length];
+		for (int i = 0; i < realPart.length; i++) {
+			modulus[i] = Math.sqrt(Math.pow(realPart[i],2)+Math.pow(imagPart[i], 2));
+		}
+		Algorithms a = new Algorithms();
+		ArrayIndexComparator comparator = a.new ArrayIndexComparator(modulus);
+		Integer[] indexes = comparator.createIndexArray();
+		Arrays.sort(indexes, comparator);
+		for (int i = 0; i < indexes.length; i++) {
+			eigenvalues[i] = realPart[indexes[i]];
+		}
+		return eigenvalues;
 	}
 	
 	/**
@@ -134,6 +168,33 @@ public class Algorithms {
 			return m;
 		}
 
+	}
+
+	public class ArrayIndexComparator implements Comparator<Integer> {
+		
+	    private final Double[] array;
+
+	    public ArrayIndexComparator(Double[] array)
+	    {
+	        this.array = array;
+	    }
+
+	    public Integer[] createIndexArray()
+	    {
+	        Integer[] indexes = new Integer[array.length];
+	        for (int i = 0; i < array.length; i++)
+	        {
+	            indexes[i] = i; // Autoboxing
+	        }
+	        return indexes;
+	    }
+
+	    @Override
+	    public int compare(Integer index1, Integer index2)
+	    {
+	         // Autounbox from Integer to int to use as array indexes
+	        return array[index2].compareTo(array[index1]);
+	    }
 	}
 	
 }
