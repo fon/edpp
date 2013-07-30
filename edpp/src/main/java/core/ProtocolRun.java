@@ -71,6 +71,7 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 			TransferableMessage tm = new TransferableMessage(m, InetAddress.getLocalHost());
 			pc.putMessageToInQueue(tm);
 			previousSession = rs.getRecordedSession();
+			adjustThreshold(previousSession.getComputedEigenvalues(), s.getComputedEigenvalues());
 		}
 		
 		//Wait to get a session through a record inserted event
@@ -79,7 +80,6 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 		}
 		this.db.removeSessionListener(this);
 		// Adjust the threshold
-		adjustThreshold(previousSession.getComputedEigenvalues(), s.getComputedEigenvalues());
 		return s;
 		
 	}
