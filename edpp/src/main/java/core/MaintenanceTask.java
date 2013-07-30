@@ -80,6 +80,7 @@ public class MaintenanceTask implements Runnable {
 							sendOutNextMessage(MessageType.NEXT, s, e);
 							e.recomputeWeight();
 							e.setRound(2);
+							checkForNewExecution(s, e);
 							logger.info("Recomputed weights and set round to "+e.getCurrentRound());
 							if (e.hasAnotherRound()) {
 								logger.fine("This has another round");
@@ -87,6 +88,7 @@ public class MaintenanceTask implements Runnable {
 								e.recomputeWeight();
 								e.getInNeighbors().renewTimers();
 								e.setRound(e.getCurrentRound() + 1);
+								checkForNewExecution(s, e);
 							} else {
 								logger.fine("This was the last round");
 								e.setPhase(Phase.GOSSIP);
@@ -142,6 +144,7 @@ public class MaintenanceTask implements Runnable {
 								e.recomputeWeight();
 								e.getInNeighbors().renewTimers();
 								e.setRound(e.getCurrentRound() + 1);
+								checkForNewExecution(s, e);
 							} else {
 								logger.fine("This was the last round");
 								e.setPhase(Phase.GOSSIP);
@@ -230,6 +233,35 @@ public class MaintenanceTask implements Runnable {
 			for (PlainNeighbor n : pnt) {
 				address = n.getAddress();
 				outgoingQueue.add(new TransferableMessage(m, address));
+			}
+		}
+	}
+	
+	private void checkForNewExecution(Session s, Execution e) {
+		if (s.isInitiator() && e.equals(s.getInitExecution())
+				&& s.newExecutionExpected()) {
+			logger.info("Initiating a new execution");
+			Execution newExecution;
+			newExecution = s.createNewExecution();
+			
+			InetAddress address;
+			double valueToSend;
+			Message outMessage;
+			String sessionId = s.getSessionId();
+			String nodeId = localNode.getLocalId().toString();
+			PlainNeighborsTable pnt = e.getOutNeighbors();
+			
+			synchronized (pnt) {
+				for (PlainNeighbor n : pnt) {
+					address = n.getAddress();
+					valueToSend = newExecution.getCurrentValue() * n.getWeight();
+					logger.info("Sending INIT message to "+n.getId()+" with address "+address);
+					logger.info("The current node is "+nodeId);
+					outMessage = MessageBuilder.buildInitMessage(nodeId, sessionId, 
+								newExecution.getExecutionNumber(), s.getNumberOfExecutions(),
+								s.getNumberOfRounds(), valueToSend);
+					outgoingQueue.add(new TransferableMessage(outMessage, address));
+				}
 			}
 		}
 	}
