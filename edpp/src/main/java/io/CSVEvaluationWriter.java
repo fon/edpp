@@ -13,9 +13,11 @@ public class CSVEvaluationWriter implements EvaluationWriter {
 	static final String EVAL_RESULTS_FILENAME = "evaluation_results.csv";
 
 	private CSVWriter writer;
+	private boolean writerIsOpen;
 	
 	public CSVEvaluationWriter(String filename, boolean append) throws IOException {
 		writer = new CSVWriter(new FileWriter(filename, true), ',');
+		writerIsOpen = true;
 	}
 	
 	public CSVEvaluationWriter(String filename) throws IOException {
@@ -27,7 +29,9 @@ public class CSVEvaluationWriter implements EvaluationWriter {
 	}
 	
 	@Override
-	public void writeSamplingResults(EvaluationResults er) {
+	public boolean writeSamplingResults(EvaluationResults er) {
+		if(!writerIsOpen)
+			return false;
 		String [] result = new String[5];
 		result[0] = er.getSessionId();
 		result[1] = new Double(er.getExpectedMixingTime()).toString();
@@ -36,12 +40,33 @@ public class CSVEvaluationWriter implements EvaluationWriter {
 		result[4] = new Double(er.getMixingTimePercentError(90)).toString();
 		
 		writer.writeNext(result);
+		return true;
 	}
 
 	@Override
-	public void writeSamplingResults(List<EvaluationResults> er) {
+	public boolean writeSamplingResults(List<EvaluationResults> er) {
+		if(!writerIsOpen)
+			return false;
 		for (EvaluationResults result : er) {
 			this.writeSamplingResults(result);
+		}
+		try {
+			writer.flush();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	public void closeWriter() {
+		try {
+			writer.flush();
+			writer.close();
+			writerIsOpen = false;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

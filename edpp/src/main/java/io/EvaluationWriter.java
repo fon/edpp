@@ -6,8 +6,8 @@ import evaluation.EvaluationResults;
 
 public interface EvaluationWriter {
 
-	public void writeSamplingResults(EvaluationResults er);
+	public boolean writeSamplingResults(EvaluationResults er);
 	
-	public void writeSamplingResults(List<EvaluationResults> er);
+	public boolean writeSamplingResults(List<EvaluationResults> er);
 	
 }
