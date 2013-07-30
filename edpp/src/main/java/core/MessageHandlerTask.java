@@ -197,7 +197,6 @@ public class MessageHandlerTask implements Runnable {
 					logger.info("The message was for the current round. Node "+m.getNodeId()+" is still alive");
 					e.setTimerToInf(m.getNodeId());
 				} else {
-					//Reset the clock. The node is still alive (just an optimization)
 					logger.info("The message was for round "+round+". Node "+m.getNodeId()+" is still alive");
 					e.addNeighborToRound(m.getNodeId(), round);
 //					e.resetTimer(m.getNodeId());

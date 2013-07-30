@@ -92,7 +92,7 @@ public class FakeNode implements Node {
 
 	@Override
 	public int getDiameter() {
-		return 1;
+		return 2;
 	}
 
 }
