@@ -188,10 +188,8 @@ public class MessageHandlerTask implements Runnable {
 					return;
 				}
 				//If the message is for the current or a future round
-				if (round >= e.getCurrentRound()) {
-					logger.info("Adding "+m.getVal()+" to the values of round "+round);
-					e.addValToRound(m.getVal(), round);
-				}
+				logger.info("Adding "+m.getVal()+" to the values of round "+round);
+				e.addValToRound(m.getVal(), round);
 				//If the message was of the current round set the clock to INF
 				if (e.getCurrentRound() == round) {
 					logger.info("The message was for the current round. Node "+m.getNodeId()+" is still alive");
