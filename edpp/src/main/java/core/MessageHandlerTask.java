@@ -188,7 +188,7 @@ public class MessageHandlerTask implements Runnable {
 					return;
 				}
 				//If the message is for the current or a future round
-				if (e.getCurrentRound() >= round) {
+				if (round >= e.getCurrentRound()) {
 					logger.info("Adding "+m.getVal()+" to the values of round "+round);
 					e.addValToRound(m.getVal(), round);
 				}

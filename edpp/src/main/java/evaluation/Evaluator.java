@@ -183,6 +183,10 @@ public class Evaluator {
 			er.setExpectedSpectralGap(expectedGap);
 			double expectedMixingTime = Analyzer.computeMixingTime(expectedEigenvals, error);
 			er.setExpectedMixingTime(expectedMixingTime);
+			System.out.println("The expected mixing time is: "+expectedMixingTime);
+			System.out.println("The computed mixing time is: "+Analyzer.computeMixingTime(evalSession.getComputedEigenvalues(), error));
+			System.out.println("The expected spectral gap is: "+expectedGap);
+			System.out.println("The computed spectral gap is: "+Analyzer.computeSpectralGap(evalSession.getComputedEigenvalues()));
 			return er;
 		}
 		return null;
