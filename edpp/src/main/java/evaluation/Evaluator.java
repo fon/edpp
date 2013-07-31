@@ -51,8 +51,10 @@ public class Evaluator {
 				while ((s = ss.accept()) != null) {
 					SessionEvent se = SessionEvent.parseFrom(s.getInputStream());
 					if (se.getType() == EventType.INITIAL) {
+						System.out.println("Received an initiation event");
 						initialEvents.add(se);
 					} else {
+						System.out.println("Received a termination event");
 						terminationEvents.add(se);
 					}
 					s.close();
@@ -118,13 +120,13 @@ public class Evaluator {
 				return;
 			}
 		};
+		pe.addSessionListener(listener);
 	}
 	
 	public EvaluationResults evaluateEngine(int numberOfExecutions, int numberOfRounds, double error) {
 		
 		initialEvents = new ArrayList<SessionEvent>();
 		terminationEvents = new ArrayList<SessionEvent>();
-		pe.addSessionListener(listener);
 		
 		
 		if (initiator) {
