@@ -58,7 +58,6 @@ public class PastryOverlayNode implements Node {
 			byte[] nodeId = nh.getId().toByteArray();
 			Neighbor n = new Neighbor(nodeId, 
 					nh.getAddress().getInnermostAddress().getAddress());
-			System.out.println("Generated node id "+n.getId());
 			outNeighbors.add(n);
 			
 		}
