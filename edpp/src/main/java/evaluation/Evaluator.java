@@ -14,12 +14,12 @@ import java.util.concurrent.Executors;
 import org.jgraph.JGraph;
 import org.jgrapht.ext.JGraphModelAdapter;*/
 
+import java.util.logging.Logger;
+
 import algorithms.Algorithms;
 import analysis.Analyzer;
-
 import comm.ProtocolMessage.SessionEvent;
 import comm.ProtocolMessage.SessionEvent.EventType;
-
 import util.SamplingParameters;
 import core.ProtocolEngine;
 import core.RecordedSession;
@@ -37,6 +37,8 @@ public class Evaluator {
 	private List<SessionEvent> terminationEvents;
 	private ExecutorService executor;
 	private IncomingEvaluationDataListener iedl; 
+	
+	private Logger logger;
 	
 	class IncomingEvaluationDataListener implements Runnable {
 		
@@ -72,6 +74,8 @@ public class Evaluator {
 		this.pe = pe;
 		this.initiator = init;
 		
+		logger = Logger.getLogger(Evaluator.class.getName());
+		
 		initialEvents = new ArrayList<SessionEvent>();
 		terminationEvents = new ArrayList<SessionEvent>();
 		
@@ -86,12 +90,18 @@ public class Evaluator {
 			@Override
 			public void sessionInitiated(SessionEvent e) {
 				if (initiator) {
-					initialEvents.add(e);
+					logger.info("Received an initiation SessionEvent by node "+e.getLocalNodeId()
+							+" for session with id "+e.getSessionId());
+					synchronized (initialEvents) {
+						initialEvents.add(e);
+					}
 				} else {
 					try {
 						Socket s = new Socket(evaluatorAddress, EVALUATION_PORT);
 						e.writeTo(s.getOutputStream());
 						s.close();
+						logger.info("Sent an initiation SessionEvent to node with address "+evaluatorAddress
+								+" for session with id "+e.getSessionId());
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -102,13 +112,18 @@ public class Evaluator {
 			@Override
 			public void sessionCompleted(SessionEvent e) {
 				if (initiator) {
-					System.out.println("Session was completed");
-					terminationEvents.add(e);
+					logger.info("Received a termination SessionEvent by node "+e.getLocalNodeId()
+							+" for session with id "+e.getSessionId());
+					synchronized (terminationEvents) {
+						terminationEvents.add(e);
+					}
 				} else {
 					try {
 						Socket s = new Socket(evaluatorAddress, EVALUATION_PORT);
 						e.writeTo(s.getOutputStream());
 						s.close();
+						logger.info("Sent a termination SessionEvent to node with address "+evaluatorAddress
+								+" for session with id "+e.getSessionId());
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -132,6 +147,7 @@ public class Evaluator {
 		
 		if (initiator) {
 			SamplingParameters sp = new SamplingParameters(numberOfExecutions, numberOfRounds);
+			logger.info("Making a request for sampling data");
 			Session evalSession = pe.requestSessionData(sp);
 			EvaluationResults er = new EvaluationResults(evalSession.getSessionId());
 			try {
@@ -152,34 +168,45 @@ public class Evaluator {
 			frame.setSize(300, 200);
 		    frame.setVisible(true);*/
 		      
-			for (SessionEvent se : initialEvents) {
-				//Construct initial graph
-				initialGraph.addNode(se.getLocalNodeId());
-				List<String> outNeighbors = se.getOutNeighborsList();
-				double weight = (double) 1 / outNeighbors.size();
-				for (String outNeighbor : outNeighbors) {
-					initialGraph.addNode(outNeighbor);
-					initialGraph.addLinkWithWeight(se.getLocalNodeId(), outNeighbor, weight);
+			logger.info("Constructing the initial graph of the network topology");
+			synchronized (initialEvents) {
+				for (SessionEvent se : initialEvents) {
+					//Construct initial graph
+					initialGraph.addNode(se.getLocalNodeId());
+					List<String> outNeighbors = se.getOutNeighborsList();
+					double weight = (double) 1 / outNeighbors.size();
+					for (String outNeighbor : outNeighbors) {
+						initialGraph.addNode(outNeighbor);
+						initialGraph.addLinkWithWeight(se.getLocalNodeId(), outNeighbor, weight);
+					}
 				}
 			}
-			for (SessionEvent se : terminationEvents) {
-				//Construct final graph
-				terminalGraph.addNode(se.getLocalNodeId());
-				List<String> outNeighbors = se.getOutNeighborsList();
-				double weight = (double) 1 / outNeighbors.size();
-				for (String outNeighbor : outNeighbors) {
-					terminalGraph.addNode(outNeighbor);
-					terminalGraph.addLinkWithWeight(se.getLocalNodeId(), outNeighbor, weight);
+			logger.info("Constructing the final graph of the network topology");
+			synchronized (terminationEvents) {
+				for (SessionEvent se : terminationEvents) {
+					//Construct final graph
+					terminalGraph.addNode(se.getLocalNodeId());
+					List<String> outNeighbors = se.getOutNeighborsList();
+					double weight = (double) 1 / outNeighbors.size();
+					for (String outNeighbor : outNeighbors) {
+						terminalGraph.addNode(outNeighbor);
+						terminalGraph.addLinkWithWeight(se.getLocalNodeId(), outNeighbor, weight);
+					}
+					
+					List<Double> eigenvalues = se.getEigenvaluesList();
+					double [] computedEigenvals = toDoubleArray(eigenvalues);
+					double computedGap = Analyzer.computeSpectralGap(computedEigenvals);
+					er.addComputedSpectralGap(computedGap);
+					double computedMixingTime = Analyzer.computeMixingTime(computedEigenvals, error);
+					er.addComputedMixningTime(computedMixingTime);
+					
 				}
-				
-				List<Double> eigenvalues = se.getEigenvaluesList();
-				double [] computedEigenvals = toDoubleArray(eigenvalues);
-				double computedGap = Analyzer.computeSpectralGap(computedEigenvals);
-				er.addComputedSpectralGap(computedGap);
-				double computedMixingTime = Analyzer.computeMixingTime(computedEigenvals, error);
-				er.addComputedMixningTime(computedMixingTime);
-				
 			}
+			logger.info("Construction of graphs completed");
+			System.out.println("Initial graph:");
+			System.out.println(initialGraph.getGraph().toString()+"\n");
+			System.out.println("Final graph:");
+			System.out.println(terminalGraph.getGraph().toString()+"\n");
 			
 			double [] expectedEigenvals = Algorithms.computeEigenvaluesModulus(terminalGraph.getMatrixOfWeights());
 			double expectedGap = Analyzer.computeSpectralGap(expectedEigenvals);
