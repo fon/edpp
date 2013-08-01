@@ -9,13 +9,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import storage.Database;
-
 import comm.MessageReceiver;
 import comm.MessageSender;
 import comm.TransferableMessage;
-
 import network.Node;
 
 public class ProtocolController implements Runnable {
@@ -37,8 +36,12 @@ public class ProtocolController implements Runnable {
 	private Map<String, Session> sessions;
 	private Database db;
 	
+	private Logger logger;
+	
 	public ProtocolController(Node localNode,
 			Database db) {
+		
+		logger = Logger.getLogger(ProtocolController.class.getName());
 		this.localNode = localNode;
 		this.db = db;
 		
@@ -65,13 +68,16 @@ public class ProtocolController implements Runnable {
 		TransferableMessage incomingMessage;
 		
 		//Set up and run the basic threads
+		logger.info("Initiating the receiver thread");
 		daemonExecutor.execute(receiver);
+		logger.info("Initiating the sender thread");
 		daemonExecutor.execute(sender);
 		
 		//Set the threads as daemons, so that the vm will exit
 		//if only those threads remain running
 		
 		// Schedule thread maintenance
+		logger.info("Initiating the maintenance task scheduler");
 		scheduledExecutor.scheduleWithFixedDelay(new MaintenanceTask(sessions, outgoingQueue, localNode, db), 
 				TIMEOUT, 100, TimeUnit.MILLISECONDS);
 		
