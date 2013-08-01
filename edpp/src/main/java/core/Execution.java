@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.logging.Logger;
 
 import org.jblas.DoubleMatrix;
 
@@ -27,7 +28,6 @@ import util.PlainNeighborsTableSet;
 import util.TimedNeighbor;
 import util.TimedNeighborsTable;
 import util.TimedNeighborsTableSet;
-
 import network.Node;
 
 public class Execution implements Serializable {
@@ -53,6 +53,8 @@ public class Execution implements Serializable {
 	private Map<String, double[]> pendingGossip;
 	private Map<Integer, List<String>> pendingData;
 	
+	private Logger logger;
+	
 	/**
 	 * Class constructor
 	 * @param executionNumber the id of the current execution
@@ -60,6 +62,8 @@ public class Execution implements Serializable {
 	 * @param localNode the local underlying network node
 	 */
 	public Execution(final int executionNumber,final int numOfRounds, final Node localNode) {
+		logger = Logger.getLogger(Execution.class.getName());
+		
 		this.executionNumber = executionNumber;
 		this.numOfRounds = numOfRounds;
 		this.localNode = localNode;
@@ -68,7 +72,9 @@ public class Execution implements Serializable {
 		setPhase(Phase.INIT);
 		impulseResponse = new AtomicDoubleArray(numOfRounds);
 		roundVals = new ConcurrentHashMap<Integer, Double>();
-		roundVals.put(1, (double) chooseInitialValue());
+		double initialValue = chooseInitialValue();
+		logger.info("The initial value chosen by execution number "+executionNumber+" was "+initialValue);
+		roundVals.put(1, initialValue);
 		impulseResponse.set(0, roundVals.get(1));
 		round = new AtomicInteger(1);
 		snapshot = new AtomicLong(System.nanoTime());
