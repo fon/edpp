@@ -438,6 +438,7 @@ public class Execution implements Serializable {
 	public void recomputeWeight() {
 		Set<Neighbor> on = localNode.getOutNeighbors();
 		double weight = 1.0/on.size();
+		logger.info("Having "+on.size()+" neighbors. Their weight is "+weight);
 		synchronized (outNeighbors) {
 			for (PlainNeighbor n : outNeighbors) {
 				n.setWeight(weight);
