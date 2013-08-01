@@ -53,7 +53,7 @@ public class Execution implements Serializable {
 	private Map<String, double[]> pendingGossip;
 	private Map<Integer, List<String>> pendingData;
 	
-	private Logger logger;
+	private transient Logger logger;
 	
 	/**
 	 * Class constructor
