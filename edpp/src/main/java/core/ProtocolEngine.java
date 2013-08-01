@@ -47,7 +47,8 @@ public class ProtocolEngine {
 	
 	public Session requestSessionData(SamplingParameters sp) {
 		logger.info("Submitting a request for a new protocol run");
-		Future<Session> future = executor.submit(new ProtocolRun(sessionDB, pc, sp));
+		ProtocolRun pr = new ProtocolRun(sessionDB, pc, sp);
+		Future<Session> future = executor.submit(pr);
 		Session s = null;
 		
 		try {

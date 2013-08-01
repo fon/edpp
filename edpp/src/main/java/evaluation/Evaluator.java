@@ -102,6 +102,7 @@ public class Evaluator {
 			@Override
 			public void sessionCompleted(SessionEvent e) {
 				if (initiator) {
+					System.out.println("Session was completed");
 					terminationEvents.add(e);
 				} else {
 					try {

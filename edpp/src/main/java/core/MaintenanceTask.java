@@ -66,14 +66,17 @@ public class MaintenanceTask implements Runnable {
 				sessionIter.remove();
 				RecordedSession recSes = new RecordedSession(s);
 				db.addSession(recSes);
-				
+				System.out.println("Will try to notify listeners");
 				//Notify for the session completion event
 				for (SessionListener sl : sessionListeners) {
 					SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode, EventType.TERMINAL);
+					System.out.println("Notifing a listener");
 					sl.sessionCompleted(se);
 				}
+				logger.info("Notified Listeners");
 			}
 			for (int i = 1; i <= s.getCurrentNumberOfExecutions(); i++) {
+				logger.info("Notified Listeners");
 				e = s.getExecution(i);
 				if (e != null){
 					logger.info("Checking execution "+e.getExecutionNumber());
@@ -220,6 +223,7 @@ public class MaintenanceTask implements Runnable {
 					}
 				}
 			}
+			logger.info("Notified Listeners");
 		}
 	}
 	

@@ -77,12 +77,11 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 		synchronized (lock) {
 			lock.wait();
 		}
-		this.db.removeSessionListener(this);
+//		this.db.removeSessionListener(this);
 		// Adjust the threshold
 		if (previousSession != null)
 			adjustThreshold(previousSession.getComputedEigenvalues(), s.getComputedEigenvalues());
 		return s;
-		
 	}
 
 	@Override
