@@ -23,7 +23,7 @@ public class ProtocolController implements Runnable {
 	public static final int PROTOCOL_PORT = 11990;
 	public static final long TIMEOUT = 1000;
 	
-	private static final int NTHREADS = 5;
+	private static final int NTHREADS = 1;
 	
 
 	private Node localNode;

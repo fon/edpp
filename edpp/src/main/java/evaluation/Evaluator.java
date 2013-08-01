@@ -51,7 +51,7 @@ public class Evaluator {
 				while ((s = ss.accept()) != null) {
 					SessionEvent se = SessionEvent.parseFrom(s.getInputStream());
 					if (se.getType() == EventType.INITIAL) {
-						System.out.println("Received an initiation event");
+						System.out.println("Received an initiation event from node with IP "+s.getInetAddress());
 						initialEvents.add(se);
 					} else {
 						System.out.println("Received a termination event");
