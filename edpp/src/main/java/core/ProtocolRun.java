@@ -53,16 +53,17 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 		RecordedSession rs = null;
 		Session previousSession = null;
 		
+		logger.info("Checking for previously stored sampling data...");
 		rs = db.getLastRecordedSession();
 			
 		if(rs == null) {
-			logger.info("No previous recorded session data found\nMaking a new request");
+			logger.info("No previously stored session data found. Making a new request");
 			//make a new request
 			Message m = MessageBuilder.buildNewMessage(sp.getNumberOfExecutions(), sp.getNumberOfRounds());
 			TransferableMessage tm = new TransferableMessage(m, InetAddress.getLocalHost());
 			pc.putMessageToInQueue(tm);
 		} else if (System.currentTimeMillis() - rs.getTimestamp() <= CURRENT_THRESHOLD) {
-			logger.info("A recent session exists. No new request will be made");
+			logger.info("A recently stored session exists. Using this");
 			s = rs.getRecordedSession();
 			return s;
 		} else {
@@ -80,6 +81,7 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 //		this.db.removeSessionListener(this);
 		// Adjust the threshold
 		if (previousSession != null)
+			logger.info("Adjusting the sampling time interval threshold");
 			adjustThreshold(previousSession.getComputedEigenvalues(), s.getComputedEigenvalues());
 		return s;
 	}
@@ -96,7 +98,8 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 
 	@Override
 	public void sessionStored(RecordedSession rs) {
-		logger.info("A new record was inserted to the database");
+		logger.info("A new record was inserted to the database for session with id "
+				+rs.getRecordedSession().getSessionId());
 		synchronized (lock) {
 			s = rs.getRecordedSession();
 			lock.notify();
