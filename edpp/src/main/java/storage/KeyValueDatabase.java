@@ -47,12 +47,9 @@ public class KeyValueDatabase implements Database {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Entering this");
-		System.out.println(sessionListeners.size());
 		for (SessionListener sl : sessionListeners) {
 			sl.sessionStored(rs);
 		}
-		System.out.println("Leaving this");
 	}
 
 	@Override
