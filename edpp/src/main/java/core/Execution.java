@@ -146,6 +146,7 @@ public class Execution implements Serializable {
 		}
 	}
 	
+	
 	/**
 	 * 
 	 * @param round the round to be checked
@@ -468,9 +469,12 @@ public class Execution implements Serializable {
 	 * @return <code>true</code> if the round is over, <code>false</code> otherwise
 	 */
 	public boolean roundIsOver() {
+		System.out.println("Checking whether the round is over");
 		synchronized (inNeighbors) {
 			for (TimedNeighbor tn : inNeighbors) {
 				if (tn.getTimeToProbe() != TimedNeighbor.INF) {
+					System.out.println("The node with id "+tn.getId().toString()+" was not set to INF");
+					System.out.println("It was set to "+tn.getTimeToProbe());
 					return false;
 				}
 			}

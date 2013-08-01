@@ -205,6 +205,8 @@ public class MessageHandlerTask implements Runnable {
 						logger.info("Round "+e.getCurrentRound()+" is over");
 						e.setCurrentImpulseResponse(e.getCurrentValue());
 						logger.info("The impulse response of round "+e.getCurrentRound()+" is "+ e.getImpulseResponse(e.getCurrentRound()));
+						logger.info("Renewing the timers of all the in-neighbors");
+						e.getInNeighbors().renewTimers();
 						//Check if we have terminated or for initiator round
 						if (e.hasAnotherRound()) {
 							logger.info("The session has another round");
@@ -222,11 +224,11 @@ public class MessageHandlerTask implements Runnable {
 							double [] eigenvals = e.getMatrixAEigenvalues();
 							Message msg = MessageBuilder.buildGossipMessage(localNode.getLocalId().toString(),
 									s.getSessionId(), e.getExecutionNumber(), eigenvals);
+							e.transferPendingGossipMessages();
 							//send GOSSIP message to out-neighbors
 							sendGossipMessage(msg, e);
+						
 						}
-						logger.info("Renewing the timers of all the in-neighbors");
-						e.getInNeighbors().renewTimers();
 						e.setRound(e.getCurrentRound()+1);
 						
 						//Check whether a new execution should be initiated
@@ -277,30 +279,19 @@ public class MessageHandlerTask implements Runnable {
 					return;
 				}
 				//Add the collected gossip round values
-				logger.info("Adding the eigenvalues of node with id "+m.getNodeId()+" and IP"+ incomingMessage.getAddress()
+				logger.info("Adding the eigenvalues of node with id "+m.getNodeId()+" and IP "+ incomingMessage.getAddress()
 						+" to the list of gossip eigenvalues");
 				e.addGossipEigenvalues(m.getNodeId(), eigenvals);
-				e.setTimerToInf(m.getNodeId());
 				//If the round is over, the execution finished
 				synchronized (e) {
+					if (e.setTimerToInf(m.getNodeId())){
+						System.out.println("The timer of node "+m.getNodeId()+" was set to INF");
+					}
 					if (e.roundIsOver()) {
 						logger.info("Gossip round is now over");
 						e.computeMedianEigenvalues();
 						e.setPhase(Phase.TERMINATED);
 						s.addCompletedExecution();
-						//If the session finished, compute the final eigenvalues
-						if (s.hasTerminated()) {
-							logger.info("Session "+s.getSessionId()+" terminated.");
-							sessions.remove(s.getSessionId());
-							RecordedSession recSes = new RecordedSession(s);
-							db.addSession(recSes);
-							
-							//Notify for the session completion event
-							for (SessionListener sl : sessionListeners) {
-								SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode, EventType.TERMINAL);
-								sl.sessionCompleted(se);
-							}
-						}
 					}
 				}
 			}

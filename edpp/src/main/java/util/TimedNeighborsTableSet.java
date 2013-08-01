@@ -133,8 +133,10 @@ public class TimedNeighborsTableSet implements TimedNeighborsTable {
 		synchronized (neighborsList) {
 			for(TimedNeighbor n : neighborsList) {
 				if (n.equals(node)) {
-					n.setRemainingTime(defaultTimerValue.get());
-					return true;
+					if (n.getTimeToProbe() != TimedNeighbor.INF) {
+						n.setRemainingTime(defaultTimerValue.get());
+						return true;
+					}
 				}
 			}			
 		}
@@ -146,8 +148,10 @@ public class TimedNeighborsTableSet implements TimedNeighborsTable {
 		synchronized (neighborsList) {
 			for(TimedNeighbor n : neighborsList) {
 				if (n.getId().equals(nodeId)) {
-					n.setRemainingTime(defaultTimerValue.get());
-					return true;
+					if (n.getTimeToProbe() != TimedNeighbor.INF) {
+						n.setRemainingTime(defaultTimerValue.get());
+						return true;
+					}
 				}
 			}			
 		}

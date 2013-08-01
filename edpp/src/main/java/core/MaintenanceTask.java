@@ -60,6 +60,19 @@ public class MaintenanceTask implements Runnable {
 			s = sessionIter.next();
 			//Get all executions of the session
 			logger.info("Checking session "+s.getSessionId());
+			//If the session finished, compute the final eigenvalues
+			if (s.hasTerminated()) {
+				logger.info("Session "+s.getSessionId()+" terminated.");
+				sessionIter.remove();
+				RecordedSession recSes = new RecordedSession(s);
+				db.addSession(recSes);
+				
+				//Notify for the session completion event
+				for (SessionListener sl : sessionListeners) {
+					SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode, EventType.TERMINAL);
+					sl.sessionCompleted(se);
+				}
+			}
 			for (int i = 1; i <= s.getCurrentNumberOfExecutions(); i++) {
 				e = s.getExecution(i);
 				if (e != null){
@@ -137,12 +150,12 @@ public class MaintenanceTask implements Runnable {
 						}
 						if (endOfRound) {
 							logger.info("Round "+e.getCurrentRound()+" has ended");
+							e.getInNeighbors().renewTimers();
 							// If it is the end of the round check if we have another round
 							if (e.hasAnotherRound()) {
 								logger.fine("This has another round");
 								sendOutNextMessage(MessageType.NEXT, s, e);
 								e.recomputeWeight();
-								e.getInNeighbors().renewTimers();
 								e.setRound(e.getCurrentRound() + 1);
 								checkForNewExecution(s, e);
 							} else {
@@ -152,6 +165,7 @@ public class MaintenanceTask implements Runnable {
 								e.computeRealizationMatrix(localNode.getDiameter());
 								logger.info("Computed the matrix");
 								e.getRealizationMatrix().print();
+								e.transferPendingGossipMessages();
 //								e.getRealizationMatrix().print(NumberFormat.FRACTION_FIELD, 5);
 								//compute the eigenvalues of the approximation matrix
 								//TODO probably should test this for null
