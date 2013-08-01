@@ -55,7 +55,7 @@ public class MessageHandlerTaskTest {
 		InetAddress address = InetAddress.getByName("192.168.0.1");
 		TransferableMessage tm = new TransferableMessage(m, address);
 		
-		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		assertEquals(1, sessions.size());
 		//Get the only session
@@ -73,7 +73,7 @@ public class MessageHandlerTaskTest {
 		InetAddress address = InetAddress.getByName("192.168.0.1");
 		TransferableMessage tm = new TransferableMessage(m, address);
 		
-		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		assertEquals(1, sessions.size());
@@ -95,7 +95,7 @@ public class MessageHandlerTaskTest {
 		InetAddress address = InetAddress.getByName("192.168.0.1");
 		TransferableMessage tm = new TransferableMessage(m, address);
 		
-		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		//No new session was created
@@ -126,7 +126,7 @@ public class MessageHandlerTaskTest {
 		InetAddress address = InetAddress.getByName("192.168.0.1");
 		TransferableMessage tm = new TransferableMessage(m, address);
 		
-		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		assertEquals(1, sessions.size());
@@ -141,7 +141,7 @@ public class MessageHandlerTaskTest {
 		InetAddress address = InetAddress.getByName("192.168.0.1");
 		TransferableMessage tm = new TransferableMessage(m, address);
 		
-		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		//The session map should still be empty
@@ -155,7 +155,7 @@ public class MessageHandlerTaskTest {
 		InetAddress address = InetAddress.getByName("192.168.0.1");
 		TransferableMessage tm = new TransferableMessage(m, address);
 		
-		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		//Get the only session
@@ -168,10 +168,10 @@ public class MessageHandlerTaskTest {
 		Message n2 = MessageBuilder.buildInitMessage("cmVtb3RlTm9kZVR3bw==", testSession.getSessionId(), 1, 1, 2, 0);
 		
 		tm = new TransferableMessage(n1, address);
-		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		tm = new TransferableMessage(n2, address);
-		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		//Terminate INIT phase
@@ -186,10 +186,10 @@ public class MessageHandlerTaskTest {
 		n2 = MessageBuilder.buildNextMessage("cmVtb3RlTm9kZVR3bw==", testSession.getSessionId(), 1, 3, 3);
 
 		tm = new TransferableMessage(n1, address);
-		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		tm = new TransferableMessage(n2, address);
-		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		//The execution must enter the gossip phase
@@ -205,7 +205,7 @@ public class MessageHandlerTaskTest {
 		InetAddress address = InetAddress.getByName("192.168.0.1");
 		TransferableMessage tm = new TransferableMessage(m, address);
 		
-		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		//Get the only session
@@ -218,10 +218,10 @@ public class MessageHandlerTaskTest {
 		Message n2 = MessageBuilder.buildInitMessage("cmVtb3RlTm9kZVR3bw==", testSession.getSessionId(), 1, 1, 2, 0);
 		
 		tm = new TransferableMessage(n1, address);
-		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		tm = new TransferableMessage(n2, address);
-		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		e.setPhase(Phase.DATA_EXCHANGE);
@@ -238,10 +238,10 @@ public class MessageHandlerTaskTest {
 		n2 = MessageBuilder.buildGossipMessage("cmVtb3RlTm9kZVR3bw==", testSession.getSessionId(), 1, eig2);
 	
 		tm = new TransferableMessage(n1, address);
-		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		tm = new TransferableMessage(n2, address);
-		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		assertEquals(Phase.TERMINATED, e.getPhase());
@@ -253,7 +253,7 @@ public class MessageHandlerTaskTest {
 		InetAddress address = InetAddress.getByName("192.168.0.1");
 		TransferableMessage tm = new TransferableMessage(m, address);
 		
-		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		//Get the only session
@@ -265,7 +265,7 @@ public class MessageHandlerTaskTest {
 		Message n1 = MessageBuilder.buildGossipMessage("cmVtb3RlTm9kZU9uZQ==", testSession.getSessionId(), 1, eigenvalues);
 		
 		tm = new TransferableMessage(n1, address);
-		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		
 		//We are still in the INIT phase
@@ -279,7 +279,7 @@ public class MessageHandlerTaskTest {
 		InetAddress address = InetAddress.getByName("192.168.0.1");
 		TransferableMessage tm = new TransferableMessage(m, address);
 		
-		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue, db);
+		MessageHandlerTask mht = new MessageHandlerTask(tm, sessions, localNode, outQueue);
 		mht.run();
 		//Nothing must have changed, the message must be ignored
 		assertEquals(0, sessions.size());

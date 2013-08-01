@@ -87,7 +87,7 @@ public class ProtocolController implements Runnable {
 						incomingQueue.take();
 				//ReceivedMessage
 				executor.execute(new MessageHandlerTask(incomingMessage, sessions, 
-						localNode, outgoingQueue, db));					
+						localNode, outgoingQueue));					
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
