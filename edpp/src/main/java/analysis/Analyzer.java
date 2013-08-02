@@ -16,7 +16,7 @@ public class Analyzer {
 		if (eigenvalues.length<2)
 			return -1;
 		double secondEigenval = eigenvalues[1];
-		return Math.abs(eigenvalues[0]) - Math.abs(secondEigenval);
+		return 1 - Math.abs(secondEigenval);
 	}
 	
 	/**

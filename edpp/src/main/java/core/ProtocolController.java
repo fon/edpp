@@ -79,7 +79,7 @@ public class ProtocolController implements Runnable {
 		// Schedule thread maintenance
 		logger.info("Initiating the maintenance task scheduler");
 		scheduledExecutor.scheduleWithFixedDelay(new MaintenanceTask(sessions, outgoingQueue, localNode, db), 
-				TIMEOUT, 100, TimeUnit.MILLISECONDS);
+				TIMEOUT, TIMEOUT, TimeUnit.MILLISECONDS);
 		
 		while (true) {
 			try {

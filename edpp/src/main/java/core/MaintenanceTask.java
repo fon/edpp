@@ -89,7 +89,7 @@ public class MaintenanceTask implements Runnable {
 							 * send message to all out-neighbors
 							 */
 							e.setPhase(Phase.DATA_EXCHANGE);
-							sendOutNextMessage(MessageType.NEXT, s, e);
+//							sendOutNextMessage(MessageType.NEXT, s, e);
 							e.recomputeWeight();
 							e.setRound(2);
 							checkForNewExecution(s, e);

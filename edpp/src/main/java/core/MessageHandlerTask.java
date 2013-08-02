@@ -47,7 +47,7 @@ public class MessageHandlerTask implements Runnable {
 	@Override
 	public void run() {
 		Message m = incomingMessage.getMessage();
-		logger.info("Receieved a message of type "+m.getType()+ "from node with IP "+incomingMessage.getAddress());
+		logger.info("Receieved a message of type "+m.getType()+ " from node with IP "+incomingMessage.getAddress());
 		switch (m.getType()) {
 		case NEW:
 			this.createNewSession(true);
