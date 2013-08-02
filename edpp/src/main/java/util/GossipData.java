@@ -36,7 +36,7 @@ public class GossipData implements Serializable{
 		for (int j = 0; j < proposals[0].length; j++) {
 			double items [] = new double[proposals.length];
 			for (int i = 0; i < proposals.length; i++) {
-				items[i] = proposals[i][j];
+				items[i] = Math.abs(proposals[i][j]);
 			}
 			finalValues[j] = findMedian(items);
 		}

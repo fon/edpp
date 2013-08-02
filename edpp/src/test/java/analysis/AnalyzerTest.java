@@ -24,7 +24,7 @@ public class AnalyzerTest {
 	
 	@Test
 	public void spectralGapIsComputedCorrectly() {
-		assertEquals(0.1, Analyzer.computeSpectralGap(testEigenvalues), 0.001);
+		assertEquals(0.2, Analyzer.computeSpectralGap(testEigenvalues), 0.001);
 		assertEquals(0.2, Analyzer.computeSpectralGap(testEigenvalues2), 0.001);
 	}
 	
