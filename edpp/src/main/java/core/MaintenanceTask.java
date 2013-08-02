@@ -100,10 +100,10 @@ public class MaintenanceTask implements Runnable {
 								e.recomputeWeight();
 								e.getInNeighbors().renewTimers();
 								int newRound = e.getCurrentRound()+1;
-								e.setRound(newRound);
 								checkForNewExecution(s, e);
 								logger.info("Round "+e.getCurrentRound()+" of execution "+e.getExecutionNumber()
 										+" in session "+s.getSessionId()+" is over. Going to round "+newRound);
+								e.setRound(newRound);
 							} else {
 								logger.info("Round "+e.getCurrentRound()+" of execution "+e.getExecutionNumber()
 										+" in session "+s.getSessionId()+" is over. This was the final round. "

@@ -148,6 +148,7 @@ public class MessageHandlerTask implements Runnable {
 				logger.info("Adding node "+m.getNodeId()+" with IP "+incomingMessage.getAddress()
 						+" to the in-neighbors list");
 				addToInNeighborsTable(tn, s, executionNumber);
+				sendOutMessage(MessageType.INIT, s, e);
 			} else {
 				/*
 				 * Session and execution both exist.
