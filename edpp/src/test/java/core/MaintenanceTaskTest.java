@@ -53,8 +53,15 @@ public class MaintenanceTaskTest {
 		assertTrue(e.remainingInitTime() > 0);
 		assertEquals(Phase.INIT, e.getPhase());
 		mt.run();
+		Thread.sleep(10000);
+		while(e.remainingInitTime()>0) {
+			System.out.println(e.remainingInitTime());
+			mt = new MaintenanceTask(sessions, outQueue, localNode, db);
+			mt.run();
+		}
 		// When the remaining INIT time is negative, the INIT phase is over
 		assertTrue(e.remainingInitTime() <= 0);
+		mt.run();
 		assertNotEquals(Phase.INIT, e.getPhase());
 	}
 	

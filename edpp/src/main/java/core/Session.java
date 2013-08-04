@@ -216,15 +216,21 @@ public class Session implements Serializable{
 
 	private double [] majorityVotingResults() {
 		int sizeOfArray = initExecution.getMatrixAEigenvalues().length;
+		Collection<Execution> execs = executions.values();
+		
+		for (Execution e : execs) {
+			if (e.getMedianEigenvalues().length < sizeOfArray)
+				sizeOfArray = e.getMedianEigenvalues().length;
+		}
+		
 		double [] results = new double[sizeOfArray];
 		
 		double [][] completeResults = new double[numberOfExecutions][sizeOfArray];
 		
-		Collection<Execution> execs = executions.values();
 		int i=0;
 		for (Execution e : execs) {
 			double [] median = e.getMedianEigenvalues();
-			for (int j = 0; j < median.length; j++) {
+			for (int j = 0; j < sizeOfArray; j++) {
 				completeResults[i][j] = median[j];
 			}
 			i++;
