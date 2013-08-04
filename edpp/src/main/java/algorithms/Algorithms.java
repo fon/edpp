@@ -99,6 +99,7 @@ public class Algorithms {
 		 
 			DoubleMatrix U, S, u, u1, u2, ss, invss, temp;
 			
+			double [] d = {impulseResponses[0]};
 			double [] rest = new double[impulseResponses.length-1];
 			for (int i = 0; i<impulseResponses.length-1; i++) {
 				rest[i] = impulseResponses[i+1];
@@ -130,6 +131,8 @@ public class Algorithms {
 			}
 			u1 = U.getRange(0, m.getRows()-1, 0, firstProperIndex);
 			u2 = U.getRange(1, m.getRows(), 0, firstProperIndex);
+			if (u1.getColumns() == 0 || u2.getColumns() == 0 || u1.getRows() == 0 || u2.getRows() == 0 )
+				return new DoubleMatrix(d);
 			ss = org.jblas.MatrixFunctions.sqrt(S.getRange(0, firstProperIndex));
 			invss = DoubleMatrix.ones(ss.length);
 			invss = invss.divi(ss);
