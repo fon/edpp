@@ -1,15 +1,13 @@
 package algorithms;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 
 import org.jblas.ComplexDoubleMatrix;
 import org.jblas.DoubleMatrix;
 import org.jblas.Eigen;
 import org.jblas.Singular;
-import org.jblas.Solve;
-
-
 
 
 /**
@@ -51,18 +49,15 @@ public class Algorithms {
 		double [] realPart = cdm.real().data;
 		double [] imagPart = cdm.imag().data;
 		Double [] modulus = new Double[realPart.length];
-		double [] eigenvalues = new double[realPart.length];
-		for (int i = 0; i < realPart.length; i++) {
-			modulus[i] = Math.sqrt(Math.pow(realPart[i],2)+Math.pow(imagPart[i], 2));
+		for (int i = 0; i < modulus.length; i++) {
+			modulus[i] = new Double(Math.sqrt(Math.pow(realPart[i],2)+Math.pow(imagPart[i], 2)));
 		}
-		Algorithms a = new Algorithms();
-		ArrayIndexComparator comparator = a.new ArrayIndexComparator(modulus);
-		Integer[] indexes = comparator.createIndexArray();
-		Arrays.sort(indexes, comparator);
-		for (int i = 0; i < indexes.length; i++) {
-			eigenvalues[i] = realPart[indexes[i]];
+		Arrays.sort(modulus, Collections.reverseOrder());
+		double [] vals = new double[modulus.length];
+		for(int i=0; i< modulus.length; i++) {
+			vals[i] = modulus[i].doubleValue();
 		}
-		return eigenvalues;
+		return vals;
 	}
 	
 	/**
@@ -75,18 +70,15 @@ public class Algorithms {
 		double [] realPart = cdm.real().data;
 		double [] imagPart = cdm.imag().data;
 		Double [] modulus = new Double[realPart.length];
-		double [] eigenvalues = new double[realPart.length];
 		for (int i = 0; i < realPart.length; i++) {
-			modulus[i] = Math.sqrt(Math.pow(realPart[i],2)+Math.pow(imagPart[i], 2));
+			modulus[i] = new Double(Math.sqrt(Math.pow(realPart[i],2)+Math.pow(imagPart[i], 2)));
 		}
-		Algorithms a = new Algorithms();
-		ArrayIndexComparator comparator = a.new ArrayIndexComparator(modulus);
-		Integer[] indexes = comparator.createIndexArray();
-		Arrays.sort(indexes, comparator);
-		for (int i = 0; i < indexes.length; i++) {
-			eigenvalues[i] = realPart[indexes[i]];
+		Arrays.sort(modulus, Collections.reverseOrder());
+		double [] vals = new double[modulus.length];
+		for(int i=0; i< modulus.length; i++) {
+			vals[i] = modulus[i].doubleValue();
 		}
-		return eigenvalues;
+		return vals;
 	}
 	
 	/**
@@ -104,41 +96,47 @@ public class Algorithms {
 		 * @see DoubleMatrix
 		 */
 		public static DoubleMatrix computeSystemMatrixA(double [] impulseResponses, int networkDiameter) {
-			DoubleMatrix m, temp, a, u1, sqrts1, g, g1, g2;
-			double [] s;
-			int dim = impulseResponses.length;
+		 
+			DoubleMatrix U, S, u, u1, u2, ss, invss, temp;
 			
-			m = convertToHankelMatrix(impulseResponses);
-
+			double [] rest = new double[impulseResponses.length-1];
+			for (int i = 0; i<impulseResponses.length-1; i++) {
+				rest[i] = impulseResponses[i+1];
+			}
+			DoubleMatrix m = convertToHankelMatrix(rest);
 			DoubleMatrix [] svd = Singular.fullSVD(m);
+			U = svd[0];
+			S = svd[1];
+			int size = S.length;
+			double [] s = S.data;
+			double tol = 0.01*S.get(0);
 			
-			if (networkDiameter > dim)
-				networkDiameter = dim;
-			// Get the first p columns of matrices U and V, where
-			// p is the defined order (the network diameter)
-			u1 = svd[0].getRange(0, dim, 0, networkDiameter);
-			s = svd[1].toArray();
-			
-			
-			// The roots of the first p singular values will be
-			//stored in the diagonal of this matrix
-			sqrts1 = DoubleMatrix.zeros(networkDiameter, networkDiameter);
-			
-			//Compute the square root of the singular values submatrix
-			for (int i = 0; i < networkDiameter; i++) {
-				sqrts1.put(i, i, Math.sqrt(s[i]));
+			double [] bounds = new double[size+1];
+			for(int i=0; i<bounds.length; i++) {
+				bounds[i] = 0;
+				for(int j=i; j<s.length; j++) {
+					bounds[i] += s[j];
+				}
 			}
 			
-			g = u1.mmul(sqrts1);
+			int firstProperIndex = 0;
+			boolean indexNotFound = true;
 			
-			//G1 are the first 2n-2 rows of g
-			//and G2 the last 2n-2 rows
-			g1 = g.getRange(0, dim-1, 0, g.getColumns());
-			g2 = g.getRange(1, g.getRows(), 0, g.getColumns());
-			//A = [G1^T G1]^-1 G1^T G2
-			temp = (g1.transpose().mmul(g1));
-			a = Solve.pinv(temp).mmul(g1.transpose().mmul(g2));
-			return a;
+			while(indexNotFound) {
+				if(2*bounds[firstProperIndex]<=tol)
+					indexNotFound = false;
+				else
+					firstProperIndex++;
+			}
+			u1 = U.getRange(0, m.getRows()-1, 0, firstProperIndex);
+			u2 = U.getRange(1, m.getRows(), 0, firstProperIndex);
+			ss = org.jblas.MatrixFunctions.sqrt(S.getRange(0, firstProperIndex));
+			invss = DoubleMatrix.ones(ss.length);
+			invss = invss.divi(ss);
+			u = u1.transpose().mmul(u2);
+			temp  = invss.mmul(ss.transpose());
+			return u.mul(temp);
+			
 		}
 		
 		/**
