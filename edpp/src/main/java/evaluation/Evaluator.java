@@ -16,6 +16,8 @@ import org.jgrapht.ext.JGraphModelAdapter;*/
 
 import java.util.logging.Logger;
 
+import org.jblas.DoubleMatrix;
+
 import algorithms.Algorithms;
 import analysis.Analyzer;
 import comm.ProtocolMessage.SessionEvent;
@@ -150,8 +152,9 @@ public class Evaluator {
 			logger.info("Making a request for sampling data");
 			Session evalSession = pe.requestSessionData(sp);
 			EvaluationResults er = new EvaluationResults(evalSession.getSessionId());
+			logger.info("Sampling completed...");
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -198,7 +201,7 @@ public class Evaluator {
 					double computedGap = Analyzer.computeSpectralGap(computedEigenvals);
 					er.addComputedSpectralGap(computedGap);
 					double computedMixingTime = Analyzer.computeMixingTime(computedEigenvals, error);
-					er.addComputedMixningTime(computedMixingTime);
+					er.addComputedMixningTime(computedMixingTime);		
 					
 				}
 			}
@@ -208,7 +211,12 @@ public class Evaluator {
 			System.out.println("Final graph:");
 			System.out.println(terminalGraph.getGraph().toString()+"\n");
 			
-			double [] expectedEigenvals = Algorithms.computeEigenvaluesModulus(terminalGraph.getMatrixOfWeights());
+			double [][] matrixOfWeights = terminalGraph.getMatrixOfWeights();
+			DoubleMatrix dm = new DoubleMatrix(matrixOfWeights);
+			dm.print();
+			double [] expectedEigenvals = Algorithms.computeEigenvaluesModulus(dm);
+			DoubleMatrix mat = new DoubleMatrix(expectedEigenvals);
+			mat.print();
 			double expectedGap = Analyzer.computeSpectralGap(expectedEigenvals);
 			er.setExpectedSpectralGap(expectedGap);
 			double expectedMixingTime = Analyzer.computeMixingTime(expectedEigenvals, error);

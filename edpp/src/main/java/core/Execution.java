@@ -78,7 +78,7 @@ public class Execution implements Serializable {
 		impulseResponse.set(0, roundVals.get(1));
 		round = new AtomicInteger(1);
 		snapshot = new AtomicLong(System.nanoTime());
-		initTimeout = new AtomicLong(2*ProtocolController.TIMEOUT);
+		initTimeout = new AtomicLong(10*ProtocolController.TIMEOUT);
 		this.hasComputedMatrix = false;
 		gossip = new GossipData();
 		computedMedian = false;
@@ -187,7 +187,7 @@ public class Execution implements Serializable {
 	public synchronized long remainingInitTime() {
 		long interval = System.nanoTime() - snapshot.get();
 		//set the time for the next sampling
-		snapshot = new AtomicLong(System.currentTimeMillis());
+		snapshot = new AtomicLong(System.nanoTime());
 		long remTime = TimeUnit.MILLISECONDS.convert(interval, TimeUnit.NANOSECONDS);
 		return initTimeout.addAndGet(-remTime);
 	}
@@ -206,7 +206,7 @@ public class Execution implements Serializable {
 		for (int i = 0; i< impulseResponse.length(); i++) {
 			responses[i] = impulseResponse.get(i);
 		}
-
+		
 		this.matrixA = Algorithms.computeSystemMatrixA(responses, networkDiameter);
 		eigenvalues = Algorithms.computeEigenvaluesModulus(matrixA);
 		gossip.setNewProposal(localNode.getLocalId().toString(), eigenvalues);
@@ -476,12 +476,12 @@ public class Execution implements Serializable {
 	 * @return <code>true</code> if the round is over, <code>false</code> otherwise
 	 */
 	public boolean roundIsOver() {
-		System.out.println("Checking whether the round is over");
+//		System.out.println("Checking whether the round is over");
 		synchronized (inNeighbors) {
 			for (TimedNeighbor tn : inNeighbors) {
 				if (tn.getTimeToProbe() != TimedNeighbor.INF) {
-					System.out.println("The node with id "+tn.getId().toString()+" was not set to INF");
-					System.out.println("It was set to "+tn.getTimeToProbe());
+//					System.out.println("The node with id "+tn.getId().toString()+" was not set to INF");
+//					System.out.println("It was set to "+tn.getTimeToProbe());
 					return false;
 				}
 			}
