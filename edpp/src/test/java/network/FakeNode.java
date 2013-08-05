@@ -5,7 +5,6 @@ import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import util.Id;
 import util.Neighbor;
 
@@ -93,6 +92,12 @@ public class FakeNode implements Node {
 	@Override
 	public int getDiameter() {
 		return 2;
+	}
+
+	@Override
+	public boolean removeOutNeighborNode(String Id) {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }

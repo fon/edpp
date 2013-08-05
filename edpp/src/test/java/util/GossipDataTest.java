@@ -7,7 +7,7 @@ import org.junit.Test;
 public class GossipDataTest {
 
 	double [] proposer1 = {
-			0.5, 0.4, 0.2
+			0.5, 0.4, 0.2, 0.2
 	};
 	
 	double [] proposer2 = {

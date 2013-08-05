@@ -15,7 +15,6 @@ import rice.pastry.PastryNode;
 import rice.pastry.leafset.LeafSet;
 import rice.pastry.routing.RoutingTable;
 import rice.pastry.socket.TransportLayerNodeHandle;
-
 import util.Id;
 import util.Neighbor;
 
@@ -114,5 +113,41 @@ public class PastryOverlayNode implements Node {
 	    ObjectInputStream is = new ObjectInputStream(in);
 	    return is.readObject();
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean removeOutNeighborNode(String Id) {
+		boolean removed = false;
+		
+		RoutingTable rt = localNode.getRoutingTable();
+		List<rice.pastry.NodeHandle> routingTableNodes = rt.asList();
+		
+		for (rice.pastry.NodeHandle remoteNode : routingTableNodes) {
+			if (remoteNode instanceof TransportLayerNodeHandle<?>) {
+				TransportLayerNodeHandle<MultiInetSocketAddress> nh =
+						(TransportLayerNodeHandle<MultiInetSocketAddress>) remoteNode;
+				
+				Id i = new Id(nh.getId().toByteArray());
+				if(i.toString().equals(Id)) {
+					rt.remove(nh);
+					removed = true;
+				}
+			}
+		}
+		LeafSet ls = localNode.getLeafSet();
+		
+		List<rice.pastry.NodeHandle> leafSetNodes = ls.asList();
+		
+		for (rice.pastry.NodeHandle remoteNode : leafSetNodes) {
+			TransportLayerNodeHandle<MultiInetSocketAddress> nh =
+					(TransportLayerNodeHandle<MultiInetSocketAddress>) remoteNode;
+			Id i = new Id(nh.getId().toByteArray());
+			if(i.toString().equals(Id)) {
+				rt.remove(nh);
+				removed = true;
+			}
+			
+		}
+		return removed;
+	}
 }

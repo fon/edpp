@@ -13,6 +13,8 @@ public interface Node {
 	
 //	public boolean isAlive(Neighbor n);
 	
+	public boolean removeOutNeighborNode(String Id);
+	
 	public int getDiameter();
 	
 	

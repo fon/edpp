@@ -155,6 +155,10 @@ public class MaintenanceTask implements Runnable {
 												+ " Removing it from in-neihgbors table of Execution "+
 												e.getExecutionNumber()+" in Session "+s.getSessionId());
 										iter.remove();
+										if (localNode.removeOutNeighborNode(neighbor.getId().toString())) {
+											logger.info("Node "+neighbor.getId().toString()+" is no longer alive."
+													+ " Removing it from out-neihgbors table");
+										}
 									}
 								} else if (neighbor.getTimeToProbe() != TimedNeighbor.INF) {
 									endOfRound = false;
@@ -220,6 +224,10 @@ public class MaintenanceTask implements Runnable {
 												+ " Removing it from in-neihgbors table of Execution "+
 												e.getExecutionNumber()+" in Session "+s.getSessionId());
 										iter.remove();
+										if (localNode.removeOutNeighborNode(neighbor.getId().toString())) {
+											logger.info("Node "+neighbor.getId().toString()+" is no longer alive."
+													+ " Removing it from out-neihgbors table");
+										}
 									}
 								} else if (neighbor.getTimeToProbe() != TimedNeighbor.INF) {
 									endOfRound = false;
@@ -243,7 +251,6 @@ public class MaintenanceTask implements Runnable {
 								sessionIter.remove();
 								RecordedSession recSes = new RecordedSession(s);
 								db.addSession(recSes);
-								
 								//Notify all listeners
 								for (SessionListener sl : sessionListeners) {
 									SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode, EventType.TERMINAL);

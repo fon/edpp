@@ -56,10 +56,14 @@ public class Evaluator {
 					SessionEvent se = SessionEvent.parseFrom(s.getInputStream());
 					if (se.getType() == EventType.INITIAL) {
 						logger.info("Received an initiation event from node with address "+s.getInetAddress());
-						initialEvents.add(se);
+						synchronized (initialEvents) {
+							initialEvents.add(se);
+						}
 					} else {
 						logger.info("Received a termination event from node with address "+s.getInetAddress());
-						terminationEvents.add(se);
+						synchronized (terminationEvents) {
+							terminationEvents.add(se);
+						}
 					}
 					s.close();
 				}
@@ -121,9 +125,12 @@ public class Evaluator {
 					}
 				} else {
 					try {
+						System.out.println("At least got here");
 						Socket s = new Socket(evaluatorAddress, EVALUATION_PORT);
 						e.writeTo(s.getOutputStream());
 						s.close();
+						System.out.println("Sent a termination SessionEvent to node with address "+evaluatorAddress
+								+" for session with id "+e.getSessionId());
 						logger.info("Sent a termination SessionEvent to node with address "+evaluatorAddress
 								+" for session with id "+e.getSessionId());
 					} catch (IOException e1) {
@@ -213,10 +220,7 @@ public class Evaluator {
 			
 			double [][] matrixOfWeights = terminalGraph.getMatrixOfWeights();
 			DoubleMatrix dm = new DoubleMatrix(matrixOfWeights);
-			dm.print();
 			double [] expectedEigenvals = Algorithms.computeEigenvaluesModulus(dm);
-			DoubleMatrix mat = new DoubleMatrix(expectedEigenvals);
-			mat.print();
 			double expectedGap = Analyzer.computeSpectralGap(expectedEigenvals);
 			er.setExpectedSpectralGap(expectedGap);
 			double expectedMixingTime = Analyzer.computeMixingTime(expectedEigenvals, error);

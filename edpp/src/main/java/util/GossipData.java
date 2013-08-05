@@ -30,12 +30,28 @@ public class GossipData implements Serializable{
 	
 	public double [] computeMedianOfProposedValues() {
 		Collection<double []> values = collectedEigenvalues.values();
-		double [][] proposals = values.toArray(new double[values.size()][]);
-		double [] finalValues = new double[proposals[0].length]; 
+		
+		int rows = values.size();
+		int columns = Integer.MAX_VALUE;
+		
+		for (double [] vals : values) {
+			if (vals.length < columns)
+				columns = vals.length;
+		}
+		
+		double [][] proposals = new double[rows][columns];
+		int i=0;
+		for (double [] vals : values) {
+			for (int j = 0; j< columns; j++) {
+				proposals[i][j] = vals[j];
+			}
+			i++;
+		}
+		double [] finalValues = new double[columns]; 
 		
 		for (int j = 0; j < proposals[0].length; j++) {
 			double items [] = new double[proposals.length];
-			for (int i = 0; i < proposals.length; i++) {
+			for (i = 0; i < proposals.length; i++) {
 				items[i] = Math.abs(proposals[i][j]);
 			}
 			finalValues[j] = findMedian(items);

@@ -40,12 +40,6 @@ public class KeyValueDatabase implements Database {
 				size = 0;
 			}
 			db.put(new Integer(size), rs);
-			try {
-				recMan.commit();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 		for (SessionListener sl : sessionListeners) {
 			sl.sessionStored(rs);
@@ -62,7 +56,6 @@ public class KeyValueDatabase implements Database {
 			} catch (NoSuchElementException e) {
 				lastRecord = 0;
 			}
-			System.out.println("The size is: "+lastRecord);
 			try {
 				rs = db.find(new Integer(lastRecord));
 			} catch (IOException e) {
