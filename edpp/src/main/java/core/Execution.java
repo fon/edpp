@@ -194,10 +194,9 @@ public class Execution implements Serializable {
 	
 	/**
 	 * Runs Kung's realization algorithm to compute the approximate matrix A and its eigenvalues
-	 * @param networkDiameter the diameter of the network or some approximation
 	 * @return the approximation of matrix A, if we had gathered all the required impulse responses, otherwise null
 	 */
-	public synchronized DoubleMatrix computeRealizationMatrix(int networkDiameter) {
+	public synchronized DoubleMatrix computeRealizationMatrix() {
 		if (this.hasAnotherRound() || hasComputedMatrix) {
 			return null;
 		}
@@ -207,7 +206,7 @@ public class Execution implements Serializable {
 			responses[i] = impulseResponse.get(i);
 		}
 		
-		this.matrixA = Algorithms.computeSystemMatrixA(responses, networkDiameter);
+		this.matrixA = Algorithms.computeSystemMatrixA(responses);
 		eigenvalues = Algorithms.computeEigenvaluesModulus(matrixA);
 		gossip.setNewProposal(localNode.getLocalId().toString(), eigenvalues);
 		hasComputedMatrix = true;

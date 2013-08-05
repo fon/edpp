@@ -109,7 +109,7 @@ public class MaintenanceTask implements Runnable {
 										+" in session "+s.getSessionId()+" is over. This was the final round. "
 												+ "Switching to GOSSIP phase");
 								e.setPhase(Phase.GOSSIP);
-								DoubleMatrix rm = e.computeRealizationMatrix(localNode.getDiameter());
+								DoubleMatrix rm = e.computeRealizationMatrix();
 								logger.info("The realization matrix of execution "+e.getExecutionNumber()
 										+" of session "+s.getSessionId()+" was computed");
 								rm.print();
@@ -181,7 +181,7 @@ public class MaintenanceTask implements Runnable {
 										+" in session "+s.getSessionId()+" is over. This was the final round. "
 												+ "Switching to GOSSIP phase");
 								e.setPhase(Phase.GOSSIP);
-								DoubleMatrix rm = e.computeRealizationMatrix(localNode.getDiameter());
+								DoubleMatrix rm = e.computeRealizationMatrix();
 								logger.info("The realization matrix of execution "+e.getExecutionNumber()
 										+" of session "+s.getSessionId()+" was computed");
 								rm.print();

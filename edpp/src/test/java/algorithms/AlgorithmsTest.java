@@ -41,7 +41,7 @@ public class AlgorithmsTest {
 	@Test
 	public void computesSystemMatrixACorrectly() {
 		double [][] results;
-		results = Algorithms.systemMatrixAToArray(impulseResponses, 4);
+		results = Algorithms.systemMatrixAToArray(impulseResponses);
 		int dim = expectedMatrixA.length;
 		for (int i = 0; i < dim; i++) {
 			assertArrayEquals(expectedMatrixA[i], results[i], 0.05);
@@ -62,7 +62,7 @@ public class AlgorithmsTest {
 	public void computeMatrixUsingZeroImpulseResponses() {
 		double [][] results;
 		double [] zeroImpulseResponses = { 0.0, 0.0 };
-		results = Algorithms.systemMatrixAToArray(zeroImpulseResponses, 1);
+		results = Algorithms.systemMatrixAToArray(zeroImpulseResponses);
 		for (int i = 0; i< results.length; i++) {
 			for (int j = 0; j<results[0].length; j++) {
 				assertEquals(0.0, results[i][j], 0.0);

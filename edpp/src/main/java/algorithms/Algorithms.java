@@ -24,8 +24,8 @@ public class Algorithms {
 	 * @return the realization matrix A of the system in a DoubleMatrix form
 	 * @see DoubleMatrix
 	 */
-	public static DoubleMatrix computeSystemMatrixA(double [] impulseResponses, int networkDiameter) {
-		return KungsRealizationAlgorithm.computeSystemMatrixA(impulseResponses, networkDiameter);
+	public static DoubleMatrix computeSystemMatrixA(double [] impulseResponses) {
+		return KungsRealizationAlgorithm.computeSystemMatrixA(impulseResponses);
 	}
 	
 	/**
@@ -34,8 +34,8 @@ public class Algorithms {
 	 * @param networkDiameter an approximation of the diameter of the underlying network
 	 * @return the realization matrix A of the system in an array form
 	 */
-	public static double [][] systemMatrixAToArray(double [] impulseResponses, int networkDiameter) {
-		return KungsRealizationAlgorithm.systemMatrixAToArray(impulseResponses, networkDiameter);
+	public static double [][] systemMatrixAToArray(double [] impulseResponses) {
+		return KungsRealizationAlgorithm.systemMatrixAToArray(impulseResponses);
 	}
 	
 	/**
@@ -91,11 +91,10 @@ public class Algorithms {
 		/**
 		 * Computes the system matrix A
 		 * @param impulseResponses an array of the collected impulse responses
-		 * @param networkDiameter an approximation of the diameter of the underlying network
 		 * @return the realization matrix A of the system in a DoubleMatrix form
 		 * @see DoubleMatrix
 		 */
-		public static DoubleMatrix computeSystemMatrixA(double [] impulseResponses, int networkDiameter) {
+		public static DoubleMatrix computeSystemMatrixA(double [] impulseResponses) {
 		 
 			DoubleMatrix U, S, u, u1, u2, ss, invss, temp;
 			
@@ -145,11 +144,10 @@ public class Algorithms {
 		/**
 		 * Computes the system matrix A
 		 * @param impulseResponses an array of the collected impulse responses
-		 * @param networkDiameter an approximation of the diameter of the underlying network
 		 * @return the realization matrix A of the system in an array form
 		 */ 
-		public static double[][] systemMatrixAToArray(double [] impulseResponses, int networkDiameter) {
-			DoubleMatrix m = computeSystemMatrixA(impulseResponses, networkDiameter);
+		public static double[][] systemMatrixAToArray(double [] impulseResponses) {
+			DoubleMatrix m = computeSystemMatrixA(impulseResponses);
 			return m.toArray2();
 		}
 		

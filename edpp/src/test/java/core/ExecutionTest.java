@@ -169,7 +169,7 @@ public class ExecutionTest {
 		execution = new Execution(1, impulseResponses.length, localNode);
 
 		//The matrix should not be computed yet
-		assertNull(execution.computeRealizationMatrix(4));
+		assertNull(execution.computeRealizationMatrix());
 		
 		for (int i = 2; i <= impulseResponses.length; i++) {
 			execution.addValToRound(impulseResponses[i-1], i);
@@ -183,7 +183,7 @@ public class ExecutionTest {
 		execution.setImpulseResponse(1, impulseResponses[0]);
 		assertFalse(execution.hasAnotherRound());
 		
-		DoubleMatrix m = execution.computeRealizationMatrix(4);
+		DoubleMatrix m = execution.computeRealizationMatrix();
 		
 		for (int i=0; i < m.getRows(); i++) {
 			for (int j=0; j < m.getColumns(); j++) {
@@ -211,7 +211,7 @@ public class ExecutionTest {
 		execution.setImpulseResponse(1, impulseResponses[0]);
 		assertFalse(execution.hasAnotherRound());
 		
-		execution.computeRealizationMatrix(4);
+		execution.computeRealizationMatrix();
 		
 		DoubleMatrix m = execution.getRealizationMatrix();
 		
@@ -240,7 +240,7 @@ public class ExecutionTest {
 		//We need it to be the test impulse response
 		execution.setImpulseResponse(1, impulseResponses[0]);
 		
-		execution.computeRealizationMatrix(4);
+		execution.computeRealizationMatrix();
 		
 		double [] eigenvalues = execution.getMatrixAEigenvalues();
 		assertArrayEquals(expectedEigenvals, eigenvalues, 0.05);
@@ -286,7 +286,7 @@ public class ExecutionTest {
 		//Computation should be null because we are not in the gossip phase
 		assertNull(execution.computeMedianEigenvalues());
 		
-		execution.computeRealizationMatrix(4);
+		execution.computeRealizationMatrix();
 		execution.setPhase(Phase.GOSSIP);
 		execution.addGossipEigenvalues(id1.toString(), newEigenvalues);
 		execution.addGossipEigenvalues(id2.toString(), newEigenvalues);

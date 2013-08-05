@@ -229,7 +229,7 @@ public class MessageHandlerTaskTest {
 		e.setRound(2);
 		e.recomputeWeight();
 		e.setPhase(Phase.GOSSIP);
-		e.computeRealizationMatrix(localNode.getDiameter());
+		e.computeRealizationMatrix();
 		
 		double [] eig1 = {1.0};
 		double [] eig2 = {0.0};

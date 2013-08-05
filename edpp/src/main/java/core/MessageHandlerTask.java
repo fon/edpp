@@ -229,7 +229,7 @@ public class MessageHandlerTask implements Runnable {
 							logger.info("This was the final round of the data exchange phase of execution"
 									+execution+" of session "+sessionId+" .Entering gossip round");
 							e.setPhase(Phase.GOSSIP);
-							DoubleMatrix rm = e.computeRealizationMatrix(localNode.getDiameter());
+							DoubleMatrix rm = e.computeRealizationMatrix();
 							logger.info("The realization matrix of execution "+execution
 									+" of session "+sessionId+" was computed");
 							rm.print();

@@ -140,18 +140,18 @@ public class SessionTest {
 		e2.setImpulseResponse(1, impulseResponses[0]);
 		e3.setImpulseResponse(1, impulseResponses[0]);
 		
-		e1.computeRealizationMatrix(4);
+		e1.computeRealizationMatrix();
 		e1.setPhase(Phase.GOSSIP);
 		e1.computeMedianEigenvalues();
 		e1.setPhase(Phase.TERMINATED);
 		session.addCompletedExecution();
-		e2.computeRealizationMatrix(4);
+		e2.computeRealizationMatrix();
 		e2.setPhase(Phase.GOSSIP);
 		e2.computeMedianEigenvalues();
 		e2.setPhase(Phase.TERMINATED);
 		session.addCompletedExecution();
 		
-		e3.computeRealizationMatrix(4);
+		e3.computeRealizationMatrix();
 		e3.setPhase(Phase.GOSSIP);
 		DoubleMatrix dd = new DoubleMatrix(e3.computeMedianEigenvalues());
 		dd.print();
