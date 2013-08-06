@@ -30,18 +30,24 @@ public class MessageSender implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			try {
-				TransferableMessage m = outgoingQueue.take();
-				s = new Socket(m.getAddress(), ProtocolController.PROTOCOL_PORT);
-				m.getMessage().writeTo(s.getOutputStream());
-				s.close();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				TransferableMessage m=null;
+				try {
+					m = outgoingQueue.take();
+					s = new Socket(m.getAddress(), ProtocolController.PROTOCOL_PORT);
+					m.getMessage().writeTo(s.getOutputStream());
+					s.close();
+				} catch (IOException e) {
+					//Place it again on queue to try retransmission later
+					try {
+						outgoingQueue.put(m);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 	
@@ -52,20 +58,23 @@ public class MessageSender implements Runnable {
 	 */
 	public static boolean makeLivenessCheck(TransferableMessage tm) {
 		BufferedReader in = null;
-		try {
-			Socket s = new Socket(tm.getAddress(), ProtocolController.PROTOCOL_PORT);
-			tm.getMessage().writeTo(s.getOutputStream());
-			s.shutdownOutput();
-			in = new BufferedReader(new InputStreamReader(
-                    s.getInputStream()));
-			String reply = in.readLine();
-			in.close();
-			s.close();
-			if (reply.equals("alive")); 
-				return true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		int numOfTries = 0;
+		do {
+			try {
+				Socket s = new Socket(tm.getAddress(), ProtocolController.PROTOCOL_PORT);
+				tm.getMessage().writeTo(s.getOutputStream());
+				s.shutdownOutput();
+				in = new BufferedReader(new InputStreamReader(
+						s.getInputStream()));
+				String reply = in.readLine();
+				in.close();
+				s.close();
+				if (reply.equals("alive"))
+					return true;
+			} catch (IOException e) {
+				numOfTries++;
+			}
+		} while (numOfTries <= 3);
 		return false;
 	}
 			

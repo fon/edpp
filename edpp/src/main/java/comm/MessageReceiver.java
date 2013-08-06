@@ -6,10 +6,11 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.MessageType;
-
 import core.ProtocolController;
 
 /**
@@ -33,22 +34,42 @@ public class MessageReceiver implements Runnable {
 	}
 	
 	
+	class LivenessListener implements Runnable {
+
+		Socket inSocket;
+		
+		public LivenessListener(Socket inSocket) {
+			this.inSocket = inSocket;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				PrintWriter out = new PrintWriter(inSocket.getOutputStream(), true);
+				out.println("alive");
+				out.close();
+				inSocket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 	@Override
 	public void run() {
 		InetAddress address;
-		PrintWriter out = null;
+		ExecutorService executor = Executors.newFixedThreadPool(10);
 		try {
-			ss = new ServerSocket(ProtocolController.PROTOCOL_PORT);
+			ss = new ServerSocket(ProtocolController.PROTOCOL_PORT, 100);
 			while (true) {
 				incomingSocket = ss.accept();
 				address = incomingSocket.getInetAddress();
 				Message pm = Message.parseFrom(
 						incomingSocket.getInputStream());
 				if (pm.getType() == MessageType.LIVENESS_CHECK) {
-					out = new PrintWriter(incomingSocket.getOutputStream(), true);
-					out.println("alive");
-					out.close();
-					incomingSocket.close();
+					executor.execute(new LivenessListener(incomingSocket));
 				} else {
 					incomingQueue.add(new TransferableMessage(pm, address));
 				}
