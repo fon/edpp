@@ -14,15 +14,17 @@ import java.util.logging.Logger;
 import storage.Database;
 import comm.MessageReceiver;
 import comm.MessageSender;
+import comm.ProtocolMessage.Message.MessageType;
 import comm.TransferableMessage;
 import network.Node;
 
 public class ProtocolController implements Runnable {
 	
 	public static final int PROTOCOL_PORT = 11990;
+
 	public static final long TIMEOUT = 1000;
 	
-	private static final int NTHREADS = 1;
+	private static final int NTHREADS = 5;
 	
 
 	private Node localNode;
@@ -31,6 +33,7 @@ public class ProtocolController implements Runnable {
 	private MessageReceiver receiver;
 	private MessageSender sender;
 	private ExecutorService executor;
+	private ExecutorService initExecutor;
 	private ExecutorService daemonExecutor;
 	private ScheduledExecutorService scheduledExecutor;
 	private Map<String, Session> sessions;
@@ -52,6 +55,7 @@ public class ProtocolController implements Runnable {
 		sender = new MessageSender(outgoingQueue);
 		
 		executor = Executors.newFixedThreadPool(NTHREADS);
+		initExecutor = Executors.newFixedThreadPool(1);
 		scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
 		daemonExecutor = Executors.newFixedThreadPool(4,new ThreadFactory() {
 		    public Thread newThread(Runnable r) {
@@ -85,9 +89,14 @@ public class ProtocolController implements Runnable {
 			try {
 				incomingMessage = 
 						incomingQueue.take();
-				//ReceivedMessage
-				executor.execute(new MessageHandlerTask(incomingMessage, sessions, 
-						localNode, outgoingQueue));					
+				if (incomingMessage.getMessage().getType() == MessageType.INIT) {
+					initExecutor.execute(new MessageHandlerTask(incomingMessage, sessions, 
+						localNode, outgoingQueue));
+				} else {
+					//ReceivedMessage
+					executor.execute(new MessageHandlerTask(incomingMessage, sessions, 
+							localNode, outgoingQueue));					
+				}
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

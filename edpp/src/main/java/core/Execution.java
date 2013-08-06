@@ -2,6 +2,7 @@ package core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -119,8 +120,24 @@ public class Execution implements Serializable {
 		}
 		List<String> nodes = pendingData.get(round);
 		if (nodes != null) {
-			for (String node : nodes) {
-				inNeighbors.setTimerToInf(node);
+			synchronized (nodes) {
+				for (String node : nodes) {
+					inNeighbors.setTimerToInf(node);
+				}
+				nodes.clear();
+			}
+		}
+	}
+	
+	public void setProperTimersToInf() {
+		int currRound = this.getCurrentRound();
+		List<String> nodes = pendingData.get(currRound);
+		if (nodes != null) {
+			synchronized (nodes) {
+				for (String node : nodes) {
+					inNeighbors.setTimerToInf(node);
+				}
+				nodes.clear();
 			}
 		}
 	}
@@ -148,7 +165,9 @@ public class Execution implements Serializable {
 			nodes.add(nodeId);
 			pendingData.put(round, nodes);
 		} else {
-			nodes.add(nodeId);
+			synchronized (nodes) {
+				nodes.add(nodeId);
+			}
 		}
 	}
 	
@@ -168,14 +187,15 @@ public class Execution implements Serializable {
 	
 	//TODO must add test
 	public void addPendingGossipMessage(String nodeId, double [] eigenvalues) {
-		pendingGossip.put(nodeId, eigenvalues);
+			pendingGossip.put(nodeId, eigenvalues);
 	}
 	
 	//TODO must add test
 	public void transferPendingGossipMessages() {
-		for (Map.Entry<String, double []> entry : pendingGossip.entrySet()) {
-			this.addGossipEigenvalues(entry.getKey(), entry.getValue());
-			this.setTimerToInf(entry.getKey());
+		for(Iterator<Map.Entry<String, double[]>> it = pendingGossip.entrySet().iterator(); it.hasNext(); ) {
+		      Map.Entry<String, double []> entry = it.next();
+		      this.addGossipEigenvalues(entry.getKey(), entry.getValue());
+		      this.setTimerToInf(entry.getKey());
 		}
 	}
 	

@@ -59,19 +59,6 @@ public class MaintenanceTask implements Runnable {
 		while (sessionIter.hasNext()) {
 			s = sessionIter.next();
 			//Get all executions of the session
-//			logger.info("Checking session "+s.getSessionId());
-			//If the session finished, compute the final eigenvalues
-			if (s.hasTerminated()) {
-				logger.info("Session "+s.getSessionId()+" terminated.");
-				sessionIter.remove();
-				RecordedSession recSes = new RecordedSession(s);
-				db.addSession(recSes);
-				//Notify for the session completion event
-				for (SessionListener sl : sessionListeners) {
-					SessionEvent se = MessageBuilder.buildNewSessionEvent(s, localNode, EventType.TERMINAL);
-					sl.sessionCompleted(se);
-				}
-			}
 			for (int i = 1; i <= s.getCurrentNumberOfExecutions(); i++) {
 				e = s.getExecution(i);
 				if (e != null){
@@ -113,6 +100,7 @@ public class MaintenanceTask implements Runnable {
 								logger.info("The realization matrix of execution "+e.getExecutionNumber()
 										+" of session "+s.getSessionId()+" was computed");
 								rm.print();
+								e.transferPendingGossipMessages();
 //								e.getRealizationMatrix().print(NumberFormat.FRACTION_FIELD, 5);
 								//compute the eigenvalues of the approximation matrix
 								//TODO probably should test this for null
@@ -132,6 +120,7 @@ public class MaintenanceTask implements Runnable {
 							}
 						}
 					} else if (e.getPhase() == Phase.DATA_EXCHANGE) { /* Check for in-neighbors suspected of failure*/
+						e.setProperTimersToInf();
 						inNeighbors = e.getInNeighbors();
 						boolean endOfRound = true;
 //						logger.info("Got in neighbors list and now time to check their times");
@@ -172,10 +161,10 @@ public class MaintenanceTask implements Runnable {
 								sendOutNextMessage(MessageType.NEXT, s, e);
 								e.recomputeWeight();
 								int newRound = e.getCurrentRound()+1;
-								e.setRound(e.getCurrentRound() + 1);
-								checkForNewExecution(s, e);
 								logger.info("Round "+e.getCurrentRound()+" of execution "+e.getExecutionNumber()
 										+" in session "+s.getSessionId()+" is over. Going to round "+newRound);
+								e.setRound(e.getCurrentRound() + 1);
+								checkForNewExecution(s, e);
 							} else {
 								logger.info("Round "+e.getCurrentRound()+" of execution "+e.getExecutionNumber()
 										+" in session "+s.getSessionId()+" is over. This was the final round. "
@@ -205,6 +194,7 @@ public class MaintenanceTask implements Runnable {
 							}
 						}
 					} else if (e.getPhase() == Phase.GOSSIP) {
+						e.transferPendingGossipMessages();
 						inNeighbors = e.getInNeighbors();
 						
 						boolean endOfRound = true;
