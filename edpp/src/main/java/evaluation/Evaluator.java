@@ -161,7 +161,7 @@ public class Evaluator {
 			EvaluationResults er = new EvaluationResults(evalSession.getSessionId());
 			logger.info("Sampling completed...");
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(60000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

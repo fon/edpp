@@ -8,6 +8,7 @@ import org.jblas.ComplexDoubleMatrix;
 import org.jblas.DoubleMatrix;
 import org.jblas.Eigen;
 import org.jblas.Singular;
+import org.jblas.Solve;
 
 
 /**
@@ -88,13 +89,8 @@ public class Algorithms {
 	 */
 	public static class KungsRealizationAlgorithm {
 		
-		/**
-		 * Computes the system matrix A
-		 * @param impulseResponses an array of the collected impulse responses
-		 * @return the realization matrix A of the system in a DoubleMatrix form
-		 * @see DoubleMatrix
-		 */
-		public static DoubleMatrix computeSystemMatrixA(double [] impulseResponses) {
+		
+		/*public static DoubleMatrix computeSystemMatrixA2(double [] impulseResponses) {
 		 
 			DoubleMatrix U, S, u, u1, u2, ss, invss, temp;
 			
@@ -103,7 +99,7 @@ public class Algorithms {
 			for (int i = 0; i<impulseResponses.length-1; i++) {
 				rest[i] = impulseResponses[i+1];
 			}
-			DoubleMatrix m = convertToHankelMatrix(rest);
+			DoubleMatrix m = convertToHankelMatrix2(rest);
 			DoubleMatrix [] svd = Singular.fullSVD(m);
 			U = svd[0];
 			S = svd[1];
@@ -139,6 +135,47 @@ public class Algorithms {
 			temp  = invss.mmul(ss.transpose());
 			return u.mul(temp);
 			
+		}*/
+		
+		
+		/**
+		 * Computes the system matrix A
+		 * @param impulseResponses an array of the collected impulse responses
+		 * @return the realization matrix A of the system in a DoubleMatrix form
+		 * @see DoubleMatrix
+		 */
+		public static DoubleMatrix computeSystemMatrixA(double [] impulseResponses) {
+			 
+			DoubleMatrix H, U, S, u1, O, O1, O2, temp, A;
+			
+			H = convertToHankelMatrix(impulseResponses);
+			DoubleMatrix [] svd = Singular.fullSVD(H);
+			U = svd[0];
+			S = svd[1];
+			double tol = 1e-7;
+			
+			int lastAcceptedIndex = 0;
+
+			for (int i = 0; i<S.length; i++) {
+				if (S.get(i)>tol)
+					lastAcceptedIndex++;
+			}
+
+			DoubleMatrix sqrt_s = DoubleMatrix.zeros(lastAcceptedIndex);
+			
+			for (int i = 0; i<lastAcceptedIndex; i++) {
+				sqrt_s.put(i, Math.sqrt(S.get(i)));
+			}
+			
+			u1 = U.getRange(0, U.getRows(), 0, lastAcceptedIndex);
+			O = u1.mmul(DoubleMatrix.diag(sqrt_s));
+			O1 = O.getRange(0,O.getRows()-1,0,O.getColumns());
+			O2 = O.getRange(1, O.getRows(), 0, O.getColumns());
+			
+			temp = Solve.pinv(O1);
+			A = temp.mmul(O2);
+			
+			return A;
 		}
 		
 		/**
@@ -151,7 +188,7 @@ public class Algorithms {
 			return m.toArray2();
 		}
 		
-		private static DoubleMatrix convertToHankelMatrix(double [] impulseResponsesArray) {
+		/*private static DoubleMatrix convertToHankelMatrix2(double [] impulseResponsesArray) {
 			int dim = impulseResponsesArray.length;
 			
 			DoubleMatrix m = DoubleMatrix.zeros(dim, dim);
@@ -165,6 +202,21 @@ public class Algorithms {
 				}
 			}
 			return m;
+		}*/
+		
+		private static DoubleMatrix convertToHankelMatrix(double [] impulseResponsesArray) {
+			int dim = impulseResponsesArray.length;
+			
+			int l = (int)Math.floor((dim+1)/2);
+
+			DoubleMatrix dm = DoubleMatrix.zeros(l, l);
+
+			for (int i = 0; i < l; i++) {
+				for (int j = 0; j < l; j++) {
+					dm.put(i, j, impulseResponsesArray[i+j]);
+				}
+			}
+			return dm;
 		}
 
 	}
@@ -194,6 +246,19 @@ public class Algorithms {
 	         // Autounbox from Integer to int to use as array indexes
 	        return array[index2].compareTo(array[index1]);
 	    }
+	}
+	
+	public static void main(String args []) {
+		double [] impulseResponses  = {
+				0.00000,   0.52632,   0.49861,   0.50007,   0.50000,   0.50000,  0.5000
+
+		};
+		DoubleMatrix dm = Algorithms.KungsRealizationAlgorithm.computeSystemMatrixA(impulseResponses);
+		dm.print();
+		double [] eigs = Algorithms.computeEigenvaluesModulus(dm);
+		for(int i=0; i<eigs.length; i++) {
+			System.out.println(eigs[i]);
+		}
 	}
 	
 }

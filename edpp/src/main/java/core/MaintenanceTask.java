@@ -169,6 +169,7 @@ public class MaintenanceTask implements Runnable {
 								logger.info("Round "+e.getCurrentRound()+" of execution "+e.getExecutionNumber()
 										+" in session "+s.getSessionId()+" is over. This was the final round. "
 												+ "Switching to GOSSIP phase");
+								e.setRound(e.getCurrentRound()+1);
 								e.setPhase(Phase.GOSSIP);
 								DoubleMatrix rm = e.computeRealizationMatrix();
 								logger.info("The realization matrix of execution "+e.getExecutionNumber()

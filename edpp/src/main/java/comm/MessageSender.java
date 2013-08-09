@@ -3,6 +3,7 @@ package comm;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
@@ -33,7 +34,8 @@ public class MessageSender implements Runnable {
 				TransferableMessage m=null;
 				try {
 					m = outgoingQueue.take();
-					s = new Socket(m.getAddress(), ProtocolController.PROTOCOL_PORT);
+					s = new Socket();
+					s.connect(new InetSocketAddress(m.getAddress(), ProtocolController.PROTOCOL_PORT), 10000);
 					m.getMessage().writeTo(s.getOutputStream());
 					s.close();
 				} catch (IOException e) {
@@ -61,7 +63,8 @@ public class MessageSender implements Runnable {
 		int numOfTries = 0;
 		do {
 			try {
-				Socket s = new Socket(tm.getAddress(), ProtocolController.PROTOCOL_PORT);
+				Socket s = new Socket();
+				s.connect(new InetSocketAddress(tm.getAddress(), ProtocolController.PROTOCOL_PORT), 0);
 				tm.getMessage().writeTo(s.getOutputStream());
 				s.shutdownOutput();
 				in = new BufferedReader(new InputStreamReader(
@@ -74,7 +77,7 @@ public class MessageSender implements Runnable {
 			} catch (IOException e) {
 				numOfTries++;
 			}
-		} while (numOfTries <= 3);
+		} while (numOfTries <= 6);
 		return false;
 	}
 			
