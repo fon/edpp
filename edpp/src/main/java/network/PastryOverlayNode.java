@@ -14,6 +14,7 @@ import org.mpisws.p2p.transport.multiaddress.MultiInetSocketAddress;
 import rice.pastry.PastryNode;
 import rice.pastry.leafset.LeafSet;
 import rice.pastry.routing.RoutingTable;
+//import rice.pastry.routing.RoutingTable;
 import rice.pastry.socket.TransportLayerNodeHandle;
 import util.Id;
 import util.Neighbor;
@@ -143,7 +144,7 @@ public class PastryOverlayNode implements Node {
 					(TransportLayerNodeHandle<MultiInetSocketAddress>) remoteNode;
 			Id i = new Id(nh.getId().toByteArray());
 			if(i.toString().equals(Id)) {
-				rt.remove(nh);
+				ls.remove(nh);
 				removed = true;
 			}
 			
