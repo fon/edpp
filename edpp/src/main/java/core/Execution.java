@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -52,7 +54,7 @@ public class Execution implements Serializable {
 	private double [] medianEigenvalues;
 	private transient GossipData gossip;
 	private Map<String, double[]> pendingGossip;
-	private Map<Integer, List<String>> pendingData;
+	private Map<Integer, Queue<String>> pendingData;
 	
 	private transient Logger logger;
 	
@@ -84,7 +86,7 @@ public class Execution implements Serializable {
 		gossip = new GossipData();
 		computedMedian = false;
 		pendingGossip = new ConcurrentHashMap<String, double[]>();
-		pendingData = new ConcurrentHashMap<Integer, List<String>>();
+		pendingData = new ConcurrentHashMap<Integer, Queue<String>>();
 	}
 
 	/**
@@ -118,26 +120,22 @@ public class Execution implements Serializable {
 		} else {
 			this.setCurrentValue(d);
 		}
-		List<String> nodes = pendingData.get(round);
+		Queue<String> nodes = pendingData.get(round);
 		if (nodes != null) {
-			synchronized (nodes) {
-				for (String node : nodes) {
-					inNeighbors.setTimerToInf(node);
-				}
-				nodes.clear();
+			String nodeId;
+			while ((nodeId = nodes.poll()) != null) {
+				inNeighbors.setTimerToInf(nodeId);
 			}
 		}
 	}
 	
 	public void setProperTimersToInf() {
 		int currRound = this.getCurrentRound();
-		List<String> nodes = pendingData.get(currRound);
+		Queue<String> nodes = pendingData.get(currRound);
 		if (nodes != null) {
-			synchronized (nodes) {
-				for (String node : nodes) {
-					inNeighbors.setTimerToInf(node);
-				}
-				nodes.clear();
+			String nodeId;
+			while ((nodeId = nodes.poll()) != null) {
+				inNeighbors.setTimerToInf(nodeId);
 			}
 		}
 	}
@@ -159,15 +157,13 @@ public class Execution implements Serializable {
 	
 	//TODO must do tests
 	public void addNeighborToRound(String nodeId, int round) {
-		List<String> nodes = pendingData.get(round);
+		Queue<String> nodes = pendingData.get(round);
 		if (nodes == null) {
-			nodes = new ArrayList<String>();
-			nodes.add(nodeId);
+			nodes = new ConcurrentLinkedQueue<String>();
+			nodes.offer(nodeId);
 			pendingData.put(round, nodes);
 		} else {
-			synchronized (nodes) {
-				nodes.add(nodeId);
-			}
+			nodes.offer(nodeId);
 		}
 	}
 	
@@ -221,10 +217,12 @@ public class Execution implements Serializable {
 			return null;
 		}
 		double [] responses = new double[impulseResponse.length()];
-		
+		System.out.print("The impulse responses are: [");
 		for (int i = 0; i< impulseResponse.length(); i++) {
 			responses[i] = impulseResponse.get(i);
+			System.out.print(responses[i]+",");
 		}
+		System.out.println("]");
 		
 		this.matrixA = Algorithms.computeSystemMatrixA(responses);
 		eigenvalues = Algorithms.computeEigenvaluesModulus(matrixA);
