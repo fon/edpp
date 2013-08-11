@@ -1,0 +1,26 @@
+package app;
+
+option java_package = "app";
+option java_outer_classname = "ApplicationMessage";
+
+message AppMessage {
+
+	enum MessageType {
+		NEW = 0;
+		VAL = 1;
+		VOID = 2;
+	} 
+	
+	required MessageType type = 1;
+	
+	required string queryId = 2;
+	
+	optional double mixTime = 3;
+	
+	optional int32 round = 4;
+	
+	
+	optional double weight = 5;
+	optional double value = 6;
+	
+}
