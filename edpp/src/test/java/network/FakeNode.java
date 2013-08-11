@@ -88,12 +88,7 @@ public class FakeNode implements Node {
 		outNeighbors.add(n4);
 
 	}
-
-	@Override
-	public int getDiameter() {
-		return 2;
-	}
-
+	
 	@Override
 	public boolean removeOutNeighborNode(String Id) {
 		// TODO Auto-generated method stub

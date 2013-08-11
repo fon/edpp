@@ -13,7 +13,6 @@ import org.mpisws.p2p.transport.multiaddress.MultiInetSocketAddress;
 
 import rice.pastry.PastryNode;
 import rice.pastry.leafset.LeafSet;
-import rice.pastry.routing.RoutingTable;
 //import rice.pastry.routing.RoutingTable;
 import rice.pastry.socket.TransportLayerNodeHandle;
 import util.Id;
@@ -22,18 +21,16 @@ import util.Neighbor;
 public class PastryOverlayNode implements Node {
 
 	private PastryNode localNode;
-	private int networkSize;
 	
-	public PastryOverlayNode(PastryNode localNode ,int networkSize) {
+	public PastryOverlayNode(PastryNode localNode) {
 		this.localNode = localNode;
-		this.networkSize = networkSize;
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public Set<Neighbor> getOutNeighbors()  {
 		HashSet<Neighbor> outNeighbors = new HashSet<Neighbor>();
-		
+		/*
 		RoutingTable rt = localNode.getRoutingTable();
 		List<rice.pastry.NodeHandle> routingTableNodes = rt.asList();
 		
@@ -46,7 +43,7 @@ public class PastryOverlayNode implements Node {
 						nh.getAddress().getInnermostAddress().getAddress());
 				outNeighbors.add(n);
 			}
-		}
+		}*/
 		
 		LeafSet ls = localNode.getLeafSet();
 		
@@ -96,10 +93,10 @@ public class PastryOverlayNode implements Node {
 		return localId;
 	}
 
-	@Override
+	/*@Override
 	public int getDiameter() {
 		return (int) Math.ceil(Math.log(networkSize)/Math.log(2));
-	}
+	}*/
 
 	public static byte[] serialize(Object obj) throws IOException {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -120,7 +117,7 @@ public class PastryOverlayNode implements Node {
 	public boolean removeOutNeighborNode(String Id) {
 		boolean removed = false;
 		
-		RoutingTable rt = localNode.getRoutingTable();
+		/*RoutingTable rt = localNode.getRoutingTable();
 		List<rice.pastry.NodeHandle> routingTableNodes = rt.asList();
 		
 		for (rice.pastry.NodeHandle remoteNode : routingTableNodes) {
@@ -134,7 +131,7 @@ public class PastryOverlayNode implements Node {
 					removed = true;
 				}
 			}
-		}
+		}*/
 		LeafSet ls = localNode.getLeafSet();
 		
 		List<rice.pastry.NodeHandle> leafSetNodes = ls.asList();

@@ -11,11 +11,11 @@ public interface Node {
 	
 	public Id getLocalId();
 	
+	public boolean removeOutNeighborNode(String Id);
 //	public boolean isAlive(Neighbor n);
 	
-	public boolean removeOutNeighborNode(String Id);
 	
-	public int getDiameter();
+//	public int getDiameter();
 	
 	
 }
