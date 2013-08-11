@@ -2,6 +2,8 @@ package storage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -16,10 +18,13 @@ public class KeyValueDatabase implements Database {
 	private RecordManager recMan;
 	private PrimaryTreeMap<Integer, RecordedSession> db;
 	
+	private final Object lock;
+	
 	private List<SessionListener> sessionListeners;
 	
 	public KeyValueDatabase(String dbName, String tableName) {
-		sessionListeners  = new ArrayList<SessionListener>();
+		sessionListeners  = Collections.synchronizedList(new ArrayList<SessionListener>());
+		lock = new Object();
 		try {
 			recMan = RecordManagerFactory.createRecordManager(dbName);
 		} catch (IOException e) {
@@ -33,24 +38,34 @@ public class KeyValueDatabase implements Database {
 	@Override
 	public void addSession(RecordedSession rs) {
 		int size;
-		synchronized (db) {
+		synchronized (lock) {
 			try {
+				System.out.println("Need to get the size");
 				size = db.lastKey()+1;
+				System.out.println("Got the size");
 			} catch (NoSuchElementException nse) {
+				System.out.println("Empty...");
 				size = 0;
 			}
+			System.out.println("Need to put the session here");
 			db.put(new Integer(size), rs);
+			System.out.println("Stored it");
 		}
-		for (SessionListener sl : sessionListeners) {
-			sl.sessionStored(rs);
+		System.out.println("Will notify the listeners");
+		synchronized (sessionListeners) {
+			Iterator<SessionListener> iter = sessionListeners.iterator();
+			while(iter.hasNext()) {
+				iter.next().sessionStored(rs);
+			}
 		}
+		System.out.println("Did it");
 	}
 
 	@Override
 	public RecordedSession getLastRecordedSession() {
 		int lastRecord;
 		RecordedSession rs = null;
-		synchronized (db) {
+		synchronized (lock) {
 			try {
 				lastRecord = db.lastKey();
 			} catch (NoSuchElementException e) {
