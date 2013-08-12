@@ -153,6 +153,37 @@ public class Execution implements Serializable {
 		}
 	}
 	
+	/**
+	 * Adds a received value to a specific round
+	 * @param val the value to be added
+	 * @param round the round to which the value corresponds
+	 */
+	public void addValToNextRound(String nodeId, double val, int round) {
+		boolean gotValue = true;
+		
+		Queue<String> nodes = pendingData.get(round);
+		if (nodes == null) {
+			nodes = new ConcurrentLinkedQueue<String>();
+			nodes.offer(nodeId);
+			pendingData.put(round, nodes);
+			gotValue = false;
+		} else {
+			if (!nodes.contains(nodeId)) {
+				nodes.offer(nodeId);
+				gotValue = false;
+			}
+		}
+		if (!gotValue) {
+			if (roundVals.get(round) == null) {
+				roundVals.put(round, val);
+			} else {
+				double newVal = roundVals.get(round);
+				newVal += val;
+				roundVals.put(round, newVal);
+			}
+		}
+	}
+	
 	//TODO must do tests
 	public void addNeighborToRound(String nodeId, int round) {
 		Queue<String> nodes = pendingData.get(round);

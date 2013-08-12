@@ -1,8 +1,11 @@
 package comm;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
@@ -34,10 +37,21 @@ public class MessageSender implements Runnable {
 				TransferableMessage m=null;
 				try {
 					m = outgoingQueue.take();
-					s = new Socket();
-					s.connect(new InetSocketAddress(m.getAddress(), ProtocolController.PROTOCOL_PORT),10000);
-					m.getMessage().writeTo(s.getOutputStream());
-					s.close();
+					if (m.getSendReliably()) {
+						s = new Socket();
+						s.connect(new InetSocketAddress(m.getAddress(), ProtocolController.PROTOCOL_PORT),10000);
+						m.getMessage().writeTo(s.getOutputStream());
+						s.close();
+					} else {
+						ByteArrayOutputStream output = new ByteArrayOutputStream(2048);
+						m.getMessage().writeDelimitedTo(output);
+						DatagramSocket socket = new DatagramSocket();
+						byte [] buf = output.toByteArray();
+						DatagramPacket packet = new DatagramPacket(buf, buf.length, 
+						                                m.getAddress(), ProtocolController.PROTOCOL_PORT);
+						socket.send(packet);
+						socket.close();
+					}
 				} catch (IOException e) {
 					//Place it again on queue to try retransmission later
 					try {

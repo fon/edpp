@@ -27,7 +27,7 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>io.SamplingApp</mainClass>
+            <mainClass>io.SampleApp</mainClass>
           </manifest>
         </archive>
         <descriptorRefs>

@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import storage.Database;
+import comm.LightMessageReceiver;
 import comm.MessageReceiver;
 import comm.MessageSender;
 import comm.ProtocolMessage.Message.MessageType;
@@ -32,6 +33,7 @@ public class ProtocolController implements Runnable {
 	private BlockingQueue<TransferableMessage> outgoingQueue;
 	private MessageReceiver receiver;
 	private MessageSender sender;
+	private LightMessageReceiver lightReceiver;
 	private ExecutorService executor;
 	private ExecutorService initExecutor;
 	private ExecutorService daemonExecutor;
@@ -50,6 +52,7 @@ public class ProtocolController implements Runnable {
 		
 		incomingQueue = new LinkedBlockingQueue<TransferableMessage>();
 		receiver = new MessageReceiver(incomingQueue);
+		lightReceiver = new LightMessageReceiver(incomingQueue);
 		
 		outgoingQueue = new LinkedBlockingQueue<TransferableMessage>();
 		sender = new MessageSender(outgoingQueue);
@@ -76,6 +79,7 @@ public class ProtocolController implements Runnable {
 		daemonExecutor.execute(receiver);
 		logger.info("Initiating the sender thread");
 		daemonExecutor.execute(sender);
+		daemonExecutor.execute(lightReceiver);
 		
 		//Set the threads as daemons, so that the vm will exit
 		//if only those threads remain running

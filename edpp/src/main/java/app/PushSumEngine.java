@@ -316,7 +316,6 @@ public class PushSumEngine {
 	class LightMessageReceiver implements Runnable {
 
 		private DatagramSocket ss;
-		Socket incomingSocket;
 		
 		@Override
 		public void run() {

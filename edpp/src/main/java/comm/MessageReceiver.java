@@ -71,7 +71,7 @@ public class MessageReceiver implements Runnable {
 				if (pm.getType() == MessageType.LIVENESS_CHECK) {
 					executor.execute(new LivenessListener(incomingSocket));
 				} else {
-					incomingQueue.add(new TransferableMessage(pm, address));
+					incomingQueue.add(new TransferableMessage(pm, address, true));
 					incomingSocket.close();
 				}
 			}

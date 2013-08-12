@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-
+import util.Neighbor;
+import util.NeighborsTable;
 import util.Phase;
 import util.PlainNeighbor;
 import util.PlainNeighborsTable;
@@ -57,6 +58,9 @@ public class MessageHandlerTask implements Runnable {
 		case NEXT:
 			this.handleNextMessage();
 			break;
+		case REQUEST_VAL:
+			this.resendVal();
+			break;
 		case GOSSIP:
 			this.handleGossipMessage();
 			break;
@@ -66,6 +70,37 @@ public class MessageHandlerTask implements Runnable {
 		}
 	}
 	
+	private void resendVal() {
+		Session s;
+		Execution e;
+		
+		Message m = incomingMessage.getMessage();
+		
+		s = sessions.get(m.getSession());
+		if (s != null) {
+			e = s.getExecution(m.getExecution());
+			if(e != null) {
+				int wantedRound = m.getRound();
+				int currentRound = e.getCurrentRound();
+				if (wantedRound <= currentRound) {
+					NeighborsTable<PlainNeighbor> n = e.getOutNeighbors();
+					double weight = 1.0/n.getSize();
+					double valToSend = e.getImpulseResponse(wantedRound-1)*weight;
+					int r = wantedRound;
+					logger.info("Sending NEXT message to node with address "+incomingMessage.getAddress()+
+							" for round "+wantedRound+" of execution "+m.getExecution()+
+							" in session "+s.getSessionId());
+					String nodeId = localNode.getLocalId().toString();
+					Message outMessage = MessageBuilder.buildNextMessage(nodeId,
+							s.getSessionId(), e.getExecutionNumber(),
+							r, valToSend);
+					outQueue.add(new TransferableMessage(outMessage, incomingMessage.getAddress(), false));
+				}
+			}
+		}
+		
+	}
+
 	public static void addSessionListener(SessionListener listener) {
 		sessionListeners.add(listener);
 	}
@@ -196,8 +231,8 @@ public class MessageHandlerTask implements Runnable {
 				//If the message is for the current or a future round
 				logger.info("Adding "+m.getVal()+" to the values of round "+round
 						+" in execution "+execution+" of session "+sessionId);
-				e.addValToRound(m.getVal(), round);
-				e.addNeighborToRound(m.getNodeId(), round);
+				e.addValToNextRound(m.getNodeId(), m.getVal(), round);
+//				e.addNeighborToRound(m.getNodeId(), round);
 			} else {
 				// TODO What if execution does not exist
 				// Do we hold the message?
@@ -286,7 +321,7 @@ public class MessageHandlerTask implements Runnable {
 							r, valueToSend);
 					break;
 				}
-				outQueue.add(new TransferableMessage(outMessage, address));
+				outQueue.add(new TransferableMessage(outMessage, address, true));
 			}
 		}
 	}

@@ -136,6 +136,9 @@ public class MaintenanceTask implements Runnable {
 								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
 //									logger.info("Probing node to see if it is alive");
 									if (isAlive(neighbor)) {
+										requestPreviousVal(s.getSessionId(), e.getExecutionNumber(),
+												e.getCurrentRound(), neighbor.getAddress());
+										//Send message to request again the same packet
 //										logger.info("Node is still alive");
 										inNeighbors.renewTimer(neighbor);
 										endOfRound = false;
@@ -268,7 +271,7 @@ public class MaintenanceTask implements Runnable {
 	private boolean isAlive(TimedNeighbor neighbor) {
 		Message m = MessageBuilder.buildLivenessMessage();
 		return MessageSender.makeLivenessCheck(
-				new TransferableMessage(m, neighbor.getAddress()));
+				new TransferableMessage(m, neighbor.getAddress(), true));
 	}
 
 	private void sendGossipMessage(Message m, Execution e) {
@@ -278,7 +281,7 @@ public class MaintenanceTask implements Runnable {
 		synchronized (pnt) {
 			for (PlainNeighbor n : pnt) {
 				address = n.getAddress();
-				outgoingQueue.add(new TransferableMessage(m, address));
+				outgoingQueue.add(new TransferableMessage(m, address, true));
 			}
 		}
 	}
@@ -306,7 +309,7 @@ public class MaintenanceTask implements Runnable {
 					outMessage = MessageBuilder.buildInitMessage(nodeId, sessionId, 
 								newExecution.getExecutionNumber(), s.getNumberOfExecutions(),
 								s.getNumberOfRounds(), valueToSend);
-					outgoingQueue.add(new TransferableMessage(outMessage, address));
+					outgoingQueue.add(new TransferableMessage(outMessage, address, true));
 				}
 			}
 		}
@@ -333,9 +336,19 @@ public class MaintenanceTask implements Runnable {
 				outMessage = MessageBuilder.buildNextMessage(nodeId,
 						sessionId, execution.getExecutionNumber(), 
 						r, valueToSend);
-				outgoingQueue.add(new TransferableMessage(outMessage, address));
+				outgoingQueue.add(new TransferableMessage(outMessage, address, false));
 			}
 		}
 	}
 
+	
+	private void requestPreviousVal(String sessionId, int execNum, int round, InetAddress address) {
+		String nodeId = localNode.getLocalId().toString();
+		Message m = MessageBuilder.requestPreviousValMessage(nodeId,sessionId, execNum, round);
+		TransferableMessage tm = new TransferableMessage(m, address,false);
+		logger.info("Sending REQUEST message to node with address "+address+
+				" for round "+round+" of execution "+execNum+
+				" in session "+sessionId);
+		outgoingQueue.add(tm);
+	}
 }

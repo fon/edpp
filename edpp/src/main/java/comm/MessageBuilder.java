@@ -129,6 +129,18 @@ public class MessageBuilder {
 		return m;
 	}
 	
+	public static Message requestPreviousValMessage(String nodeId, String session, int execNum, int round) {
+		Message m =
+				Message.newBuilder()
+				.setType(MessageType.REQUEST_VAL)
+				.setNodeId(nodeId)
+				.setSession(session)
+				.setExecution(execNum)
+				.setRound(round)
+				.build();
+		return m;
+	}
+	
 	
 	public static SessionEvent buildNewSessionEvent(Session s, Node localNode, EventType type) {
 		double [] eigenvalues; 
