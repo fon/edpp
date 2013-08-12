@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-import util.Neighbor;
 import util.NeighborsTable;
 import util.Phase;
 import util.PlainNeighbor;

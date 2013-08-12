@@ -101,7 +101,6 @@ public class TestPastryNode {
 			// build the bootaddress from the command line args
 			InetAddress bootaddr = InetAddress.getByName(args[1]);
 			int bootport = Integer.parseInt(args[2]);
-			int totalNumOfNodes = Integer.parseInt(args[3]);
 			InetSocketAddress bootaddress = new InetSocketAddress(bootaddr,bootport);
 
 			// launch our node!
