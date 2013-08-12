@@ -125,7 +125,7 @@ public class SamplingApp {
 			
 			@Override
 			public void run() {
-				SamplingParameters sp = new SamplingParameters(1, 9);
+				SamplingParameters sp = new SamplingParameters(1, 20);
 				Session s = null;
 				boolean isDemoNode = false;
 				try {
@@ -141,6 +141,12 @@ public class SamplingApp {
 						double mixingTime = Analyzer.computeMixingTime(s.getComputedEigenvalues(), 0.001);
 						estimate.clear();
 						estimate.offer(mixingTime);
+						try {
+							Thread.sleep(10000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}

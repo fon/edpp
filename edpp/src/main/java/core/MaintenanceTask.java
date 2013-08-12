@@ -111,10 +111,20 @@ public class MaintenanceTask implements Runnable {
 									eig+=", ";
 								}
 								eig+="]";
+								//Send only the largest eigenvals
+								double [] valsToSend;
+								if(eigenvals.length>3){
+									valsToSend = new double[3];
+									for(int j = 0; j<3;j++) {
+										valsToSend[j] = eigenvals[j];
+									}
+								} else {
+									valsToSend = eigenvals;
+								}
 								logger.info("The computed eigenvalues of execution "+e.getExecutionNumber()
 										+" of session "+s.getSessionId()+" are "+eig);
 								Message msg = MessageBuilder.buildGossipMessage(localNode.getLocalId().toString(),
-										s.getSessionId(), e.getExecutionNumber(), eigenvals);
+										s.getSessionId(), e.getExecutionNumber(), valsToSend);
 								//send GOSSIP message to out-neighbors
 								sendGossipMessage(msg, e);
 							}
@@ -189,10 +199,19 @@ public class MaintenanceTask implements Runnable {
 									eig+=", ";
 								}
 								eig+="]";
+								double [] valsToSend;
+								if(eigenvals.length>3){
+									valsToSend = new double[3];
+									for(int j = 0; j<3;j++) {
+										valsToSend[j] = eigenvals[j];
+									}
+								} else {
+									valsToSend = eigenvals;
+								}
 								logger.info("The computed eigenvalues of execution "+e.getExecutionNumber()
 										+" of session "+s.getSessionId()+" are "+eig);
 								Message msg = MessageBuilder.buildGossipMessage(localNode.getLocalId().toString(),
-										s.getSessionId(), e.getExecutionNumber(), eigenvals);
+										s.getSessionId(), e.getExecutionNumber(), valsToSend);
 								//send GOSSIP message to out-neighbors
 								sendGossipMessage(msg, e);
 							}
@@ -211,6 +230,8 @@ public class MaintenanceTask implements Runnable {
 									neighbor.decreaseTime(ProtocolController.TIMEOUT);
 								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
 									if (isAlive(neighbor)) {
+										requestPreviousVal(s.getSessionId(), e.getExecutionNumber(),
+												1, neighbor.getAddress());
 										inNeighbors.renewTimer(neighbor);
 										endOfRound = false;
 									} else {
@@ -281,7 +302,7 @@ public class MaintenanceTask implements Runnable {
 		synchronized (pnt) {
 			for (PlainNeighbor n : pnt) {
 				address = n.getAddress();
-				outgoingQueue.add(new TransferableMessage(m, address, true));
+				outgoingQueue.add(new TransferableMessage(m, address, false));
 			}
 		}
 	}

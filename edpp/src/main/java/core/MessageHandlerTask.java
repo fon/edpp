@@ -81,20 +81,39 @@ public class MessageHandlerTask implements Runnable {
 			e = s.getExecution(m.getExecution());
 			if(e != null) {
 				int wantedRound = m.getRound();
-				int currentRound = e.getCurrentRound();
-				if (wantedRound <= currentRound) {
-					NeighborsTable<PlainNeighbor> n = e.getOutNeighbors();
-					double weight = 1.0/n.getSize();
-					double valToSend = e.getImpulseResponse(wantedRound-1)*weight;
-					int r = wantedRound;
-					logger.info("Sending NEXT message to node with address "+incomingMessage.getAddress()+
-							" for round "+wantedRound+" of execution "+m.getExecution()+
-							" in session "+s.getSessionId());
-					String nodeId = localNode.getLocalId().toString();
-					Message outMessage = MessageBuilder.buildNextMessage(nodeId,
-							s.getSessionId(), e.getExecutionNumber(),
-							r, valToSend);
-					outQueue.add(new TransferableMessage(outMessage, incomingMessage.getAddress(), false));
+				if (wantedRound >= 0 ) {
+					int currentRound = e.getCurrentRound();
+					if (wantedRound <= currentRound) {
+						NeighborsTable<PlainNeighbor> n = e.getOutNeighbors();
+						double weight = 1.0/n.getSize();
+						double valToSend = e.getImpulseResponse(wantedRound-1)*weight;
+						int r = wantedRound;
+						logger.info("Sending NEXT message to node with address "+incomingMessage.getAddress()+
+								" for round "+wantedRound+" of execution "+m.getExecution()+
+								" in session "+s.getSessionId());
+						String nodeId = localNode.getLocalId().toString();
+						Message outMessage = MessageBuilder.buildNextMessage(nodeId,
+								s.getSessionId(), e.getExecutionNumber(),
+								r, valToSend);
+						outQueue.add(new TransferableMessage(outMessage, incomingMessage.getAddress(), false));
+					}
+				} else {
+					double [] eigenvals;
+					if ((eigenvals = e.getMatrixAEigenvalues())!=null){
+						double [] valsToSend;
+						if(eigenvals.length>3){
+							valsToSend = new double[3];
+							for(int j = 0; j<3;j++) {
+								valsToSend[j] = eigenvals[j];
+							}
+						} else {
+							valsToSend = eigenvals;
+						}
+						Message msg = MessageBuilder.buildGossipMessage(localNode.getLocalId().toString(),
+								s.getSessionId(), e.getExecutionNumber(), valsToSend);
+						//send GOSSIP message to out-neighbors
+						outQueue.add(new TransferableMessage(msg, incomingMessage.getAddress(),false));
+					}
 				}
 			}
 		}
