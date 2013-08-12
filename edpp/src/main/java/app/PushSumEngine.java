@@ -1,12 +1,18 @@
 package app;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -63,8 +69,9 @@ public class PushSumEngine {
 		this.numOfRounds = 0;
 		this.protocolRunning = new AtomicBoolean(false);
 		this.currentRound = 0;
-		executor = Executors.newFixedThreadPool(1);
+		executor = Executors.newFixedThreadPool(2);
 		executor.execute(new MessageReceiver());
+		executor.execute(new LightMessageReceiver());
 		query = new ConcurrentHashMap<String, Double>();
 		currentQuery = "";
 		numberOfInLinks = 0;
@@ -101,7 +108,7 @@ public class PushSumEngine {
 
 		MessageContainer cont = new MessageContainer(init, bootNode);
 		//Put to sending queue
-		sendMessage(cont);
+		sendMessage(cont, true);
 		
 		receivedValues.set(currentRound, initValue);
 		receivedWeights.set(currentRound, 1);
@@ -122,7 +129,7 @@ public class PushSumEngine {
 			
 			MessageContainer mc = new MessageContainer(m, n.getAddress());
 			//Put to sending queue
-			sendMessage(mc);
+			sendMessage(mc, true);
 		}
 		
 		try {
@@ -179,16 +186,17 @@ public class PushSumEngine {
 							.setRound(round)
 							.build();
 					MessageContainer mc = new MessageContainer(voidM,n[i].getAddress());
-					sendMessage(mc);
+					sendMessage(mc, false);
 				}
 			}
 			
 			MessageContainer mc = new MessageContainer(m,selected.getAddress());
-			sendMessage(mc);
+			sendMessage(mc, true);
 			synchronized (linksInRound) {
 				if(linksInRound[round] != 0 ) {
 					try {
-						linksInRound.wait();
+						linksInRound.wait(5000);
+						linksInRound[round] = 0;
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 					}
@@ -205,17 +213,36 @@ public class PushSumEngine {
 		return estimation;
 	}
 	
-	private void sendMessage(MessageContainer mc) {
-		boolean notSent = true;
-		while(notSent) {
+	private void sendMessage(MessageContainer mc, boolean sendReliably) {
+		if(sendReliably){ 
+			boolean notSent = true;
+			while(notSent) {
+				try {
+					Socket s = new Socket();
+					s.connect(new InetSocketAddress(mc.getAddress(), PUSH_SUM_PORT));
+					mc.getMessage().writeTo(s.getOutputStream());
+					s.close();
+					notSent = false;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+				}
+			}
+		} else {
 			try {
-				Socket s = new Socket();
-				s.connect(new InetSocketAddress(mc.getAddress(), PUSH_SUM_PORT));
-				mc.getMessage().writeTo(s.getOutputStream());
-				s.close();
-				notSent = false;
+				ByteArrayOutputStream output = new ByteArrayOutputStream(1024);
+				mc.getMessage().writeDelimitedTo(output);
+				DatagramSocket socket = new DatagramSocket();
+				byte [] buf = output.toByteArray();
+				DatagramPacket packet = new DatagramPacket(buf, buf.length, 
+				                                mc.getAddress(), PUSH_SUM_PORT);
+				socket.send(packet);
+				socket.close();
+			} catch (SocketException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		
@@ -275,6 +302,40 @@ public class PushSumEngine {
 						}
 					}
 					incomingSocket.close();
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				// TODO Must fix this to locate the exact case of the exception
+			}
+
+			
+		}
+		
+	}
+	
+	class LightMessageReceiver implements Runnable {
+
+		private DatagramSocket ss;
+		Socket incomingSocket;
+		
+		@Override
+		public void run() {
+			try {
+				ss = new DatagramSocket(PUSH_SUM_PORT);
+				while (true) {
+					byte[] buf = new byte[1024];
+					DatagramPacket packet = new DatagramPacket(buf, buf.length);
+					ss.receive(packet);
+					ByteArrayInputStream input = new ByteArrayInputStream(buf);
+					AppMessage pm = AppMessage.parseDelimitedFrom(input);
+					if(pm.getType() == MessageType.VOID) {
+						int round = pm.getRound();
+						synchronized (linksInRound) {
+							linksInRound[round]-=1;
+							if(linksInRound[round] == 0)
+								linksInRound.notify();
+						}
+					}
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
