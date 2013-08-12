@@ -219,6 +219,10 @@ public final class ApplicationMessage {
        * <code>VOID = 2;</code>
        */
       VOID(2, 2),
+      /**
+       * <code>REAL_VAL = 3;</code>
+       */
+      REAL_VAL(3, 3),
       ;
 
       /**
@@ -233,6 +237,10 @@ public final class ApplicationMessage {
        * <code>VOID = 2;</code>
        */
       public static final int VOID_VALUE = 2;
+      /**
+       * <code>REAL_VAL = 3;</code>
+       */
+      public static final int REAL_VAL_VALUE = 3;
 
 
       public final int getNumber() { return value; }
@@ -242,6 +250,7 @@ public final class ApplicationMessage {
           case 0: return NEW;
           case 1: return VAL;
           case 2: return VOID;
+          case 3: return REAL_VAL;
           default: return null;
         }
       }
@@ -1014,12 +1023,13 @@ public final class ApplicationMessage {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\020appMessage.proto\022\003app\"\262\001\n\nAppMessage\022)" +
+      "\n\020appMessage.proto\022\003app\"\300\001\n\nAppMessage\022)" +
       "\n\004type\030\001 \002(\0162\033.app.AppMessage.MessageTyp" +
       "e\022\017\n\007queryId\030\002 \002(\t\022\017\n\007mixTime\030\003 \001(\001\022\r\n\005r" +
       "ound\030\004 \001(\005\022\016\n\006weight\030\005 \001(\001\022\r\n\005value\030\006 \001(" +
-      "\001\")\n\013MessageType\022\007\n\003NEW\020\000\022\007\n\003VAL\020\001\022\010\n\004VO" +
-      "ID\020\002B\031\n\003appB\022ApplicationMessage"
+      "\001\"7\n\013MessageType\022\007\n\003NEW\020\000\022\007\n\003VAL\020\001\022\010\n\004VO" +
+      "ID\020\002\022\014\n\010REAL_VAL\020\003B\031\n\003appB\022ApplicationMe" +
+      "ssage"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {

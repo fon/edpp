@@ -99,16 +99,11 @@ public class ProtocolRun implements Callable<Session>, SessionListener {
 
 	@Override
 	public void sessionStored(RecordedSession rs) {
-		System.out.println("Will try to enter the lock");
 		synchronized (lock) {
-			System.out.println("Got in the lock");
 			logger.info("A new record was inserted to the database for session with id "
 					+rs.getRecordedSession().getSessionId());
-			System.out.println("Displayed the log");
 			s = rs.getRecordedSession();
-			System.out.println("Stored the session");
 			lock.notify();
-			System.out.println("Notified the lock");
 		}
 	}
 	

@@ -9,6 +9,7 @@ message AppMessage {
 		NEW = 0;
 		VAL = 1;
 		VOID = 2;
+		REAL_VAL = 3;
 	} 
 	
 	required MessageType type = 1;

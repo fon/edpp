@@ -210,7 +210,6 @@ public class Session implements Serializable{
 	
 	@Override
 	public int hashCode() {
-		System.out.println("Wsassasasasa");
 		return sessionId.hashCode();
 	}
 

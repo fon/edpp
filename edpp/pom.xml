@@ -27,7 +27,7 @@
       <configuration>
         <archive>
           <manifest>
-            <mainClass>io.EvaluationPastryNode</mainClass>
+            <mainClass>io.SamplingApp</mainClass>
           </manifest>
         </archive>
         <descriptorRefs>

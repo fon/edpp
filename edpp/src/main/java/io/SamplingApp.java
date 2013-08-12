@@ -70,7 +70,7 @@ public class SamplingApp {
 	     });
 	    
 	    pe = new ProtocolEngine(pon);
-	    pse = new PushSumEngine(pon);
+	    pse = new PushSumEngine(pon, bootaddress.getAddress());
 	    System.out.println("Finished creating new node "+node);
 	    System.out.println("Wait to properly join pastry overlay");
 	    // wait 10 seconds
@@ -98,7 +98,7 @@ public class SamplingApp {
 	 */
 	public static void main(String[] args) throws Exception {
 		
-		BlockingQueue<Double> currentMixingTimeEstimate = new LinkedBlockingQueue<Double>();
+		BlockingQueue<Double> currentMixingTimeEstimate = new LinkedBlockingQueue<Double>(1);
 		
 		//Set logging to a file instead of the console
 		Logger rootLogger = Logger.getLogger(""); 
@@ -180,6 +180,7 @@ public class SamplingApp {
 					if(items.get(0).equals("size")) {
 						//Get mixing time
 						double mixingTime=currentMixingTimeEstimate.take();
+						currentMixingTimeEstimate.offer(mixingTime);
 						System.out.println(sa.requestSize(mixingTime));
 					} else if(items.get(0).equals("exit")) {
 						System.out.println("Exiting...");

@@ -35,7 +35,7 @@ public class MessageSender implements Runnable {
 				try {
 					m = outgoingQueue.take();
 					s = new Socket();
-					s.connect(new InetSocketAddress(m.getAddress(), ProtocolController.PROTOCOL_PORT), 10000);
+					s.connect(new InetSocketAddress(m.getAddress(), ProtocolController.PROTOCOL_PORT),10000);
 					m.getMessage().writeTo(s.getOutputStream());
 					s.close();
 				} catch (IOException e) {
@@ -62,6 +62,7 @@ public class MessageSender implements Runnable {
 		BufferedReader in = null;
 		int numOfTries = 0;
 		do {
+//			System.out.println("Making liveness check to node "+tm.getAddress());
 			try {
 				Socket s = new Socket();
 				s.connect(new InetSocketAddress(tm.getAddress(), ProtocolController.PROTOCOL_PORT), 0);
@@ -69,15 +70,14 @@ public class MessageSender implements Runnable {
 				s.shutdownOutput();
 				in = new BufferedReader(new InputStreamReader(
 						s.getInputStream()));
-				String reply = in.readLine();
+				in.readLine();
 				in.close();
 				s.close();
-				if (reply.equals("alive"))
-					return true;
+				return true;
 			} catch (IOException e) {
 				numOfTries++;
 			}
-		} while (numOfTries <= 6);
+		} while (numOfTries <= 3);
 		return false;
 	}
 			

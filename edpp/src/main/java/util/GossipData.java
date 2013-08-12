@@ -20,15 +20,15 @@ public class GossipData implements Serializable{
 		collectedEigenvalues = new ConcurrentHashMap<String, double[]>();
 	}
 	
-	public void setNewProposal(String nodeId, double [] eigenvals) {
-		collectedEigenvalues.put(nodeId, eigenvals);
+	public void setNewProposal(String nodeId, double[] fs) {
+		collectedEigenvalues.put(nodeId, fs);
 	}
 	
-	public double [] getProposal(String nodeId) {
+	public double[] getProposal(String nodeId) {
 		return collectedEigenvalues.get(nodeId);
 	}
 	
-	public double [] computeMedianOfProposedValues() {
+	public double[] computeMedianOfProposedValues() {
 		Collection<double []> values = collectedEigenvalues.values();
 		
 		int rows = values.size();
@@ -59,7 +59,7 @@ public class GossipData implements Serializable{
 		return finalValues;
 	}
 	
-	private double findMedian(double [] items) {
+	private double findMedian(double[] items) {
 		DescriptiveStatistics stats = new DescriptiveStatistics(items);
 		return stats.getPercentile(50);
 	}

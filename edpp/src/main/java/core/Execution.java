@@ -1,9 +1,7 @@
 package core;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
@@ -217,12 +215,9 @@ public class Execution implements Serializable {
 			return null;
 		}
 		double [] responses = new double[impulseResponse.length()];
-		System.out.print("The impulse responses are: [");
 		for (int i = 0; i< impulseResponse.length(); i++) {
 			responses[i] = impulseResponse.get(i);
-			System.out.print(responses[i]+",");
 		}
-		System.out.println("]");
 		
 		this.matrixA = Algorithms.computeSystemMatrixA(responses);
 		eigenvalues = Algorithms.computeEigenvaluesModulus(matrixA);

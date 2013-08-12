@@ -30,8 +30,7 @@ public class TestPastryNode {
 	private ProtocolEngine pe;
 	private PastryNode node;
 
-	public TestPastryNode(int bindport, InetSocketAddress bootaddress, Environment env,
-			int totalNumOfNodes) throws Exception {
+	public TestPastryNode(int bindport, InetSocketAddress bootaddress, Environment env) throws Exception {
 
 			    // Generate the NodeIds Randomly
 			    NodeIdFactory nidFactory = new RandomNodeIdFactory(env);
@@ -43,7 +42,7 @@ public class TestPastryNode {
 			    node = factory.newNode();
 
 			    // construct a new MyApp
-			    PastryOverlayNode pon = new PastryOverlayNode(node, totalNumOfNodes);
+			    PastryOverlayNode pon = new PastryOverlayNode(node);
 			    pe = new ProtocolEngine(pon);
 			    node.boot(bootaddress);
 
@@ -106,7 +105,7 @@ public class TestPastryNode {
 			InetSocketAddress bootaddress = new InetSocketAddress(bootaddr,bootport);
 
 			// launch our node!
-			TestPastryNode dt = new TestPastryNode(bindport, bootaddress, env, totalNumOfNodes);
+			TestPastryNode dt = new TestPastryNode(bindport, bootaddress, env);
 			
 			Console c = System.console();
 			if (c == null) {

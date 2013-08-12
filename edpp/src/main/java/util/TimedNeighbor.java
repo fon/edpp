@@ -8,7 +8,7 @@ public class TimedNeighbor extends Neighbor {
 	private volatile AtomicLong remainingTime;
 	
 	public static final long INF = Long.MAX_VALUE;
-	static final long DEFAULT_TIMER = 1000;
+	static final long DEFAULT_TIMER = 10000;
 	
 	public TimedNeighbor(byte[] id, InetAddress address) {
 		super(id, address);

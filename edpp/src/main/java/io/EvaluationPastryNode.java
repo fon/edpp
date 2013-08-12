@@ -8,13 +8,12 @@ import java.net.NetworkInterface;
 import java.util.Arrays;
 import java.util.List;
 
+import app.PushSumEngine;
 import network.PastryOverlayNode;
-
 import core.ProtocolEngine;
 import core.Session;
 import evaluation.EvaluationResults;
 import evaluation.Evaluator;
-
 import rice.environment.Environment;
 import rice.pastry.NodeIdFactory;
 import rice.pastry.PastryNode;
@@ -32,9 +31,9 @@ public class EvaluationPastryNode {
 	
 	private ProtocolEngine pe;
 	private PastryNode node;
+	private PushSumEngine pse;
 
-	public EvaluationPastryNode(int bindport, InetSocketAddress bootaddress, Environment env, 
-			int totalNumOfNodes) throws Exception {
+	public EvaluationPastryNode(int bindport, InetSocketAddress bootaddress, Environment env) throws Exception {
 
 			    // Generate the NodeIds Randomly
 			    NodeIdFactory nidFactory = new RandomNodeIdFactory(env);
@@ -46,7 +45,7 @@ public class EvaluationPastryNode {
 			    node = factory.newNode();
 
 			    // construct a new MyApp
-			    PastryOverlayNode pon = new PastryOverlayNode(node, totalNumOfNodes);
+			    PastryOverlayNode pon = new PastryOverlayNode(node);
 			    pe = new ProtocolEngine(pon);
 			    node.boot(bootaddress);
 
@@ -68,11 +67,13 @@ public class EvaluationPastryNode {
 			        }
 			     });
 			   
+			    pse = new PushSumEngine(pon, bootaddress.getAddress());
 			    System.out.println("Finished creating new node "+node);
 			    System.out.println("Wait to properly join pastry overlay");
 			    // wait 10 seconds
 			    env.getTimeSource().sleep(5000);
 			    System.out.println("Application ready");
+			    
 	}
 	
 	public void terminate() {
@@ -87,6 +88,10 @@ public class EvaluationPastryNode {
 	public Session requestSamplingData(int numberOfExecutions, int numberOfRounds) {
 		SamplingParameters sp = new SamplingParameters(numberOfExecutions, numberOfRounds);
 		return pe.requestSessionData(sp);
+	}
+	
+	public double requestSize() {
+		return this.pse.estimateSize(true, 3.14);
 	}
 	
 		
@@ -110,11 +115,10 @@ public class EvaluationPastryNode {
 			// build the bootaddress from the command line args
 			InetAddress bootaddr = InetAddress.getByName(args[1]);
 			int bootport = Integer.parseInt(args[2]);
-			int totalNumOfNodes = Integer.parseInt(args[3]);
 			InetSocketAddress bootaddress = new InetSocketAddress(bootaddr,bootport);
 
 			// launch our node!
-			EvaluationPastryNode dt = new EvaluationPastryNode(bindport, bootaddress, env, totalNumOfNodes);
+			EvaluationPastryNode dt = new EvaluationPastryNode(bindport, bootaddress, env);
 			if (bootaddr.isAnyLocalAddress() || bootaddr.isLoopbackAddress() 
 					|| NetworkInterface.getByInetAddress(bootaddr) != null) {
 				eval = new Evaluator(dt.getProtocolEngine(), bootaddr, true);
@@ -149,6 +153,8 @@ public class EvaluationPastryNode {
 //						dt.terminate();
 						System.out.println("Exiting...");
 						System.exit(0);
+					} else if(items.get(0).equals("size")) {
+						System.out.println(dt.requestSize());
 					} else {
 						System.out.println("Accepted commands are evaluate and exit...");
 					}

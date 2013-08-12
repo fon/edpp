@@ -72,6 +72,7 @@ public class MessageReceiver implements Runnable {
 					executor.execute(new LivenessListener(incomingSocket));
 				} else {
 					incomingQueue.add(new TransferableMessage(pm, address));
+					incomingSocket.close();
 				}
 			}
 		} catch (IOException e) {

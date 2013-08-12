@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
@@ -48,12 +49,14 @@ public class PushSumEngine {
 	private String currentQuery;
 	private int numberOfInLinks;
 	private int [] linksInRound;
-	
+	private double expectedVal;
+	private int numOfNodes;
+	private InetAddress bootNode;
 	
 	private ExecutorService executor;
 
 	
-	public PushSumEngine(Node localNode) {
+	public PushSumEngine(Node localNode, InetAddress bootNode) {
 		this.localNode = localNode;
 //		this.numOfRounds = (int)(this.mixTime.get()+Math.ceil(Math.log(networkSize)));
 		this.mixTime = new AtomicInteger(0);
@@ -65,10 +68,15 @@ public class PushSumEngine {
 		query = new ConcurrentHashMap<String, Double>();
 		currentQuery = "";
 		numberOfInLinks = 0;
+		expectedVal = 0;
+		numOfNodes = 0;
+		this.bootNode = bootNode;
 	}
 	
 	public double estimateSize(boolean initiator, double mixTime) {
 		double estimation = 0;
+		expectedVal = 0;
+		numOfNodes = 0;
 		this.protocolRunning.set(true);
 		this.mixTime = new AtomicInteger((int)Math.ceil(mixTime));
 		this.numOfRounds = this.mixTime.get()+(int)Math.ceil(Math.log(1/ERROR))+
@@ -85,16 +93,15 @@ public class PushSumEngine {
 		
 		int initValue = r.nextInt(1001);
 		
-		try {
-			Socket s = new Socket(InetAddress.getByName("130.43.171.48"),45678);
-			PrintWriter connectionInputter = new PrintWriter(new OutputStreamWriter(s.getOutputStream()) );
-			connectionInputter.write(new Integer(initValue).toString()+"\n");
-			connectionInputter.flush();
-			connectionInputter.close();
-			s.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-		}
+		AppMessage init = AppMessage.newBuilder()
+				.setType(MessageType.REAL_VAL)
+				.setQueryId(currentQuery)
+				.setValue(initValue)
+				.build();
+
+		MessageContainer cont = new MessageContainer(init, bootNode);
+		//Put to sending queue
+		sendMessage(cont);
 		
 		receivedValues.set(currentRound, initValue);
 		receivedWeights.set(currentRound, 1);
@@ -123,6 +130,8 @@ public class PushSumEngine {
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 		}
+		
+		System.out.println("The expected value is "+(expectedVal/numOfNodes));
 		
 		for (int i = 0; i<numOfRounds; i++) {
 			synchronized (linksInRound) {
@@ -200,7 +209,8 @@ public class PushSumEngine {
 		boolean notSent = true;
 		while(notSent) {
 			try {
-				Socket s = new Socket(mc.getAddress(), PUSH_SUM_PORT);
+				Socket s = new Socket();
+				s.connect(new InetSocketAddress(mc.getAddress(), PUSH_SUM_PORT));
 				mc.getMessage().writeTo(s.getOutputStream());
 				s.close();
 				notSent = false;
@@ -253,6 +263,9 @@ public class PushSumEngine {
 						}
 						receivedWeights.set(round, weight+newWeight);
 						receivedValues.set(round, value+newValue);
+					} else if (pm.getType() == MessageType.REAL_VAL){
+						expectedVal += pm.getValue();
+						numOfNodes++;
 					} else {
 						int round = pm.getRound();
 						synchronized (linksInRound) {

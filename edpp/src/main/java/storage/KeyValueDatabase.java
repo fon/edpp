@@ -40,25 +40,18 @@ public class KeyValueDatabase implements Database {
 		int size;
 		synchronized (lock) {
 			try {
-				System.out.println("Need to get the size");
 				size = db.lastKey()+1;
-				System.out.println("Got the size");
 			} catch (NoSuchElementException nse) {
-				System.out.println("Empty...");
 				size = 0;
 			}
-			System.out.println("Need to put the session here");
 			db.put(new Integer(size), rs);
-			System.out.println("Stored it");
 		}
-		System.out.println("Will notify the listeners");
 		synchronized (sessionListeners) {
 			Iterator<SessionListener> iter = sessionListeners.iterator();
 			while(iter.hasNext()) {
 				iter.next().sessionStored(rs);
 			}
 		}
-		System.out.println("Did it");
 	}
 
 	@Override

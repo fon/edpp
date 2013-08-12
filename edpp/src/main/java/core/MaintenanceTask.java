@@ -77,14 +77,14 @@ public class MaintenanceTask implements Runnable {
 							 */
 							e.setPhase(Phase.DATA_EXCHANGE);
 //							sendOutNextMessage(MessageType.NEXT, s, e);
-							e.recomputeWeight();
+//							e.recomputeWeight();
 							e.setRound(2);
 							checkForNewExecution(s, e);
 							logger.info("Recomputed weights and set round to "+e.getCurrentRound()+
 									" in execution "+e.getExecutionNumber()+" of session "+s.getSessionId());
 							if (e.hasAnotherRound()) {
 								sendOutNextMessage(MessageType.NEXT, s, e);
-								e.recomputeWeight();
+//								e.recomputeWeight();
 								e.getInNeighbors().renewTimers();
 								int newRound = e.getCurrentRound()+1;
 								checkForNewExecution(s, e);
@@ -99,7 +99,7 @@ public class MaintenanceTask implements Runnable {
 								DoubleMatrix rm = e.computeRealizationMatrix();
 								logger.info("The realization matrix of execution "+e.getExecutionNumber()
 										+" of session "+s.getSessionId()+" was computed");
-								rm.print();
+//								rm.print();
 								e.transferPendingGossipMessages();
 //								e.getRealizationMatrix().print(NumberFormat.FRACTION_FIELD, 5);
 								//compute the eigenvalues of the approximation matrix
@@ -159,7 +159,7 @@ public class MaintenanceTask implements Runnable {
 							// If it is the end of the round check if we have another round
 							if (e.hasAnotherRound()) {
 								sendOutNextMessage(MessageType.NEXT, s, e);
-								e.recomputeWeight();
+//								e.recomputeWeight();
 								int newRound = e.getCurrentRound()+1;
 								logger.info("Round "+e.getCurrentRound()+" of execution "+e.getExecutionNumber()
 										+" in session "+s.getSessionId()+" is over. Going to round "+newRound);
@@ -174,7 +174,7 @@ public class MaintenanceTask implements Runnable {
 								DoubleMatrix rm = e.computeRealizationMatrix();
 								logger.info("The realization matrix of execution "+e.getExecutionNumber()
 										+" of session "+s.getSessionId()+" was computed");
-								rm.print();
+//								rm.print();
 								e.transferPendingGossipMessages();
 //								e.getRealizationMatrix().print(NumberFormat.FRACTION_FIELD, 5);
 								//compute the eigenvalues of the approximation matrix
