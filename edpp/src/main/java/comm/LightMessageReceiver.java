@@ -1,12 +1,14 @@
 package comm;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.util.concurrent.BlockingQueue;
 
 import comm.ProtocolMessage.Message;
+import comm.ProtocolMessage.Message.MessageType;
 import core.ProtocolController;
 
 public class LightMessageReceiver implements Runnable {
@@ -28,7 +30,14 @@ public class LightMessageReceiver implements Runnable {
 				ss.receive(packet);
 				ByteArrayInputStream input = new ByteArrayInputStream(buf);
 				Message m = Message.parseDelimitedFrom(input);
-				incomingQueue.add(new TransferableMessage(m, packet.getAddress(), false));
+				if (m.getType() == MessageType.LIVENESS_CHECK) {
+					byte [] rep = new byte[64];
+					DatagramPacket pack = new  DatagramPacket(rep, rep.length, 
+							packet.getAddress(), packet.getPort());
+					ss.send(pack);
+				} else {
+					incomingQueue.add(new TransferableMessage(m, packet.getAddress(), false));
+				}
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
