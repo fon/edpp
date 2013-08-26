@@ -146,7 +146,7 @@ public class MaintenanceTask implements Runnable {
 								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
 //									logger.info("Probing node to see if it is alive");
 									if (isAlive(neighbor)) {
-										System.out.println("Is alive");
+//										System.out.println("Is alive");
 										requestPreviousVal(s.getSessionId(), e.getExecutionNumber(),
 												e.getCurrentRound(), neighbor.getAddress());
 										//Send message to request again the same packet
@@ -232,6 +232,8 @@ public class MaintenanceTask implements Runnable {
 								if (neighbor.getTimeToProbe() <= 0) { /* Check whether the node is alive */
 									if (isAlive(neighbor)) {
 										inNeighbors.renewTimer(neighbor);
+										requestPreviousVal(s.getSessionId(), e.getExecutionNumber(),
+												-1, neighbor.getAddress());
 										endOfRound = false;
 									} else {
 										logger.info("Node "+neighbor.getId().toString()+" is no longer alive."

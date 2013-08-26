@@ -188,11 +188,11 @@ public class PushSumEngine {
 			}
 			
 			MessageContainer mc = new MessageContainer(m,selected.getAddress());
-			sendMessage(mc, true);
+			sendMessage(mc, false);
 			synchronized (linksInRound) {
 				if(linksInRound[round] != 0 ) {
 					try {
-						linksInRound.wait(5000);
+						linksInRound.wait(3000);
 						linksInRound[round] = 0;
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
@@ -274,19 +274,6 @@ public class PushSumEngine {
 							};
 							protocolExec.execute(t);
 						}
-					} else if (pm.getType() == MessageType.VAL){
-						double weight = pm.getWeight();
-						double value = pm.getValue();
-						int round = pm.getRound();
-						double newWeight = receivedWeights.get(round);
-						double newValue = receivedValues.get(round);
-						synchronized (linksInRound) {
-							linksInRound[round]-=1;
-							if(linksInRound[round] == 0)
-								linksInRound.notify();
-						}
-						receivedWeights.set(round, weight+newWeight);
-						receivedValues.set(round, value+newValue);
 					} else if (pm.getType() == MessageType.REAL_VAL){
 						expectedVal += pm.getValue();
 						numOfNodes++;
@@ -331,6 +318,19 @@ public class PushSumEngine {
 							if(linksInRound[round] == 0)
 								linksInRound.notify();
 						}
+					}  else if (pm.getType() == MessageType.VAL){
+						double weight = pm.getWeight();
+						double value = pm.getValue();
+						int round = pm.getRound();
+						double newWeight = receivedWeights.get(round);
+						double newValue = receivedValues.get(round);
+						synchronized (linksInRound) {
+							linksInRound[round]-=1;
+							if(linksInRound[round] == 0)
+								linksInRound.notify();
+						}
+						receivedWeights.set(round, weight+newWeight);
+						receivedValues.set(round, value+newValue);
 					}
 				}
 			} catch (IOException e) {

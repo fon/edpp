@@ -81,7 +81,7 @@ public class MessageSender implements Runnable {
 		int numOfTries = 0;
 		do{
 			try {
-				System.out.println("Making liveness check");
+//				System.out.println("Making liveness check");
 				output  = new ByteArrayOutputStream(2048);
 				tm.getMessage().writeDelimitedTo(output);
 				DatagramSocket socket = new DatagramSocket();

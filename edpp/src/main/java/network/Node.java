@@ -11,11 +11,5 @@ public interface Node {
 	
 	public Id getLocalId();
 	
-	public boolean removeOutNeighborNode(String Id);
-//	public boolean isAlive(Neighbor n);
-	
-	
-//	public int getDiameter();
-	
-	
+	public boolean removeOutNeighborNode(String id);
 }

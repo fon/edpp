@@ -23,5 +23,5 @@ message AppMessage {
 	
 	optional double weight = 5;
 	optional double value = 6;
-	
+		
 }

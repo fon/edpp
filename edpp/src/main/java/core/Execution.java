@@ -158,7 +158,7 @@ public class Execution implements Serializable {
 	 * @param val the value to be added
 	 * @param round the round to which the value corresponds
 	 */
-	public void addValToNextRound(String nodeId, double val, int round) {
+	public synchronized void addValToNextRound(String nodeId, double val, int round) {
 		boolean gotValue = true;
 		
 		Queue<String> nodes = pendingData.get(round);
@@ -184,7 +184,7 @@ public class Execution implements Serializable {
 		}
 	}
 	
-	//TODO must do tests
+	/*//TODO must do tests
 	public void addNeighborToRound(String nodeId, int round) {
 		Queue<String> nodes = pendingData.get(round);
 		if (nodes == null) {
@@ -194,7 +194,7 @@ public class Execution implements Serializable {
 		} else {
 			nodes.offer(nodeId);
 		}
-	}
+	}*/
 	
 	
 	/**

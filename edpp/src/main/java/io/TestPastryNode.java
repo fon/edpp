@@ -8,10 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import network.PastryOverlayNode;
-
 import core.ProtocolEngine;
 import core.Session;
-
 import rice.environment.Environment;
 import rice.pastry.NodeIdFactory;
 import rice.pastry.PastryNode;
@@ -40,9 +38,11 @@ public class TestPastryNode {
 
 			    // construct a node
 			    node = factory.newNode();
-
+			    System.out.println(node.getId().toStringFull());
+			    
 			    // construct a new MyApp
 			    PastryOverlayNode pon = new PastryOverlayNode(node);
+			   
 			    pe = new ProtocolEngine(pon);
 			    node.boot(bootaddress);
 
