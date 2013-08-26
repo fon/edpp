@@ -149,6 +149,14 @@ public class EvaluationPastryNode {
 								+ results.getSpectralGapPercentError(50));
 						System.out.println("The 50th percentile of the mixing time percent error is "
 								+ results.getMixingTimePercentError(50));
+						System.out.println("The 10th percentile of the spectral gap percent error is "
+								+ results.getSpectralGapPercentError(10));
+						System.out.println("The 10th percentile of the mixing time percent error is "
+								+ results.getMixingTimePercentError(10));
+						System.out.println("The 90th percentile of the spectral gap percent error is "
+								+ results.getSpectralGapPercentError(90));
+						System.out.println("The 90th percentile of the mixing time percent error is "
+								+ results.getMixingTimePercentError(90));
 					} else if (items.get(0).equals("exit")) {
 //						dt.terminate();
 						System.out.println("Exiting...");
