@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import domain.GossipData;
+
 public class GossipDataTest {
 
 	double [] proposer1 = {

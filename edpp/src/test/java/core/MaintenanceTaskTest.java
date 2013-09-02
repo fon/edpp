@@ -16,9 +16,10 @@ import org.junit.Test;
 
 import storage.Database;
 import storage.FakeDatabase;
-import util.Phase;
-
 import comm.TransferableMessage;
+import domain.Execution;
+import domain.Phase;
+import domain.Session;
 
 public class MaintenanceTaskTest {
 

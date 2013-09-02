@@ -7,6 +7,10 @@ import java.net.UnknownHostException;
 
 import org.junit.Test;
 
+import domain.Id;
+import domain.Neighbor;
+import domain.TimedNeighbor;
+
 public class NeighborTest {
 
 	@Test

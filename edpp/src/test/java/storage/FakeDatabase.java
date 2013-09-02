@@ -4,8 +4,8 @@ package storage;
 
 import java.util.Stack;
 
-import core.RecordedSession;
-import core.SessionListener;
+import domain.RecordedSession;
+import event.SessionListener;
 
 public class FakeDatabase implements Database {
 

@@ -18,12 +18,13 @@ import org.junit.Test;
 
 import storage.Database;
 import storage.FakeDatabase;
-import util.Phase;
-import util.TimedNeighborsTable;
-
 import comm.MessageBuilder;
 import comm.ProtocolMessage.Message;
 import comm.TransferableMessage;
+import domain.Execution;
+import domain.Phase;
+import domain.Session;
+import domain.structure.TimedNeighborsTable;
 
 public class MessageHandlerTaskTest {
 

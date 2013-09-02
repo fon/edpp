@@ -7,6 +7,11 @@ import java.net.InetAddress;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.Id;
+import domain.PlainNeighbor;
+import domain.structure.PlainNeighborsTable;
+import domain.structure.PlainNeighborsTableSet;
+
 public class PlainNeighborsTableSetTest {
 
 	PlainNeighborsTable table;

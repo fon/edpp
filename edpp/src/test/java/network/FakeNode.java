@@ -5,8 +5,9 @@ import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Set;
 
-import util.Id;
-import util.Neighbor;
+import domain.Id;
+import domain.Neighbor;
+import domain.network.Node;
 
 public class FakeNode implements Node {
 

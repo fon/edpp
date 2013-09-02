@@ -2,13 +2,15 @@ package core;
 
 import static org.junit.Assert.*;
 import network.FakeNode;
-import network.Node;
 
 import org.jblas.DoubleMatrix;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.Phase;
+import domain.Execution;
+import domain.Phase;
+import domain.Session;
+import domain.network.Node;
 
 public class SessionTest {
 

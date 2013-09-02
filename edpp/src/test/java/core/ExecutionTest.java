@@ -6,16 +6,16 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-
 import network.FakeNode;
 
 import org.jblas.DoubleMatrix;
 import org.junit.Before;
 import org.junit.Test;
 
-import util.Id;
-import util.Phase;
-import util.TimedNeighbor;
+import domain.Execution;
+import domain.Id;
+import domain.Phase;
+import domain.TimedNeighbor;
 
 public class ExecutionTest {
 

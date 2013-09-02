@@ -7,6 +7,11 @@ import java.net.InetAddress;
 import org.junit.Before;
 import org.junit.Test;
 
+import domain.Id;
+import domain.TimedNeighbor;
+import domain.structure.TimedNeighborsTable;
+import domain.structure.TimedNeighborsTableSet;
+
 public class TimedNeighborsTableSetTest {
 
 	TimedNeighborsTable table;
