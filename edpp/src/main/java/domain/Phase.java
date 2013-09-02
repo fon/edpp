@@ -1,4 +1,4 @@
-package util;
+package domain;
 
 public enum Phase {
 	INIT, 

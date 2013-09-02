@@ -1,4 +1,4 @@
-package core;
+package domain;
 
 import java.io.Serializable;
 import java.util.Iterator;
@@ -19,17 +19,12 @@ import algorithms.Algorithms;
 
 import com.google.common.util.concurrent.AtomicDoubleArray;
 
-import util.GossipData;
-import util.Id;
-import util.Neighbor;
-import util.Phase;
-import util.PlainNeighbor;
-import util.PlainNeighborsTable;
-import util.PlainNeighborsTableSet;
-import util.TimedNeighbor;
-import util.TimedNeighborsTable;
-import util.TimedNeighborsTableSet;
-import network.Node;
+import core.ProtocolController;
+import domain.network.Node;
+import domain.structure.PlainNeighborsTable;
+import domain.structure.PlainNeighborsTableSet;
+import domain.structure.TimedNeighborsTable;
+import domain.structure.TimedNeighborsTableSet;
 
 public class Execution implements Serializable {
 	

@@ -1,4 +1,4 @@
-package core;
+package domain;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import network.Node;
+import domain.network.Node;
 
 public class Session implements Serializable{
 

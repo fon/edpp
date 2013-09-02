@@ -1,4 +1,4 @@
-package util;
+package domain;
 
 import java.io.Serializable;
 import java.util.Collection;
