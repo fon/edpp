@@ -1,6 +1,7 @@
-package core;
+package event;
 
 import comm.ProtocolMessage.SessionEvent;
+import domain.RecordedSession;
 
 public interface SessionListener {
 
