@@ -22,11 +22,11 @@ import algorithms.Algorithms;
 import analysis.Analyzer;
 import comm.ProtocolMessage.SessionEvent;
 import comm.ProtocolMessage.SessionEvent.EventType;
-import util.SamplingParameters;
 import core.ProtocolEngine;
-import core.RecordedSession;
-import core.Session;
-import core.SessionListener;
+import domain.RecordedSession;
+import domain.SamplingParameters;
+import domain.Session;
+import event.SessionListener;
 
 public class Evaluator {
 	
@@ -219,6 +219,7 @@ public class Evaluator {
 			System.out.println(terminalGraph.getGraph().toString()+"\n");
 			
 			double [][] matrixOfWeights = terminalGraph.getMatrixOfWeights();
+			terminalGraph.exportAdjacencyMatrix();
 			DoubleMatrix dm = new DoubleMatrix(matrixOfWeights);
 			double [] expectedEigenvals = Algorithms.computeEigenvaluesModulus(dm);
 			double expectedGap = Analyzer.computeSpectralGap(expectedEigenvals);
@@ -229,6 +230,7 @@ public class Evaluator {
 			System.out.println("The computed mixing time is: "+Analyzer.computeMixingTime(evalSession.getComputedEigenvalues(), error));
 			System.out.println("The expected spectral gap is: "+expectedGap);
 			System.out.println("The computed spectral gap is: "+Analyzer.computeSpectralGap(evalSession.getComputedEigenvalues()));
+			System.out.println("The computed spectral gap v2 is: "+Analyzer.computeSpectralGap2(evalSession.getComputedEigenvalues()));
 			return er;
 		}
 		return null;

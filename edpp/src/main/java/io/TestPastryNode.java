@@ -7,16 +7,16 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.List;
 
-import network.PastryOverlayNode;
 import core.ProtocolEngine;
-import core.Session;
+import domain.SamplingParameters;
+import domain.Session;
+import domain.network.PastryOverlayNode;
 import rice.environment.Environment;
 import rice.pastry.NodeIdFactory;
 import rice.pastry.PastryNode;
 import rice.pastry.PastryNodeFactory;
 import rice.pastry.socket.SocketPastryNodeFactory;
 import rice.pastry.standard.RandomNodeIdFactory;
-import util.SamplingParameters;
 
 /**
  * 

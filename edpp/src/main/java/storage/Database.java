@@ -1,7 +1,7 @@
 package storage;
 
-import core.RecordedSession;
-import core.SessionListener;
+import domain.RecordedSession;
+import event.SessionListener;
 
 public interface Database {
 

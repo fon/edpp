@@ -6,11 +6,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
+import domain.SamplingParameters;
+import domain.Session;
+import domain.network.Node;
+import event.SessionListener;
 import storage.Database;
 import storage.KeyValueDatabase;
-import util.SamplingParameters;
-
-import network.Node;
 
 public class ProtocolEngine {
 

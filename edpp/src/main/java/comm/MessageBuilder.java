@@ -3,16 +3,14 @@ package comm;
 import java.util.Date;
 import java.util.Set;
 
-import util.Neighbor;
-
-import network.Node;
-
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.Builder;
 import comm.ProtocolMessage.Message.MessageType;
 import comm.ProtocolMessage.SessionEvent;
 import comm.ProtocolMessage.SessionEvent.EventType;
-import core.Session;
+import domain.Neighbor;
+import domain.Session;
+import domain.network.Node;
 
 /**
  * Class for producing messages used by the decetralized protocol

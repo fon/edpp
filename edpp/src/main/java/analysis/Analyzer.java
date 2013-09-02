@@ -19,6 +19,13 @@ public class Analyzer {
 		return 1 - Math.abs(secondEigenval);
 	}
 	
+	public static double computeSpectralGap2(double [] eigenvalues) {
+		if (eigenvalues.length<2)
+			return -1;
+		double secondEigenval = eigenvalues[1];
+		return Math.abs(eigenvalues[0]) - Math.abs(secondEigenval);
+	}
+	
 	/**
 	 * Computes the mixing time of the eigenvalues derived from a network-related matrix
 	 * @param eigenvalues an array of unsorted eigenvalues

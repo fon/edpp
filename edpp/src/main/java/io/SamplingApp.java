@@ -17,18 +17,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import network.PastryOverlayNode;
 import rice.environment.Environment;
 import rice.pastry.NodeIdFactory;
 import rice.pastry.PastryNode;
 import rice.pastry.PastryNodeFactory;
 import rice.pastry.socket.SocketPastryNodeFactory;
 import rice.pastry.standard.RandomNodeIdFactory;
-import util.SamplingParameters;
 import analysis.Analyzer;
 import app.PushSumEngine;
 import core.ProtocolEngine;
-import core.Session;
+import domain.SamplingParameters;
+import domain.Session;
+import domain.network.PastryOverlayNode;
 
 public class SamplingApp {
 

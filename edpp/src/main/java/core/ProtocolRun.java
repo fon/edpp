@@ -5,12 +5,14 @@ import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 import storage.Database;
-import util.SamplingParameters;
-
 import comm.MessageBuilder;
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.SessionEvent;
 import comm.TransferableMessage;
+import domain.RecordedSession;
+import domain.SamplingParameters;
+import domain.Session;
+import event.SessionListener;
 
 public class ProtocolRun implements Callable<Session>, SessionListener {
 

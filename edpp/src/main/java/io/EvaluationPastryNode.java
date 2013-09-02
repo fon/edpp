@@ -9,9 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import app.PushSumEngine;
-import network.PastryOverlayNode;
 import core.ProtocolEngine;
-import core.Session;
+import domain.SamplingParameters;
+import domain.Session;
+import domain.network.PastryOverlayNode;
 import evaluation.EvaluationResults;
 import evaluation.Evaluator;
 import rice.environment.Environment;
@@ -20,7 +21,6 @@ import rice.pastry.PastryNode;
 import rice.pastry.PastryNodeFactory;
 import rice.pastry.socket.SocketPastryNodeFactory;
 import rice.pastry.standard.RandomNodeIdFactory;
-import util.SamplingParameters;
 
 /**
  * 

@@ -2,7 +2,9 @@ package app;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -22,17 +24,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.common.util.concurrent.AtomicDoubleArray;
 
+import domain.Neighbor;
+import domain.network.Node;
 import app.ApplicationMessage.AppMessage;
 import app.ApplicationMessage.AppMessage.MessageType;
-import util.Neighbor;
-import network.Node;
 
 public class PushSumEngine {
 
 	public static final int PUSH_SUM_PORT = 9856;
-	
-	private static final double ERROR = 0.001;
-	private static final double PROBABILITY = 0.99;
 	
 	private Node localNode;
 	private AtomicInteger mixTime;
@@ -82,9 +81,19 @@ public class PushSumEngine {
 		expectedVal = 0;
 		numOfNodes = 0;
 		this.protocolRunning.set(true);
+		PrintWriter pw = null;
+		try {
+			 
+			FileWriter write = new FileWriter( "estimated_vals.txt" , false);
+ 
+			
+ 
+			pw = new PrintWriter(write);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.mixTime = new AtomicInteger((int)Math.ceil(mixTime));
-		this.numOfRounds = this.mixTime.get()+(int)Math.ceil(Math.log(1/ERROR))+
-				(int)Math.ceil(Math.log(1/(1-PROBABILITY)));
+		this.numOfRounds = this.mixTime.get()+localNode.getOutNeighbors().size();
 		Random r = new Random();
 		if (query.get(currentQuery) != null)
 			return Double.POSITIVE_INFINITY;
@@ -154,7 +163,7 @@ public class PushSumEngine {
 			
 			float percentComplete = ((float)round/numOfRounds)*100;
 			System.out.print("\rSampling at "+(int)percentComplete+"%...Current estimation: "+estimation);
-			
+			pw.println(estimation);
 			double currentRecWeight = receivedWeights.get(round);
 			double currentRecVals = receivedValues.get(round);
 			receivedWeights.set(round, weights.get(round)*0.5+currentRecWeight);
@@ -202,6 +211,9 @@ public class PushSumEngine {
 		}
 
 		estimation = values.get(numOfRounds-1)/weights.get(numOfRounds-1);
+		pw.println(estimation);
+		pw.close();
+
 		query.put(currentQuery, estimation);
 		currentQuery = "";
 		numberOfInLinks = 0;

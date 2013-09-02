@@ -7,18 +7,21 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-import util.NeighborsTable;
-import util.Phase;
-import util.PlainNeighbor;
-import util.PlainNeighborsTable;
-import util.TimedNeighbor;
 import comm.MessageBuilder;
 import comm.ProtocolMessage.Message.MessageType;
 import comm.ProtocolMessage.SessionEvent;
 import comm.ProtocolMessage.SessionEvent.EventType;
 import comm.TransferableMessage;
 import comm.ProtocolMessage.Message;
-import network.Node;
+import domain.Execution;
+import domain.Phase;
+import domain.PlainNeighbor;
+import domain.Session;
+import domain.TimedNeighbor;
+import domain.network.Node;
+import domain.structure.NeighborsTable;
+import domain.structure.PlainNeighborsTable;
+import event.SessionListener;
 
 public class MessageHandlerTask implements Runnable {
 

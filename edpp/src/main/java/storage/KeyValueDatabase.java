@@ -10,8 +10,8 @@ import java.util.NoSuchElementException;
 import jdbm.PrimaryTreeMap;
 import jdbm.RecordManager;
 import jdbm.RecordManagerFactory;
-import core.RecordedSession;
-import core.SessionListener;
+import domain.RecordedSession;
+import event.SessionListener;
 
 public class KeyValueDatabase implements Database {
 

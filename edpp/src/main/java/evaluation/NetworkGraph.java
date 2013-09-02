@@ -1,9 +1,14 @@
 package evaluation;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.jgrapht.ext.MatrixExporter;
 import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.ListenableDirectedWeightedGraph;
 
@@ -82,6 +87,18 @@ public class NetworkGraph {
 			}
 		}
 		return weightedMatrix;
+	}
+	
+	public void exportAdjacencyMatrix() {
+		MatrixExporter<String, DefaultWeightedEdge> exporter = new MatrixExporter<String, DefaultWeightedEdge>();
+		try {
+			PrintWriter out
+			   = new PrintWriter(new BufferedWriter(new FileWriter("adjacency.mat")));
+			exporter.exportAdjacencyMatrix(out, graph);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public ListenableDirectedWeightedGraph<String, DefaultWeightedEdge> getGraph() {

@@ -17,7 +17,8 @@ import comm.MessageReceiver;
 import comm.MessageSender;
 import comm.ProtocolMessage.Message.MessageType;
 import comm.TransferableMessage;
-import network.Node;
+import domain.Session;
+import domain.network.Node;
 
 public class ProtocolController implements Runnable {
 	

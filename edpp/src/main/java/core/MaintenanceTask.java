@@ -9,15 +9,7 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.logging.Logger;
 
-import org.jblas.DoubleMatrix;
-
-import network.Node;
 import storage.Database;
-import util.Phase;
-import util.PlainNeighbor;
-import util.PlainNeighborsTable;
-import util.TimedNeighbor;
-import util.TimedNeighborsTable;
 import comm.MessageBuilder;
 import comm.MessageSender;
 import comm.ProtocolMessage.SessionEvent;
@@ -25,6 +17,16 @@ import comm.TransferableMessage;
 import comm.ProtocolMessage.Message;
 import comm.ProtocolMessage.Message.MessageType;
 import comm.ProtocolMessage.SessionEvent.EventType;
+import domain.Execution;
+import domain.Phase;
+import domain.PlainNeighbor;
+import domain.RecordedSession;
+import domain.Session;
+import domain.TimedNeighbor;
+import domain.network.Node;
+import domain.structure.PlainNeighborsTable;
+import domain.structure.TimedNeighborsTable;
+import event.SessionListener;
 
 public class MaintenanceTask implements Runnable {
 	
