@@ -9,33 +9,42 @@ import cx.ath.troja.chordless.ServerInfo;
 import domain.Id;
 import domain.Neighbor;
 
+/**
+ * Implementation of the Node interface for providing support for Chordless
+ * networks
+ * 
+ * @author Xenofon Foukas
+ * 
+ */
 public class ChordOverlayNode implements Node {
 
 	private Chord localNode;
-	
+
 	/**
 	 * Class constructor
-	 * @param localNode The Chord object provided by the Chordless overlay
+	 * 
+	 * @param localNode
+	 *            The Chord object provided by the Chordless overlay
 	 */
 	public ChordOverlayNode(Chord localNode) {
-		this.localNode =  localNode;
+		this.localNode = localNode;
 	}
-	
+
 	@Override
 	public Set<Neighbor> getOutNeighbors() {
 		HashSet<Neighbor> outNeighbors = new HashSet<Neighbor>();
-		
+
 		// Get an array of all the successors contained in the Finger Table
-		ServerInfo [] si = localNode.getFingerArray();
-		//Create a Neighbor object for each successor
+		ServerInfo[] si = localNode.getFingerArray();
+		// Create a Neighbor object for each successor
 		for (ServerInfo server : si) {
 			Id nodeId = new Id(server.getIdentifier().toByteArray());
 			// Unsafe if the protocol is not IP
 			InetSocketAddress isa = (InetSocketAddress) server.getAddress();
-			Neighbor n = new Neighbor(nodeId , isa.getAddress());
+			Neighbor n = new Neighbor(nodeId, isa.getAddress());
 			// Add the Neighbor to the set of out-neighbors for the node
 			outNeighbors.add(n);
-		}		
+		}
 		return outNeighbors;
 	}
 
@@ -48,9 +57,9 @@ public class ChordOverlayNode implements Node {
 
 	@Override
 	public boolean removeOutNeighborNode(String Id) {
-		/* This optional method is not implemented for Chord
-	 	 * Just ignore the hint of the protocol for removal of 
-		 * the node with id Id
+		/*
+		 * This optional method is not implemented for Chord Just ignore the
+		 * hint of the protocol for removal of the node with id Id
 		 */
 		return false;
 	}
