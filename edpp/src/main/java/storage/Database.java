@@ -23,7 +23,7 @@ public interface Database {
 	 * Finds the last Session stored in the database
 	 * 
 	 * @return an object of type RecordedSession containing the last session
-	 *         stored
+	 *         stored or null if the database is currently empty
 	 */
 	public RecordedSession getLastRecordedSession();
 
