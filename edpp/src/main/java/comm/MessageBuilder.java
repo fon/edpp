@@ -168,7 +168,7 @@ public class MessageBuilder {
 	 *            the abstract Node representation of the local node
 	 * @param type
 	 *            the type of event occurred in the Session
-	 * @return
+	 * @return a message of type SessionEvent containing the new event
 	 */
 	public static SessionEvent buildNewSessionEvent(Session s, Node localNode,
 			EventType type) {
