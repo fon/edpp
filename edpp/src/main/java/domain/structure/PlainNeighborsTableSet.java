@@ -9,18 +9,37 @@ import domain.Id;
 import domain.Neighbor;
 import domain.PlainNeighbor;
 
+/**
+ * Table for storing and managing out-neighbors using a HashSet. This table is
+ * thread safe, but iterating over the PlainNeighbor objects should be performed
+ * using an Iterator
+ * 
+ * @author Xenofon Foukas
+ * 
+ */
 public class PlainNeighborsTableSet implements PlainNeighborsTable {
 
 	private Set<PlainNeighbor> neighborsList;
-	
+
+	/**
+	 * Constructor class. Creates an empty table of size 0
+	 */
 	public PlainNeighborsTableSet() {
-		neighborsList = Collections.synchronizedSet(new HashSet<PlainNeighbor>());
+		neighborsList = Collections
+				.synchronizedSet(new HashSet<PlainNeighbor>());
 	}
-	
+
+	/**
+	 * Constructor class. Creates an emtpy table with an initial capacity
+	 * 
+	 * @param initCapacity
+	 *            the initial capacity of the empty table
+	 */
 	public PlainNeighborsTableSet(int initCapacity) {
-		neighborsList = Collections.synchronizedSet(new HashSet<PlainNeighbor>(initCapacity));
+		neighborsList = Collections.synchronizedSet(new HashSet<PlainNeighbor>(
+				initCapacity));
 	}
-	
+
 	@Override
 	public PlainNeighbor getNeighbor(Id nodeId) {
 		synchronized (neighborsList) {
@@ -28,7 +47,7 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 				if (n.getId().equals(nodeId)) {
 					return n;
 				}
-			}			
+			}
 		}
 		return null;
 	}
@@ -36,12 +55,13 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 	@Override
 	public PlainNeighbor getNeighbor(String stringId) {
 		synchronized (neighborsList) {
-			for (Iterator<PlainNeighbor> i = neighborsList.iterator(); i.hasNext();) {
+			for (Iterator<PlainNeighbor> i = neighborsList.iterator(); i
+					.hasNext();) {
 				PlainNeighbor n = i.next();
-				if (n.getId().toString().equals(stringId)) {   
+				if (n.getId().toString().equals(stringId)) {
 					return n;
 				}
-			}			
+			}
 		}
 		return null;
 	}
@@ -55,13 +75,14 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 	@Override
 	public boolean removeNeighbor(Id nodeId) {
 		synchronized (neighborsList) {
-			for (Iterator<PlainNeighbor> i = neighborsList.iterator(); i.hasNext();) {
+			for (Iterator<PlainNeighbor> i = neighborsList.iterator(); i
+					.hasNext();) {
 				PlainNeighbor n = i.next();
-				if (n.getId().equals(nodeId)) {   
+				if (n.getId().equals(nodeId)) {
 					i.remove();
 					return true;
 				}
-			}			
+			}
 		}
 		return false;
 	}
@@ -92,7 +113,7 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 			for (PlainNeighbor pn : neighborsList) {
 				if (pn.equals(node))
 					return pn.getWeight();
-			}			
+			}
 		}
 		return -1;
 	}
@@ -103,7 +124,7 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 			for (PlainNeighbor pn : neighborsList) {
 				if (pn.getId().equals(nodeId))
 					return pn.getWeight();
-			}			
+			}
 		}
 		return -1;
 	}
@@ -114,7 +135,7 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 			for (PlainNeighbor pn : neighborsList) {
 				if (pn.getId().toString().equals(nodeId))
 					return pn.getWeight();
-			}			
+			}
 		}
 		return -1;
 	}
@@ -127,7 +148,7 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 					pn.setWeight(weight);
 					return true;
 				}
-			}			
+			}
 		}
 		return false;
 	}
@@ -140,7 +161,7 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 					pn.setWeight(weight);
 					return true;
 				}
-			}			
+			}
 		}
 		return false;
 	}
@@ -153,7 +174,7 @@ public class PlainNeighborsTableSet implements PlainNeighborsTable {
 					pn.setWeight(weight);
 					return true;
 				}
-			}			
+			}
 		}
 		return false;
 	}
