@@ -63,5 +63,12 @@ public class LightMessageReceiver implements Runnable {
 			// TODO Must fix this to locate the exact case of the exception
 		}
 	}
+	
+	/**
+	 * Stops the message receiving service, by closing the datagram socket
+	 */
+	public void stopService() {
+		ss.close();
+	}
 
 }
