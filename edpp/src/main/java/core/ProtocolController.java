@@ -20,14 +20,20 @@ import comm.TransferableMessage;
 import domain.Session;
 import domain.network.Node;
 
+/**
+ * This class is responsible for handling all the tasks related to the protocol,
+ * i.e. message handling and maintenance tasks. It should run as a daemon
+ * 
+ * @author Xenofon Foukas
+ * 
+ */
 public class ProtocolController implements Runnable {
-	
+
 	public static final int PROTOCOL_PORT = 11990;
 
 	public static final long TIMEOUT = 1000;
-	
+
 	private static final int NTHREADS = 1;
-	
 
 	private Node localNode;
 	private BlockingQueue<TransferableMessage> incomingQueue;
@@ -41,32 +47,43 @@ public class ProtocolController implements Runnable {
 	private ScheduledExecutorService scheduledExecutor;
 	private Map<String, Session> sessions;
 	private Database db;
-	
+
 	private Logger logger;
-	
-	public ProtocolController(Node localNode,
-			Database db) {
-		
+
+	/**
+	 * Class constructor
+	 * 
+	 * @param localNode
+	 *            the abstract Node representing the local network node
+	 * @param db
+	 *            the Database used for storing and retrieving completed
+	 *            Sessions
+	 */
+	public ProtocolController(Node localNode, Database db) {
+
 		logger = Logger.getLogger(ProtocolController.class.getName());
 		this.localNode = localNode;
 		this.db = db;
-		
+
+		// initialize the blocking queues for incoming and outgoing messages
 		incomingQueue = new LinkedBlockingQueue<TransferableMessage>();
 		receiver = new MessageReceiver(incomingQueue);
 		lightReceiver = new LightMessageReceiver(incomingQueue);
-		
+
 		outgoingQueue = new LinkedBlockingQueue<TransferableMessage>();
 		sender = new MessageSender(outgoingQueue);
-		
+
+		// set the number of threads in the pool of threads for message handling
+		// tasks
 		executor = Executors.newFixedThreadPool(NTHREADS);
 		initExecutor = Executors.newFixedThreadPool(1);
 		scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-		daemonExecutor = Executors.newFixedThreadPool(4,new ThreadFactory() {
-		    public Thread newThread(Runnable r) {
-		        Thread t=new Thread(r);
-		        t.setDaemon(true);
-		        return t;
-		    }
+		daemonExecutor = Executors.newFixedThreadPool(4, new ThreadFactory() {
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				t.setDaemon(true);
+				return t;
+			}
 		});
 		sessions = new ConcurrentHashMap<String, Session>();
 	}
@@ -74,44 +91,50 @@ public class ProtocolController implements Runnable {
 	@Override
 	public void run() {
 		TransferableMessage incomingMessage;
-		
-		//Set up and run the basic threads
+
+		// Set up and run the basic threads
 		logger.info("Initiating the receiver thread");
 		daemonExecutor.execute(receiver);
 		logger.info("Initiating the sender thread");
 		daemonExecutor.execute(sender);
 		daemonExecutor.execute(lightReceiver);
-		
-		//Set the threads as daemons, so that the vm will exit
-		//if only those threads remain running
-		
+
+		// Set the threads as daemons, so that the vm will exit
+		// if only those threads remain running
+
 		// Schedule thread maintenance
 		logger.info("Initiating the maintenance task scheduler");
-		scheduledExecutor.scheduleWithFixedDelay(new MaintenanceTask(sessions, outgoingQueue, localNode, db), 
-				TIMEOUT, TIMEOUT, TimeUnit.MILLISECONDS);
-		
+		scheduledExecutor.scheduleWithFixedDelay(new MaintenanceTask(sessions,
+				outgoingQueue, localNode, db), TIMEOUT, TIMEOUT,
+				TimeUnit.MILLISECONDS);
+
 		while (true) {
 			try {
-				incomingMessage = 
-						incomingQueue.take();
+				incomingMessage = incomingQueue.take();
+				// if an INIT message arrives to the incoming queue you should
+				// handle it sequentially and not concurrently with other INIT
+				// messages. the reason is that creation of Executions cannot be
+				// parallelized
 				if (incomingMessage.getMessage().getType() == MessageType.INIT) {
-					initExecutor.execute(new MessageHandlerTask(incomingMessage, sessions, 
-						localNode, outgoingQueue));
+					initExecutor
+							.execute(new MessageHandlerTask(incomingMessage,
+									sessions, localNode, outgoingQueue));
 				} else {
-					//ReceivedMessage
-					executor.execute(new MessageHandlerTask(incomingMessage, sessions, 
-							localNode, outgoingQueue));					
+					// if the message is of any type other than INIT, take a
+					// thread from the pool and initiate a new
+					// MessageHandlerTask
+					executor.execute(new MessageHandlerTask(incomingMessage,
+							sessions, localNode, outgoingQueue));
 				}
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	public void putMessageToInQueue(TransferableMessage tm) {
 		incomingQueue.add(tm);
 	}
-	
+
 }
