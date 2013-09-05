@@ -61,11 +61,12 @@ public class LightMessageReceiverTest {
 		socket.close();
 		TransferableMessage receivedMessage = queue.take();
 		assertEquals(testMessage, receivedMessage.getMessage());
+		mr.stopService();
 	}
 	
 	@AfterClass
 	public static void setUpAfterClass() throws Exception {
-		mr.stopService();
+//		mr.stopService();
 		executor.shutdown();
 	}
 
