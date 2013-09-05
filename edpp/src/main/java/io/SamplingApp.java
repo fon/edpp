@@ -141,8 +141,8 @@ public class SamplingApp {
 
 			@Override
 			public void run() {
-				// make a sampling request for a single execution of 20 rounds
-				SamplingParameters sp = new SamplingParameters(1, 20);
+				// make a sampling request for a single execution of 10 rounds
+				SamplingParameters sp = new SamplingParameters(1, 10);
 				Session s = null;
 				boolean isDemoNode = false;
 				// check whether this is the node where the demonstration will

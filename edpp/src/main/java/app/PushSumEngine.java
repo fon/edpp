@@ -116,8 +116,12 @@ public class PushSumEngine {
 		System.out.println("The size of the routing table is: "
 				+ localNode.getOutNeighbors().size());
 		this.mixTime = new AtomicInteger((int) Math.ceil(mixTime));
-		this.numOfRounds = this.mixTime.get()
-				+ localNode.getOutNeighbors().size();
+		if (initiator) {
+			this.numOfRounds = this.mixTime.get()
+					+ localNode.getOutNeighbors().size();			
+		} else {
+			this.numOfRounds = this.mixTime.get();
+		}
 		System.out.println("The total number of rounds required are "
 				+ numOfRounds);
 		Random r = new Random();
@@ -184,7 +188,7 @@ public class PushSumEngine {
 			estimation = values.get(round) / weights.get(round);
 
 			float percentComplete = ((float) round / numOfRounds) * 100;
-			System.out.print("Sampling at " + (int) percentComplete
+			System.out.println("Sampling at " + (int) percentComplete
 					+ "% (round )" + round + "...Current estimation: "
 					+ estimation);
 			pw.println(estimation);
