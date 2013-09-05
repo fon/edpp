@@ -167,9 +167,15 @@ public class Algorithms {
 			O1 = O.getRange(0, O.getRows() - 1, 0, O.getColumns());
 			O2 = O.getRange(1, O.getRows(), 0, O.getColumns());
 
-			// compute the pseudo-inverse of O1 and multiply it with O2
-			temp = Solve.pinv(O1);
-			A = temp.mmul(O2);
+			// compute the pseudo-inverse of O1 and multiply it with O2 if O1
+			// has elements
+			if (O1.length == 0) {
+				A = DoubleMatrix.zeros(1);
+				A.put(0, 1);
+			} else {
+				temp = Solve.pinv(O1);
+				A = temp.mmul(O2);
+			}
 
 			return A;
 		}
@@ -199,10 +205,7 @@ public class Algorithms {
 			/*
 			 * create a Hankel matrix of the form:
 			 * 
-			 *  |a b c d|
-			 *  |b c d e|
-			 *  |c d e f|
-			 *  |d e f g| 
+			 * |a b c d| |b c d e| |c d e f| |d e f g|
 			 */
 			for (int i = 0; i < l; i++) {
 				for (int j = 0; j < l; j++) {
