@@ -78,7 +78,7 @@ public class GossipData implements Serializable {
 				columns = vals.length;
 		}
 
-		// create a square double array containing all the proposals.
+		// create a double matrix containing all the proposals.
 		// each row will contain the eigenvalues proposed by one node in
 		// decreasing magnitude order
 		double[][] proposals = new double[rows][columns];
