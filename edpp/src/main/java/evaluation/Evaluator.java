@@ -193,7 +193,8 @@ public class Evaluator {
 	 * @param error
 	 *            the accepted error for computing the mixing time using an
 	 *            approximation
-	 * @return
+	 * @return the EvaluationResults of this evaluation if this is the initator
+	 *         node, otherwise null
 	 */
 	public EvaluationResults evaluateEngine(int numberOfExecutions,
 			int numberOfRounds, double error) {

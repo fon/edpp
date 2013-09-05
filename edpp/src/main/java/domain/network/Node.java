@@ -25,7 +25,7 @@ public interface Node {
 	/**
 	 * This method returns the Id of the local node
 	 * 
-	 * @return
+	 * @return the Id of the local node
 	 */
 	public Id getLocalId();
 

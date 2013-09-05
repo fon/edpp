@@ -49,7 +49,7 @@ public class PlainNeighbor extends Neighbor {
 	/**
 	 * Constructor class
 	 * 
-	 * @param id
+	 * @param stringId
 	 *            the string representation of the id of the out-neighbor
 	 * @param address
 	 *            the InetAddress of the out-neighbor
