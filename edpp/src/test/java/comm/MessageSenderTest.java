@@ -51,7 +51,7 @@ public class MessageSenderTest {
 				.setRound(200)
 				.build();
 		
-		TransferableMessage m = new TransferableMessage(testMessage, InetAddress.getLocalHost());
+		TransferableMessage m = new TransferableMessage(testMessage, InetAddress.getLocalHost(),true);
 		queue.put(m);
 		
 		incomingSocket = ss.accept();
