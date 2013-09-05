@@ -77,7 +77,7 @@ public class TimedNeighbor extends Neighbor {
 	 */
 	public TimedNeighbor(byte[] id, InetAddress address, long remainingTime) {
 		super(id, address);
-		this.remainingTime = new AtomicLong(DEFAULT_TIMER);
+		this.remainingTime = new AtomicLong(remainingTime);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class TimedNeighbor extends Neighbor {
 	 */
 	public TimedNeighbor(Id id, InetAddress address, long remainingTime) {
 		super(id, address);
-		this.remainingTime = new AtomicLong(DEFAULT_TIMER);
+		this.remainingTime = new AtomicLong(remainingTime);
 	}
 
 	/**
