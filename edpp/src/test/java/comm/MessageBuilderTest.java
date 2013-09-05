@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import network.FakeNode;
-
 import org.apache.commons.lang.ArrayUtils;
 import org.junit.Test;
 
@@ -17,6 +15,7 @@ import comm.ProtocolMessage.SessionEvent.EventType;
 import comm.ProtocolMessage.SessionEvent;
 import domain.Neighbor;
 import domain.Session;
+import domain.network.FakeNode;
 
 public class MessageBuilderTest {
 
