@@ -30,6 +30,15 @@ import domain.SamplingParameters;
 import domain.Session;
 import domain.network.PastryOverlayNode;
 
+/**
+ * Demonstration application used for estimating the average number of files per
+ * node in the network by using the mixing time estimation provided by the
+ * decentralized impulse response protocol. The protocol runs continuously on
+ * the background and provides new estimations
+ * 
+ * @author Xenofon Foukas
+ * 
+ */
 public class SamplingApp {
 
 	private ProtocolEngine pe;
@@ -98,9 +107,8 @@ public class SamplingApp {
 	}
 
 	/**
-	 * Usage: java [-cp FreePastry-<version>.jar]
-	 * rice.tutorial.lesson3.DistTutorial localbindport bootIP bootPort example
-	 * java rice.tutorial.DistTutorial 9001 pokey.cs.almamater.edu 9001
+	 * Usage: java edpp.jar localbindport bootIP bootPort example: java -jar
+	 * edpp.jar 9001 planetlab-1.imperial.ac.uk 9001
 	 */
 	public static void main(String[] args) throws Exception {
 
@@ -117,6 +125,7 @@ public class SamplingApp {
 		rootLogger.setLevel(Level.INFO);
 		rootLogger.addHandler(logHandler);
 
+		// class to perform the samplings on the background in order to provide estimates of the mixing time
 		class Sampler implements Runnable {
 
 			private ProtocolEngine p;
@@ -132,28 +141,31 @@ public class SamplingApp {
 
 			@Override
 			public void run() {
+				// make a sampling request for a single execution of 20 rounds
 				SamplingParameters sp = new SamplingParameters(1, 20);
 				Session s = null;
 				boolean isDemoNode = false;
+				// check whether this is the node where the demonstration will
+				// be performed
 				try {
 					isDemoNode = (bootaddr.isAnyLocalAddress()
 							|| bootaddr.isLoopbackAddress() || NetworkInterface
 							.getByInetAddress(bootaddr) != null);
 				} catch (SocketException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				while (true) {
 					if (isDemoNode) {
+						// if this is the demo node make a request for the
+						// mixing time
 						s = p.requestSessionData(sp);
 						double mixingTime = Analyzer.computeMixingTime(
 								s.getComputedEigenvalues(), 0.001);
 						estimate.clear();
 						estimate.offer(mixingTime);
 						try {
-							Thread.sleep(60000);
+							Thread.sleep(30000);
 						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}
@@ -179,7 +191,7 @@ public class SamplingApp {
 			InetSocketAddress bootaddress = new InetSocketAddress(bootaddr,
 					bootport);
 
-			// launch our node!
+			// launch our node
 			SamplingApp sa = new SamplingApp(bindport, bootaddress, env);
 			ExecutorService executorService = Executors.newFixedThreadPool(1);
 			executorService.execute(new Sampler(sa.getProtocolEngine(),
