@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import network.FakeNode;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,6 +18,7 @@ import comm.TransferableMessage;
 import domain.Execution;
 import domain.Phase;
 import domain.Session;
+import domain.network.FakeNode;
 
 public class MaintenanceTaskTest {
 
