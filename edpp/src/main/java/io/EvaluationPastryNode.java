@@ -103,9 +103,8 @@ public class EvaluationPastryNode {
 	}
 
 	/**
-	 * Usage: java [-cp FreePastry-<version>.jar]
-	 * rice.tutorial.lesson3.DistTutorial localbindport bootIP bootPort example
-	 * java rice.tutorial.DistTutorial 9001 pokey.cs.almamater.edu 9001
+	 * Usage: java edpp.jar localbindport bootIP bootPort example: java -jar
+	 * edpp.jar 9001 planetlab-1.imperial.ac.uk 9001
 	 */
 	public static void main(String[] args) throws Exception {
 		// Loads pastry settings
@@ -136,6 +135,8 @@ public class EvaluationPastryNode {
 				eval = new Evaluator(dt.getProtocolEngine(), bootaddr, false);
 			}
 
+			// check if the node provides console support for accepting
+			// commands, otherwise run in support mode
 			Console c = System.console();
 			if (c == null) {
 				System.err.println("No console.");
@@ -153,6 +154,8 @@ public class EvaluationPastryNode {
 						int numberOfExecutions = Integer.parseInt(items.get(1));
 						int numberOfRounds = Integer.parseInt(items.get(2));
 						double error = Double.parseDouble(items.get(3));
+
+						// make an evaluation sampling request
 						EvaluationResults results = eval.evaluateEngine(
 								numberOfExecutions, numberOfRounds, error);
 
@@ -194,9 +197,9 @@ public class EvaluationPastryNode {
 			// remind user how to use
 			System.out.println("Usage:");
 			System.out
-					.println("java -jar edpp.jar localbindport bootIP bootPort totalNumOfNodes");
+					.println("java -jar edpp.jar localbindport bootIP bootPort");
 			System.out
-					.println("example java -jar edpp.jar 9001 planetlab-1.imperial.ac.uk 9001 100");
+					.println("example java -jar edpp.jar 9001 planetlab-1.imperial.ac.uk 9001");
 			throw e;
 		}
 	}
