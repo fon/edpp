@@ -24,8 +24,6 @@ public class Algorithms {
 	 * 
 	 * @param impulseResponses
 	 *            an array of the collected impulse responses
-	 * @param networkDiameter
-	 *            an approximation of the diameter of the underlying network
 	 * @return the realization matrix A of the system in a DoubleMatrix form
 	 * @see DoubleMatrix
 	 */
@@ -38,8 +36,6 @@ public class Algorithms {
 	 * 
 	 * @param impulseResponses
 	 *            an array of the collected impulse responses
-	 * @param networkDiameter
-	 *            an approximation of the diameter of the underlying network
 	 * @return the realization matrix A of the system in an array form
 	 */
 	public static double[][] systemMatrixAToArray(double[] impulseResponses) {
