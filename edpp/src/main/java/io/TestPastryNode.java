@@ -19,6 +19,7 @@ import rice.pastry.socket.SocketPastryNodeFactory;
 import rice.pastry.standard.RandomNodeIdFactory;
 
 /**
+ * A simple class for testing the protocol
  * 
  * @author Xenofon Foukas
  * 
@@ -90,9 +91,9 @@ public class TestPastryNode {
 	}
 
 	/**
-	 * Usage: java [-cp FreePastry-<version>.jar]
-	 * rice.tutorial.lesson3.DistTutorial localbindport bootIP bootPort example
-	 * java rice.tutorial.DistTutorial 9001 pokey.cs.almamater.edu 9001
+	 * Usage: java edpp.jar localbindport bootIP bootPort
+	 * example:
+	 * java -jar edpp.jar 9001 planetlab-1.imperial.ac.uk 9001
 	 */
 	public static void main(String[] args) throws Exception {
 		// Loads pastry settings
@@ -155,9 +156,9 @@ public class TestPastryNode {
 			// remind user how to use
 			System.out.println("Usage:");
 			System.out
-					.println("java -jar edpp.jar localbindport bootIP bootPort totalNumOfNodes");
+					.println("java -jar edpp.jar localbindport bootIP bootPort");
 			System.out
-					.println("example java -jar edpp.jar 9001 planetlab-1.imperial.ac.uk 9001 100");
+					.println("example java -jar edpp.jar 9001 planetlab-1.imperial.ac.uk 9001");
 			throw e;
 		}
 	}
