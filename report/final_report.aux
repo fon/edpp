@@ -1,0 +1,446 @@
+\relax 
+\citation{6195806}
+\citation{6195806}
+\@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{11}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {1.1}Motivation}{11}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:centralized}{{1.1a}{11}}
+\newlabel{sub@fig:centralized}{{(a)}{a}}
+\newlabel{fig:decentralized}{{1.1b}{11}}
+\newlabel{sub@fig:decentralized}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1.1}{\ignorespaces Centralized vs Decentralized networks\relax }}{11}}
+\citation{6195806}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Contributions}{12}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Report Structure}{12}}
+\citation{6195806}
+\citation{parker2003mcgraw}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Background}{13}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{sec:background}{{2}{13}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.1}Important Networking Concepts and Technologies}{13}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.1}Decentralized Networks}{13}}
+\citation{Stoica:2001:CSP:964723.383071}
+\citation{Rowstron:2001:PSD:646591.697650}
+\citation{4146697}
+\newlabel{fig:sampling_error_initial}{{2.1a}{14}}
+\newlabel{sub@fig:sampling_error_initial}{{(a)}{a}}
+\newlabel{fig:sampling_error_final}{{2.1b}{14}}
+\newlabel{sub@fig:sampling_error_final}{{(b)}{b}}
+\newlabel{table:computed_matrix}{{2.1c}{14}}
+\newlabel{sub@table:computed_matrix}{{(c)}{c}}
+\newlabel{table:actual_matrix}{{2.1d}{14}}
+\newlabel{sub@table:actual_matrix}{{(d)}{d}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.1}{\ignorespaces In 2.1a\hbox {}, node 1 requests a list of neighbors from each network node. All the nodes send their adjacency list to node 1, but while the lists are being transfered, node 4 fails as shown in 2.1b\hbox {}. As a result the adjacency matrix computed by node 1 is the one displayed in 2.1c\hbox {}, while the real adjacency matrix by the end of the sampling is shown in 2.1d\hbox {} \relax }}{14}}
+\newlabel{fig:sampling_error}{{2.1}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {node 1 makes a request to create adjacency matrix}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {node 4 sends its out-neighbors and fails}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {adjacency matrix as computed by Node 1}}}{14}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(d)}{\ignorespaces {real adjacency matrix}}}{14}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.2}Network Overlays}{14}}
+\newlabel{subsec:overlay_diff}{{2.1.2}{14}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.2}{\ignorespaces The thin black lines are links of the physical network, while the yellow lines are the virtual links of an overlay network.\relax }}{15}}
+\newlabel{fig:overlay_network}{{2.2}{15}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1.3}Chord and Pastry}{15}}
+\newlabel{sec:pastry_chord}{{2.1.3}{15}}
+\citation{Stoica:2001:CSP:964723.383071}
+\citation{Eastlake:2001:USH:RFC3174}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.3}{\ignorespaces The topology of a chord network overlay\relax }}{16}}
+\newlabel{fig:chord_overlay}{{2.3}{16}}
+\citation{Rowstron:2001:PSD:646591.697650}
+\citation{Castro:2003:TRS:1809315.1809337}
+\newlabel{fig:pastry_routing_table}{{2.4a}{17}}
+\newlabel{sub@fig:pastry_routing_table}{{(a)}{a}}
+\newlabel{fig:pastry_routing_method}{{2.4b}{17}}
+\newlabel{sub@fig:pastry_routing_method}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces Pastry overlay topology\relax }}{17}}
+\newlabel{fig:pastry_figures}{{2.4}{17}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Routing table of a pastry node with id $75fax$, where $b=4$ and $x$ represents an arbitrary suffix}}}{17}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Routing of a message with key $d46a1c$ from node with id $75fa12$}}}{17}}
+\citation{Makhloufi:2009:DAP:1692742.1692756}
+\citation{Jurca:2009:CHL:1688933.1688991}
+\citation{1662440}
+\citation{Makhloufi:2009:DAP:1692742.1692756}
+\citation{Kempe:2003:GCA:946243.946317}
+\citation{Kempe:2004:SGR:1039488.1039491}
+\citation{Rabbat:2007:SGA:1524876.1525177}
+\citation{Kempe:2004:SGR:1039488.1039491}
+\@writefile{toc}{\contentsline {section}{\numberline {2.2}Related Work}{18}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.1}Aggregation Algorithms}{18}}
+\newlabel{sec:aggregation_alg}{{2.2.1}{18}}
+\citation{Kempe:2004:SGR:1039488.1039491}
+\citation{Rabbat:2007:SGA:1524876.1525177}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Push-sum algorithm at node $v$\relax }}{19}}
+\newlabel{alg:push_sum}{{1}{19}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces A network partitioned by a non-uniform gossip algorithm\relax }}{19}}
+\newlabel{fig:non_uniform}{{2.5}{19}}
+\citation{Bawa03estimatingaggregates}
+\citation{Bawa03estimatingaggregates}
+\newlabel{fig:spanning1}{{2.6a}{20}}
+\newlabel{sub@fig:spanning1}{{(a)}{a}}
+\newlabel{fig:spanning2}{{2.6b}{20}}
+\newlabel{sub@fig:spanning2}{{(b)}{b}}
+\newlabel{fig:spanning3}{{2.6c}{20}}
+\newlabel{sub@fig:spanning3}{{(c)}{c}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces In 2.6a\hbox {}, the red querying node requests a \textit  {sum} aggregate function and the spanning tree is constructed (thick gray lines). In 2.6b\hbox {} each node propagates to the higher level the aggregated values it collected. In 2.6c\hbox {} the node with the red X fails before sending the values it gathered, resulting in the computed value at the querying node being 6 instead of 21.\relax }}{20}}
+\newlabel{fig:simpletree}{{2.6}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.2}Sampling Algorithms}{20}}
+\citation{Massoulie:2006:PCS:1146381.1146402}
+\citation{Bawa03estimatingaggregates}
+\citation{Motwani:1995:RA:211390}
+\citation{Massoulie:2006:PCS:1146381.1146402}
+\citation{6195806}
+\citation{Snader:2009:ESP:1855663.1855672}
+\citation{Datta:2007:UDS:1270387.1270884}
+\citation{Kempe:2003:GCA:946243.946317}
+\citation{Sauerwald:2007:MEE:1781574.1781600}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2.3}Spectral Computation Algorithms }{21}}
+\citation{Kempe:2004:DAS:1007352.1007438}
+\citation{Snader:2009:ESP:1855663.1855672}
+\citation{Kamvar:2003:EAR:775152.775242}
+\citation{6195806}
+\citation{luenberger1979introduction}
+\@writefile{toc}{\contentsline {section}{\numberline {2.3}A Decentralized Algorithm for Estimation of Global Properties}{22}}
+\newlabel{sec:decentralized_algo}{{2.3}{22}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.1}Dynamic Systems}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces An input-output dynamic system at time $t$, where $u$ is the input, $y$ is the output and $F$ and $g$ are functions changing the state of the system and computing the output respectively\relax }}{23}}
+\newlabel{fig:dynamic_system}{{2.7}{23}}
+\newlabel{eq:one}{{2.1}{23}}
+\newlabel{eq:two}{{2.2}{23}}
+\@writefile{toc}{\contentsline {subsubsection}{Kung's Realization Algorithm}{23}}
+\newlabel{sec:kung}{{2.3.1}{23}}
+\citation{1992040}
+\citation{1164997}
+\citation{citeulike:2342309}
+\citation{6195806}
+\citation{1258114}
+\citation{Rowstron:2001:PSD:646591.697650}
+\citation{Stoica:2001:CSP:964723.383071}
+\citation{citeulike:92971}
+\citation{Schlosser:2002:HHO:1756247.1756261}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.2}Algorithm Overview}{24}}
+\newlabel{fig:modeled_network}{{2.8a}{25}}
+\newlabel{sub@fig:modeled_network}{{(a)}{a}}
+\newlabel{table:adjacency_matrix}{{2.8b}{25}}
+\newlabel{sub@table:adjacency_matrix}{{(b)}{b}}
+\newlabel{table:matrixA}{{2.8c}{25}}
+\newlabel{sub@table:matrixA}{{(c)}{c}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.8}{\ignorespaces Simple model network and adjacency-related matrices\relax }}{25}}
+\newlabel{fig:modeled_network_example}{{2.8}{25}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {The modeled network}}}{25}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Adjacency matrix of the network}}}{25}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {Matrix A. Each column sums to 1}}}{25}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces estimation algorithm at node $v$\relax }}{25}}
+\newlabel{alg:basic}{{2}{25}}
+\citation{Datta:2007:UDS:1270387.1270884}
+\citation{Snader:2009:ESP:1855663.1855672}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}Evaluation results and Limitations}{26}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Protocol Design}{27}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{sec:design}{{3}{27}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Model Assumptions}{27}}
+\newlabel{sec:model_assumptions}{{3.1}{27}}
+\newlabel{fig:in_neighbors}{{3.1a}{28}}
+\newlabel{sub@fig:in_neighbors}{{(a)}{a}}
+\newlabel{fig:out_neighbors}{{3.1b}{28}}
+\newlabel{sub@fig:out_neighbors}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces In and out-neighbors of a node\relax }}{28}}
+\newlabel{fig:neighbors}{{3.1}{28}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {The gray nodes are the \textit {in-neighbors} of $v$}}}{28}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {The blue nodes are the \textit {out-neighbors} of $v$}}}{28}}
+\citation{chien2003malicious}
+\newlabel{fig:blocking}{{3.2a}{29}}
+\newlabel{sub@fig:blocking}{{(a)}{a}}
+\newlabel{fig:non-blocking}{{3.2b}{29}}
+\newlabel{sub@fig:non-blocking}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Both networks execute the decentralized algorithm. In the beginning node $u$ is in round $k=5 $ and node $v$ in round $k=3$\relax }}{29}}
+\newlabel{fig:sending_operation}{{3.2}{29}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Network with blocking communication operations}}}{29}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Network with non-blocking communication operations}}}{29}}
+\citation{Rose01onthe}
+\citation{Kendall:1994:NDC:974938}
+\citation{6195806}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Design Requirements}{30}}
+\citation{Chandra:1996:UFD:226643.226647}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}Additional Considerations}{31}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}In-depth Protocol Analysis}{31}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Information stored in an \textit  {Execution}. On the right column are the expected results\relax }}{32}}
+\newlabel{table:execution_fields}{{3.1}{32}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Information stored in a \textit  {Session}\relax }}{32}}
+\newlabel{table:session_fields}{{3.2}{32}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}Definitions}{32}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Protocol Description}{32}}
+\newlabel{sec:protocol_description}{{3.3.2}{32}}
+\newlabel{fig:session_creation_activity}{{3.3a}{33}}
+\newlabel{sub@fig:session_creation_activity}{{(a)}{a}}
+\newlabel{fig:session_execution}{{3.3b}{33}}
+\newlabel{sub@fig:session_execution}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Creation of a new \textit  {Session}\relax }}{33}}
+\newlabel{fig:session_creation}{{3.3}{33}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {New $Session$ creation activity}}}{33}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Contents of a $Session$ right after initialization}}}{33}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Initiation procedure at node $i$\relax }}{33}}
+\newlabel{alg:init_init}{{1}{33}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Contents of the \textit  {INIT} message\relax }}{34}}
+\newlabel{table:init_msg}{{3.3}{34}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Initiation procedure at any node $u$\relax }}{34}}
+\newlabel{alg:init_all}{{2}{34}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Part of a network with a node failing before sending messages for the next round to all its out-neighbors\relax }}{35}}
+\newlabel{fig:partial_network}{{3.4}{35}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces Contents of the \textit  {NEXT} message\relax }}{36}}
+\newlabel{table:next_msg}{{3.4}{36}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Initiation of round $r$ of the Data Exchange phase in node $u$\relax }}{36}}
+\newlabel{alg:send_next}{{3}{36}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {4}{\ignorespaces Node $u$ receives a $NEXT$ message from node $v$\relax }}{36}}
+\newlabel{alg:receive_next}{{4}{36}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {5}{\ignorespaces Node $u$ runs the periodic task of the Data Exchange phase in round $r$\relax }}{37}}
+\newlabel{alg:periodic_task}{{5}{37}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces Contents of the \textit  {INIT} message\relax }}{38}}
+\newlabel{table:gossip_msg}{{3.5}{38}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {6}{\ignorespaces Initiation of \textit  {Gossip Round} in node $u$\relax }}{38}}
+\newlabel{alg:send_gossip}{{6}{38}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {7}{\ignorespaces Node $u$ receives a $GOSSIP$ message from node $v$\relax }}{38}}
+\newlabel{alg:receive_gossip}{{7}{38}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {8}{\ignorespaces Node $u$ runs the periodic task of the GOSSIP phase\relax }}{39}}
+\newlabel{alg:periodic_task_gossip}{{8}{39}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Diagram presenting all the rounds and impulse responses of a \textit  {Session}.\relax }}{40}}
+\newlabel{fig:fault_tolerance}{{3.5}{40}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Software Architecture}{41}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{sec:architecture}{{4}{41}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}General overview}{41}}
+\citation{citeulike:915718}
+\newlabel{fig:physical_neighbors}{{4.1a}{42}}
+\newlabel{sub@fig:physical_neighbors}{{(a)}{a}}
+\newlabel{fig:overlay_neighbors}{{4.1b}{42}}
+\newlabel{sub@fig:overlay_neighbors}{{(b)}{b}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces Example of neighboring nodes in physical and overlay networks. The nodes in pink are neighbors of the node in blue. The physical network is in both cases the same.\relax }}{42}}
+\newlabel{fig:different_neighbors}{{4.1}{42}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {Physical Network}}}{42}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {Overlay Network}}}{42}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Id abstraction generic mechanism\relax }}{42}}
+\newlabel{fig:id_mechanism}{{4.2}{42}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Impulse response protocol layered architecture\relax }}{43}}
+\newlabel{fig:design_overview}{{4.3}{43}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Components}{44}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces Interactions in the integration layer\relax }}{45}}
+\newlabel{fig:integration_layer}{{4.4}{45}}
+\citation{kunegis2007spectral}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.5}{\ignorespaces Interactions in the control layer\relax }}{46}}
+\newlabel{fig:network_agnostic_layer}{{4.5}{46}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Implementation}{47}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{sec:implementation}{{5}{47}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Protocol Components}{47}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Basic Domain Classes and Data Structures}{47}}
+\newlabel{sec:basic_domain}{{5.1.1}{47}}
+\citation{rfc4648}
+\newlabel{lst:id_comparison}{{5.1}{48}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.1}Comparison of ids}{48}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Representation of Pastry ids in their original form (hex) and through the \texttt  {Id} wrapper \relax }}{48}}
+\newlabel{table:id_representations}{{5.1}{48}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces \texttt  {Neighbor} hierarchy\relax }}{49}}
+\newlabel{fig:neighbors_hier}{{5.1}{49}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces \texttt  {NeighborTable} hierarchy\relax }}{50}}
+\newlabel{fig:neighbors_tables}{{5.2}{50}}
+\newlabel{lst:synchronized_tables}{{5.2}{50}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.2}Thread-safe PlainNeighborsTableSet with the use of synchronizedSet().}{50}}
+\newlabel{lst:phases_values}{{5.3}{51}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.3}Values of the \texttt  {Phase} enum}{51}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces Eigenvalue proposals of different sizes made by 3 nodes and their median. Only the three largest eigenvalues will be computed, since the second proposal does not have a fourth eigenvalue \relax }}{51}}
+\newlabel{table:largest_eigenvalues}{{5.2}{51}}
+\citation{Leach2005}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces The format of a UUID in hex digits is 8-4-4-4-12 for a total of 36 characters\relax }}{52}}
+\newlabel{fig:uuid}{{5.3}{52}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}Integration Layer}{52}}
+\newlabel{sec:integration_l}{{5.1.2}{52}}
+\citation{FreePastry}
+\newlabel{lst:node_interface}{{5.4}{53}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.4}\texttt  {Node} interface for abstract node representation}{53}}
+\citation{Chordless}
+\newlabel{lst:get_node_id}{{5.5}{54}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.5}\texttt  {getLocalId()} implementation for \textit  {FreePastry}}{54}}
+\newlabel{lst:pastry_out_neighbors}{{5.6}{54}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.6}Adding nodes from the leaf set to the out-neighbors list in \textit  {FreePastry}}{54}}
+\citation{Varda2008}
+\newlabel{lst:get_node_id_chord}{{5.7}{55}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.7}\texttt  {getLocalId()} implementation for Chordless}{55}}
+\newlabel{lst:chord_out_neighbors}{{5.8}{55}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.8}Adding nodes from the finger table to the out-neighbors list in \textit  {Chordless}}{55}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.3}Communications}{55}}
+\newlabel{sec:communications_impl}{{5.1.3}{55}}
+\newlabel{lst:message_types}{{5.9}{56}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.9}Message types as defined in the "\textit  {.proto}" file}{56}}
+\newlabel{lst:message_fields}{{5.10}{56}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.10}Fields of messages as defined in the "\textit  {.proto}" file}{56}}
+\newlabel{lst:new_message_builder}{{5.11}{57}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.11}Fields of messages as defined in the "\textit  {.proto}" file}{57}}
+\newlabel{lst:liveness_check}{{5.12}{58}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.12}Simplified snippet of the \textit  {makeLivenessCheck()} method.}{58}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Synchronization among, sender, receiver and protocol core classes\relax }}{59}}
+\newlabel{fig:communications_architecture}{{5.4}{59}}
+\citation{braschmuejug10}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.4}Algorithms and Analysis}{60}}
+\newlabel{sec:algorithms}{{5.1.4}{60}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Connection of the \texttt  {Analyzer} class to the protocol core\relax }}{61}}
+\newlabel{fig:analyzer_estimations}{{5.5}{61}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.5}Protocol Core}{61}}
+\newlabel{sec:protocol_core}{{5.1.5}{61}}
+\newlabel{lst:message_handler}{{5.13}{62}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.13}Properly handling a message in the \texttt  {MessageHandlerTask}}{62}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces Table of pending a received values for \textit  {Execution} $x$\relax }}{63}}
+\newlabel{table:pending_values}{{5.3}{63}}
+\newlabel{lst:request_val}{{5.14}{63}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.14}Probing for liveness and requesting retransmission of a value}{63}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Coordination of protocol tasks by the \texttt  {ProtocolController} class\relax }}{64}}
+\newlabel{fig:protocol_controller}{{5.6}{64}}
+\newlabel{lst:protocol_engine_initialization}{{5.15}{65}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.15}Initialization of \texttt  {ProtocolEngine} over \textit  {FreePastry}}{65}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces User interaction with the sampling protocol\relax }}{66}}
+\newlabel{fig:unser_interaction}{{5.7}{66}}
+\newlabel{lst:session_listener_definitions}{{5.16}{66}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.16}\texttt  {SessionListener} interface}{66}}
+\newlabel{lst:session_stored}{{5.17}{66}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.17}Implementation of the \textit  {sessionStored()} method by \texttt  {ProtocolRun}}{66}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Sampling initiation algorithm\relax }}{67}}
+\newlabel{alg:sampling_init}{{3}{67}}
+\citation{citeulike:10520984}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.6}Storage}{68}}
+\newlabel{lst:database_interface}{{5.18}{68}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5.18}The \texttt  {Database} interface}{68}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Protocol Evaluator}{68}}
+\newlabel{sec:evaluator}{{5.2}{68}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Collection of structural information by \textit  {evaluator} node\relax }}{69}}
+\newlabel{fig:gather_eval}{{5.8}{69}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Deployment and Documentation}{70}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Summary}{70}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Evaluation}{71}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{sec:evaluation}{{6}{71}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Experimental Setup}{71}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces Example pastry topology of 20 nodes\relax }}{72}}
+\newlabel{fig:pastry_eval}{{6.1}{72}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Number of out-neighbors per node for networks of different sizes\relax }}{72}}
+\newlabel{table:topology_sizes}{{6.1}{72}}
+\citation{6195806}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Evaluation of Requirements}{73}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.1}Correctness}{73}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.2}{\ignorespaces Spectral gap error for the 10th, 50th and 90th percentile of the estimated values versus the number of gathered impulse responses\relax }}{74}}
+\newlabel{fig:spectral_no_failure}{{6.2}{74}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {spectral gap error in 20 nodes}}}{74}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {spectral gap error in 50 nodes}}}{74}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {spectral gap error in 100 nodes}}}{74}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.3}{\ignorespaces Mixing time error for the 10th, 50th and 90th percentile of the estimated values versus the number of gathered impulse responses\relax }}{75}}
+\newlabel{fig:mixing_no_failure}{{6.3}{75}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {mixing time error in 20 nodes}}}{75}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {mixing time error in 50 nodes}}}{75}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {mixing time error in 100 nodes}}}{75}}
+\citation{6195806}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.2}Robustness}{76}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.4}{\ignorespaces Introduction of a single failure in a network of 50 nodes, using a single \textit  {Execution}\relax }}{76}}
+\newlabel{fig:single_exec_failure}{{6.4}{76}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {spectral gap median error}}}{76}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {mixing time median error}}}{76}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.5}{\ignorespaces Spectral gap median error, when introducing one failure at round $3k/4$ using multiple \textit  {Executions}\relax }}{77}}
+\newlabel{fig:single_failure_multiple}{{6.5}{77}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.6}{\ignorespaces Introduction of single addition in a network of 50 nodes, using a single \textit  {Execution}\relax }}{78}}
+\newlabel{fig:single_exec_addition}{{6.6}{78}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {spectral gap median error}}}{78}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {mixing time median error}}}{78}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.7}{\ignorespaces Spectral gap median error, when introducing one addition at round $3k/4$ using multiple \textit  {Executions}\relax }}{78}}
+\newlabel{fig:single_addition_multiple}{{6.7}{78}}
+\newlabel{table:parameters_computation}{{6.2a}{79}}
+\newlabel{sub@table:parameters_computation}{{(a)}{a}}
+\newlabel{table:num_of_introduced_failures}{{6.2b}{79}}
+\newlabel{sub@table:num_of_introduced_failures}{{(b)}{b}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.2}{\ignorespaces Parameters related to the failure rate and a \textit  {Session}'s total execution time\relax }}{79}}
+\@writefile{lot}{\contentsline {subtable}{\numberline{(a)}{\ignorespaces {Total number of rounds and total time of execution for \textit {Sessions} with multiple \textit {Executions}}}}{79}}
+\@writefile{lot}{\contentsline {subtable}{\numberline{(b)}{\ignorespaces {Number of introduced failures for various failure rates}}}{79}}
+\newlabel{eq:total_time}{{6.1}{79}}
+\newlabel{eq:num_r}{{6.2}{79}}
+\newlabel{eq:failure_rate}{{6.3}{79}}
+\citation{6195806}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.8}{\ignorespaces Average spectral gap median error estimates for various failure rates\relax }}{80}}
+\newlabel{fig:failure_rates}{{6.8}{80}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.3}Complexity and Termination}{80}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2.4}Extensibility and Efficiency}{81}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.9}{\ignorespaces Message types sent by the protocol\relax }}{81}}
+\newlabel{fig:messages_number}{{6.9}{81}}
+\citation{Sauerwald:2007:MEE:1781574.1781600}
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Sampling Application}{82}}
+\newlabel{sec:sampling_app}{{6.3}{82}}
+\newlabel{eq:sampling_rounds}{{6.4}{83}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.10}{\ignorespaces Average error in average number of files per node estimation for networks of 20, 50 and 100 nodes\relax }}{83}}
+\newlabel{fig:sampling_app_estimations}{{6.10}{83}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(a)}{\ignorespaces {average error in file number estimation for 20 nodes}}}{83}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(b)}{\ignorespaces {average error in file number estimation for 50 nodes}}}{83}}
+\@writefile{lof}{\contentsline {subfigure}{\numberline{(c)}{\ignorespaces {average error in file number estimation for 100 nodes}}}{83}}
+\citation{Kempe:2003:GCA:946243.946317}
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}Limitations}{84}}
+\citation{6195806}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{85}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{sec:conclusion}{{7}{85}}
+\bibdata{bibl}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Future Work}{86}}
+\bibcite{citeulike:10520984}{1}
+\bibcite{Chordless}{2}
+\bibcite{Bawa03estimatingaggregates}{3}
+\bibcite{6195806}{4}
+\bibcite{Castro:2003:TRS:1809315.1809337}{5}
+\bibcite{Chandra:1996:UFD:226643.226647}{6}
+\bibcite{chien2003malicious}{7}
+\bibcite{Datta:2007:UDS:1270387.1270884}{8}
+\bibcite{Eastlake:2001:USH:RFC3174}{9}
+\bibcite{citeulike:2342309}{10}
+\bibcite{rfc4648}{11}
+\bibcite{Jurca:2009:CHL:1688933.1688991}{12}
+\bibcite{citeulike:92971}{13}
+\bibcite{Kamvar:2003:EAR:775152.775242}{14}
+\bibcite{Kempe:2003:GCA:946243.946317}{15}
+\bibcite{Kempe:2004:SGR:1039488.1039491}{16}
+\bibcite{Kempe:2004:DAS:1007352.1007438}{17}
+\bibcite{Kendall:1994:NDC:974938}{18}
+\bibcite{kunegis2007spectral}{19}
+\bibcite{1992040}{20}
+\bibcite{Leach2005}{21}
+\bibcite{luenberger1979introduction}{22}
+\bibcite{Makhloufi:2009:DAP:1692742.1692756}{23}
+\bibcite{Massoulie:2006:PCS:1146381.1146402}{24}
+\bibcite{braschmuejug10}{25}
+\bibcite{Motwani:1995:RA:211390}{26}
+\bibcite{parker2003mcgraw}{27}
+\bibcite{1164997}{28}
+\bibcite{1662440}{29}
+\bibcite{Rabbat:2007:SGA:1524876.1525177}{30}
+\bibcite{4146697}{31}
+\bibcite{Rose01onthe}{32}
+\bibcite{Rowstron:2001:PSD:646591.697650}{33}
+\bibcite{Sauerwald:2007:MEE:1781574.1781600}{34}
+\bibcite{Schlosser:2002:HHO:1756247.1756261}{35}
+\bibcite{Snader:2009:ESP:1855663.1855672}{36}
+\bibcite{Stoica:2001:CSP:964723.383071}{37}
+\bibcite{FreePastry}{38}
+\bibcite{Varda2008}{39}
+\bibcite{1258114}{40}
+\bibcite{citeulike:915718}{41}
+\bibstyle{plain}
+\@writefile{toc}{\contentsline {chapter}{Appendices}{91}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Node interface and connector classes for Pastry and Chord}{93}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {A.1}Node interface}{93}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.2}Pastry}{94}}
+\@writefile{toc}{\contentsline {section}{\numberline {A.3}Chord}{96}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {B}Detailed design of the impulse response protocol}{97}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {B.1}List of packages and classes}{97}}
+\@writefile{toc}{\contentsline {section}{\numberline {B.2}Dependency graph}{99}}

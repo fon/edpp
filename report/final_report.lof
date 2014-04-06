@@ -1,0 +1,76 @@
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {1.1}{\ignorespaces Centralized vs Decentralized networks\relax }}{11}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {2.1}{\ignorespaces In 2.1a\hbox {}, node 1 requests a list of neighbors from each network node. All the nodes send their adjacency list to node 1, but while the lists are being transfered, node 4 fails as shown in 2.1b\hbox {}. As a result the adjacency matrix computed by node 1 is the one displayed in 2.1c\hbox {}, while the real adjacency matrix by the end of the sampling is shown in 2.1d\hbox {} \relax }}{14}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {node 1 makes a request to create adjacency matrix}}}{14}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {node 4 sends its out-neighbors and fails}}}{14}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {adjacency matrix as computed by Node 1}}}{14}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {real adjacency matrix}}}{14}
+\contentsline {figure}{\numberline {2.2}{\ignorespaces The thin black lines are links of the physical network, while the yellow lines are the virtual links of an overlay network.\relax }}{15}
+\contentsline {figure}{\numberline {2.3}{\ignorespaces The topology of a chord network overlay\relax }}{16}
+\contentsline {figure}{\numberline {2.4}{\ignorespaces Pastry overlay topology\relax }}{17}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Routing table of a pastry node with id $75fax$, where $b=4$ and $x$ represents an arbitrary suffix}}}{17}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Routing of a message with key $d46a1c$ from node with id $75fa12$}}}{17}
+\contentsline {figure}{\numberline {2.5}{\ignorespaces A network partitioned by a non-uniform gossip algorithm\relax }}{19}
+\contentsline {figure}{\numberline {2.6}{\ignorespaces In 2.6a\hbox {}, the red querying node requests a \textit {sum} aggregate function and the spanning tree is constructed (thick gray lines). In 2.6b\hbox {} each node propagates to the higher level the aggregated values it collected. In 2.6c\hbox {} the node with the red X fails before sending the values it gathered, resulting in the computed value at the querying node being 6 instead of 21.\relax }}{20}
+\contentsline {figure}{\numberline {2.7}{\ignorespaces An input-output dynamic system at time $t$, where $u$ is the input, $y$ is the output and $F$ and $g$ are functions changing the state of the system and computing the output respectively\relax }}{23}
+\contentsline {figure}{\numberline {2.8}{\ignorespaces Simple model network and adjacency-related matrices\relax }}{25}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {The modeled network}}}{25}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Adjacency matrix of the network}}}{25}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Matrix A. Each column sums to 1}}}{25}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {3.1}{\ignorespaces In and out-neighbors of a node\relax }}{28}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {The gray nodes are the \textit {in-neighbors} of $v$}}}{28}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {The blue nodes are the \textit {out-neighbors} of $v$}}}{28}
+\contentsline {figure}{\numberline {3.2}{\ignorespaces Both networks execute the decentralized algorithm. In the beginning node $u$ is in round $k=5 $ and node $v$ in round $k=3$\relax }}{29}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Network with blocking communication operations}}}{29}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Network with non-blocking communication operations}}}{29}
+\contentsline {figure}{\numberline {3.3}{\ignorespaces Creation of a new \textit {Session}\relax }}{33}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {New $Session$ creation activity}}}{33}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Contents of a $Session$ right after initialization}}}{33}
+\contentsline {figure}{\numberline {3.4}{\ignorespaces Part of a network with a node failing before sending messages for the next round to all its out-neighbors\relax }}{35}
+\contentsline {figure}{\numberline {3.5}{\ignorespaces Diagram presenting all the rounds and impulse responses of a \textit {Session}.\relax }}{40}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Example of neighboring nodes in physical and overlay networks. The nodes in pink are neighbors of the node in blue. The physical network is in both cases the same.\relax }}{42}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Physical Network}}}{42}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Overlay Network}}}{42}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Id abstraction generic mechanism\relax }}{42}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Impulse response protocol layered architecture\relax }}{43}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Interactions in the integration layer\relax }}{45}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Interactions in the control layer\relax }}{46}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {5.1}{\ignorespaces \texttt {Neighbor} hierarchy\relax }}{49}
+\contentsline {figure}{\numberline {5.2}{\ignorespaces \texttt {NeighborTable} hierarchy\relax }}{50}
+\contentsline {figure}{\numberline {5.3}{\ignorespaces The format of a UUID in hex digits is 8-4-4-4-12 for a total of 36 characters\relax }}{52}
+\contentsline {figure}{\numberline {5.4}{\ignorespaces Synchronization among, sender, receiver and protocol core classes\relax }}{59}
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Connection of the \texttt {Analyzer} class to the protocol core\relax }}{61}
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Coordination of protocol tasks by the \texttt {ProtocolController} class\relax }}{64}
+\contentsline {figure}{\numberline {5.7}{\ignorespaces User interaction with the sampling protocol\relax }}{66}
+\contentsline {figure}{\numberline {5.8}{\ignorespaces Collection of structural information by \textit {evaluator} node\relax }}{69}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {6.1}{\ignorespaces Example pastry topology of 20 nodes\relax }}{72}
+\contentsline {figure}{\numberline {6.2}{\ignorespaces Spectral gap error for the 10th, 50th and 90th percentile of the estimated values versus the number of gathered impulse responses\relax }}{74}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {spectral gap error in 20 nodes}}}{74}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {spectral gap error in 50 nodes}}}{74}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {spectral gap error in 100 nodes}}}{74}
+\contentsline {figure}{\numberline {6.3}{\ignorespaces Mixing time error for the 10th, 50th and 90th percentile of the estimated values versus the number of gathered impulse responses\relax }}{75}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {mixing time error in 20 nodes}}}{75}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {mixing time error in 50 nodes}}}{75}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {mixing time error in 100 nodes}}}{75}
+\contentsline {figure}{\numberline {6.4}{\ignorespaces Introduction of a single failure in a network of 50 nodes, using a single \textit {Execution}\relax }}{76}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {spectral gap median error}}}{76}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {mixing time median error}}}{76}
+\contentsline {figure}{\numberline {6.5}{\ignorespaces Spectral gap median error, when introducing one failure at round $3k/4$ using multiple \textit {Executions}\relax }}{77}
+\contentsline {figure}{\numberline {6.6}{\ignorespaces Introduction of single addition in a network of 50 nodes, using a single \textit {Execution}\relax }}{78}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {spectral gap median error}}}{78}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {mixing time median error}}}{78}
+\contentsline {figure}{\numberline {6.7}{\ignorespaces Spectral gap median error, when introducing one addition at round $3k/4$ using multiple \textit {Executions}\relax }}{78}
+\contentsline {figure}{\numberline {6.8}{\ignorespaces Average spectral gap median error estimates for various failure rates\relax }}{80}
+\contentsline {figure}{\numberline {6.9}{\ignorespaces Message types sent by the protocol\relax }}{81}
+\contentsline {figure}{\numberline {6.10}{\ignorespaces Average error in average number of files per node estimation for networks of 20, 50 and 100 nodes\relax }}{83}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {average error in file number estimation for 20 nodes}}}{83}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {average error in file number estimation for 50 nodes}}}{83}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {average error in file number estimation for 100 nodes}}}{83}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

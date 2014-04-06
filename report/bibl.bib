@@ -1,0 +1,587 @@
+@article{citeulike:10520984,
+    abstract = {{JDBM2 provides HashMap and TreeMap which are backed by disk storage. It is very easy and fast way to persist your data. JDBM2 also have minimal hardware requirements and is highly embeddable (jar have only 145 KB).
+
+JDBM2 was develop to support astronomical calculation with data which does not fit into memory. It also provides storage for astronomical planetarium Asterope.
+
+JDBM started 10 years ago as GDBM port to Java. Original version was developed by Cees De Groot, Alex Boisvert and others. Last version 1.0 was released in 2005 and is used since then with little bugs found. This project is 1.0 fork, which adds more features and performance improvements.
+
+Plus:
+
+    Fast, very small footprint
+    Transactional
+    Standalone jar have only 145 KB.
+    Simple usage
+    Scales well up to 1e9 records
+    Uses Java serialization, no ORM mapping 
+
+Cons:
+
+    Synchronized on one 'big lock', does not scale well with concurrent access
+    Only one single concurrent transaction
+    No triggers, foreign keys and other integrity checks... (compared to SQL database)
+    No J2EE or Spring like support 
+
+This project can be best compared to Oracle BerkleyDB Java Edition, but is distributed under more liberal Apache 2 license and is free as beer.}},
+    citeulike-article-id = {10520984},
+    citeulike-linkout-0 = {http://code.google.com/p/jdbm2/},
+    howpublished = {Online},
+    keywords = {databases, keymap, software},
+    month = mar,
+    posted-at = {2012-04-02 12:36:12},
+    priority = {0},
+    title = {{jdbm2: Embedded Key Value Java database}},
+    url = {http://code.google.com/p/jdbm2/},
+    year = {2012}
+}
+
+
+
+@misc{braschmuejug10,
+ author={mikio braun and johannes schaback and jan saputra mueller and matthias jugel},
+ title={jblas},
+ year={2010},
+ note={\url{http://mloss.org/software/view/180/}}
+}
+
+@techreport{Varda2008,
+  added-at = {2011-06-03T12:52:14.000+0200},
+  author = {Varda, Kenton},
+  biburl = {http://www.bibsonomy.org/bibtex/2fa05cec6c00ece80a4644756ad82b302/voj},
+  institution = {Google},
+  interhash = {3ecd49f2857e154472b259c2ad1a9ff2},
+  intrahash = {fa05cec6c00ece80a4644756ad82b302},
+  keywords = {encoding google number},
+  month = {6},
+  year = 2008,
+  title = {Protocol Buffers: Google's Data Interchange Format},
+  note = "\url{http://google-opensource.blogspot.com/2008/07/protocol-buffers-googles-data.html}",
+}
+
+@MISC{Chordless,
+      TITLE = "Chordless",
+      MONTH = aug,
+      YEAR = 2013,
+      NOTE = "\url{http://sourceforge.net/projects/chordless/}"
+}
+
+@MISC{FreePastry,
+      AUTHOR = "Rice University",
+      TITLE = "FreePastry",
+      MONTH = aug,
+      YEAR = 2013,
+      NOTE = "\url{http://http://www.freepastry.org/}"
+}
+
+@www{Leach2005,
+  added-at = {2010-01-07T13:57:09.000+0100},
+  author = {Leach, P. and Mealling, M. and Salz, R.},
+  bdsk-url-1 = {http://www.ietf.org/rfc/rfc4122.txt},
+  biburl = {http://www.bibsonomy.org/bibtex/2affcd26769cd654a1066b77b7323e2a9/syslogd},
+  date-added = {2009-12-09 11:44:21 +0100},
+  date-modified = {2010-01-04 09:30:08 +0100},
+  interhash = {6fb782461a73a24a3b75bb3d77ed2248},
+  intrahash = {affcd26769cd654a1066b77b7323e2a9},
+  keywords = {imported},
+  timestamp = {2010-01-07T13:57:09.000+0100},
+  title = {RFC 4122: A Universally Unique IDentifier (UUID) URN Namespace},
+  url = {http://www.ietf.org/rfc/rfc4122.txt},
+  year = 2005
+}
+
+@misc{rfc4648,
+  abstract = {This document describes the commonly used base 64, base 32, and base 16 encoding schemes. It also discusses the use of line-feeds in encoded data, use of padding in encoded data, use of non-alphabet characters in encoded data, use of different encoding alphabets, and canonical encodings.},
+  added-at = {2009-01-14T00:43:43.000+0100},
+  author = {Josefsson, Simon},
+  biburl = {http://www.bibsonomy.org/bibtex/2f9656164ff65d520c780d9d6e2512f72/dret},
+  description = {dret'd bibliography},
+  howpublished = {Internet RFC 4648},
+  interhash = {0c61dcee0df58c2c0a40a04bd2705483},
+  intrahash = {f9656164ff65d520c780d9d6e2512f72},
+  keywords = {imported},
+  month = {October},
+  timestamp = {2009-01-14T00:43:43.000+0100},
+  title = {The Base16, Base32, and Base64 Data Encodings},
+  topic = {base16[0.9] base32[1] base64[1]},
+  updates = {rfc3548},
+  year = 2006
+}
+
+
+@inproceedings{Schlosser:2002:HHO:1756247.1756261,
+ author = {Schlosser, Mario and Sintek, Michael and Decker, Stefan and Nejdl, Wolfgang},
+ title = {HyperCuP: hypercubes, ontologies, and efficient search on peer-to-peer networks},
+ booktitle = {Proceedings of the 1st international conference on Agents and peer-to-peer computing},
+ series = {AP2PC'02},
+ year = {2003},
+ isbn = {3-540-40538-0},
+ location = {Bologna, Italy},
+ pages = {112--124},
+ numpages = {13},
+ url = {http://dl.acm.org/citation.cfm?id=1756247.1756261},
+ acmid = {1756261},
+ publisher = {Springer-Verlag},
+ address = {Berlin, Heidelberg},
+}
+
+@misc{citeulike:92971,
+    abstract = {{Koorde
+
+
+
+is a new distributed hash table (DHT) based
+on Chord [15] and the de Bruijn graphs [2]. While
+inheriting the simplicity of Chord, Koorde meets
+various lower bounds, such as O(log n) hops per
+lookup request with only 2 neighbors per node
+(where n is the number of nodes in the DHT), and
+O(log n/ log log n) hops per lookup request with
+O(log n) neighbors per node.}},
+    author = {Kaashoek, M. and Karger, D.},
+    citeulike-article-id = {92971},
+    citeulike-linkout-0 = {http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.12.4430},
+    keywords = {debruijn, dht},
+    posted-at = {2009-01-14 18:12:14},
+    priority = {2},
+    title = {{Koorde: A simple degree-optimal distributed hash table}},
+    url = {http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.12.4430},
+    year = {2003}
+}
+
+
+
+@ARTICLE{1258114, 
+author={Zhao, B.Y. and Ling Huang and Stribling, J. and Rhea, S.C. and Joseph, A.D. and Kubiatowicz, J.D.}, 
+journal={Selected Areas in Communications, IEEE Journal on}, 
+title={Tapestry: a resilient global-scale overlay for service deployment}, 
+year={2004}, 
+volume={22}, 
+number={1}, 
+pages={41-53}, 
+keywords={Internet;application program interfaces;telecommunication computing;telecommunication network routing;telecommunication services;Internet;PlanetLab;Tapestry;applications programming interface;decentralized object location and routing;decentralized routing;localized resources;overlay networks;peer-to-peer overlay routing infrastructure;self-repairing routing layer;service deployment;soft-state-based routing layer;Availability;Delay;Engineering profession;Frequency;Internet;Peer to peer computing;Protocols;Resource virtualization;Routing;Testing}, 
+doi={10.1109/JSAC.2003.818784}, 
+ISSN={0733-8716},}
+
+@article{citeulike:2342309,
+    abstract = {{A numerically stable and fairly fast scheme is described to compute the unitary matrices \$U\$ and \$V\$ which transform a given matrix \$A\$ into a diagonal form \$\\Sigma = U^ * AV\$, thus exhibiting \$A\$'s singular values on \$\\Sigma \$'s diagonal. The scheme first transforms \$A\$ to a bidiagonal matrix \$J\$, then diagonalizes \$J\$. The scheme described here is complicated but does not suffer from the computational difficulties which occasionally afflict some previously known methods. Some applications are mentioned, in particular the use of the pseudo-inverse \$A^I = V\\Sigma ^I U^* \$ to solve least squares problems in a way which dampens spurious oscillation and cancellation.}},
+    author = {Golub, G. and Kahan, W.},
+    citeulike-article-id = {2342309},
+    citeulike-linkout-0 = {http://dx.doi.org/10.1137/0702016},
+    citeulike-linkout-1 = {http://www.jstor.org/view/0887459x/di976138/97p0037c/0},
+    citeulike-linkout-2 = {http://scitation.aip.org/getabs/servlet/GetabsServlet?prog=normal\&\#38;id=SJNAAM000002000002000205000001\&\#38;idtype=cvips\&\#38;gifs=yes},
+    citeulike-linkout-3 = {http://scitation.aip.org/getabs/servlet/GetabsServlet?prog=normal\&id=SJNAAM000002000002000205000001\&idtype=cvips\&gifs=yes},
+    citeulike-linkout-4 = {http://link.aip.org/link/?SNA/2/205},
+    doi = {10.1137/0702016},
+    journal = {Journal of the Society for Industrial and Applied Mathematics, Series B: Numerical Analysis},
+    keywords = {algebra, numerical, svd},
+    number = {2},
+    pages = {205--224},
+    posted-at = {2008-02-06 15:25:22},
+    priority = {2},
+    publisher = {SIAM},
+    title = {{Calculating the Singular Values and Pseudo-Inverse of a Matrix}},
+    url = {http://scitation.aip.org/getabs/servlet/GetabsServlet?prog=normal\&id=SJNAAM000002000002000205000001\&idtype=cvips\&gifs=yes},
+    volume = {2},
+    year = {1965}
+}
+
+
+
+@INPROCEEDINGS{1662440, 
+author={Rabbat, M. and Haupt, J. and Singh, A. and Nowak, R.}, 
+booktitle={Information Processing in Sensor Networks, 2006. IPSN 2006. The Fifth International Conference on}, 
+title={Decentralized compression and predistribution via randomized gossiping}, 
+year={2006}, 
+pages={51-59}, 
+keywords={data compression;randomised algorithms;wireless sensor networks;decentralized data compression;predistribution;randomized gossiping algorithm;sensor data;wireless sensor network;Computer networks;Data compression;Data mining;Energy efficiency;Monitoring;Permission;Sensor systems;Signal processing algorithms;Transform coding;Wireless sensor networks;Random projections;decentralized compression;predistribution in sensor networks}, 
+doi={10.1109/IPSN.2006.244056},}
+
+@inproceedings{Jurca:2009:CHL:1688933.1688991,
+ author = {Jurca, Dan and Stadler, Rolf},
+ title = {Computing histograms of local variables for real-time monitoring using aggregation trees},
+ booktitle = {Proceedings of the 11th IFIP/IEEE international conference on Symposium on Integrated Network Management},
+ series = {IM'09},
+ year = {2009},
+ isbn = {978-1-4244-3486-2},
+ location = {New York, NY, USA},
+ pages = {367--374},
+ numpages = {8},
+ url = {http://dl.acm.org/citation.cfm?id=1688933.1688991},
+ acmid = {1688991},
+ publisher = {IEEE Press},
+ address = {Piscataway, NJ, USA},
+}
+
+@rfc{Eastlake:2001:USH:RFC3174,
+ author = {Eastlake,3rd, D. and Jones, P.},
+ title = {US Secure Hash Algorithm 1 (SHA1)},
+ year = {2001},
+ publisher = {RFC Editor},
+ address = {United States},
+}
+
+@article{kunegis2007spectral,
+  title={On the Spectral Evolution of Large Networks},
+  author={Kunegis, J{\'e}r{\^o}me and others},
+  year={2007}
+}
+
+@article{chien2003malicious,
+  title={Malicious threats of peer-to-peer networking},
+  author={Chien, Eric}
+}
+
+@book{luenberger1979introduction,
+  title={Introduction to Dynamic Systems},
+  author={Luenberger, D.G.},
+  url={http://books.google.co.uk/books?id=OtK-MgEACAAJ},
+  year={1979}
+}
+
+@incollection{Castro:2003:TRS:1809315.1809337,
+ author = {Castro, Miguel and Druschel, Peter and Hu, Y. Charlie and Rowstron, Antony},
+ chapter = {Topology-aware routing in structured peer-to-peer overlay networks},
+ title = {Future directions in distributed computing},
+ editor = {Schiper, Andr{\'e} and Shvartsman, Alex A. and Weatherspoon, Hakim and Zhao, Ben Y.},
+ year = {2003},
+ isbn = {3-540-00912-4},
+ pages = {103--107},
+ numpages = {5},
+ url = {http://dl.acm.org/citation.cfm?id=1809315.1809337},
+ acmid = {1809337},
+ publisher = {Springer-Verlag},
+ address = {Berlin, Heidelberg},
+}
+
+@inproceedings{Sauerwald:2007:MEE:1781574.1781600,
+ author = {Sauerwald, Thomas},
+ title = {On mixing and edge expansion properties in randomized broadcasting},
+ booktitle = {Proceedings of the 18th international conference on Algorithms and computation},
+ series = {ISAAC'07},
+ year = {2007},
+ isbn = {3-540-77118-2, 978-3-540-77118-0},
+ location = {Sendai, Japan},
+ pages = {196--207},
+ numpages = {12},
+ url = {http://dl.acm.org/citation.cfm?id=1781574.1781600},
+ acmid = {1781600},
+ publisher = {Springer-Verlag},
+ address = {Berlin, Heidelberg},
+}
+
+@inproceedings{Datta:2007:UDS:1270387.1270884,
+ author = {Datta, Souptik and Kargupta, Hillol},
+ title = {Uniform Data Sampling from a Peer-to-Peer Network},
+ booktitle = {Proceedings of the 27th International Conference on Distributed Computing Systems},
+ series = {ICDCS '07},
+ year = {2007},
+ isbn = {0-7695-2837-3},
+ pages = {50--},
+ url = {http://dl.acm.org/citation.cfm?id=1270387.1270884},
+ acmid = {1270884},
+ publisher = {IEEE Computer Society},
+ address = {Washington, DC, USA},
+}
+
+@book{Motwani:1995:RA:211390,
+ author = {Motwani, Rajeev and Raghavan, Prabhakar},
+ title = {Randomized algorithms},
+ year = {1995},
+ isbn = {0-521-47465-5, 9780521474658},
+ publisher = {Cambridge University Press},
+ address = {New York, NY, USA},
+} 
+
+@INPROCEEDINGS{4146697, 
+author={Rasti, A.H. and Stutzbach, D. and Rejaie, R.}, 
+booktitle={INFOCOM 2006. 25th IEEE International Conference on Computer Communications. Proceedings}, 
+title={On the Long-term Evolution of the Two-Tier Gnutella Overlay}, 
+year={2006}, 
+pages={1-6}, 
+keywords={peer-to-peer computing;peer-to-peer file sharing applications;two-tier Gnutella overlay;Application software;Continents;Information science;Internet;Network topology;Open source software;Peer to peer computing;Scalability;Software maintenance;Telecommunication traffic}, 
+doi={10.1109/INFOCOM.2006.44}, 
+ISSN={0743-166X},}
+
+@ARTICLE{Rose01onthe,
+    author = {M. T. Rose},
+    title = {On the design of application protocols},
+    journal = {RFC},
+    year = {2001}
+}
+
+@techreport{Kendall:1994:NDC:974938,
+ author = {Kendall, Samuel C. and Waldo, Jim and Wollrath, Ann and Wyant, Geoff},
+ title = {A Note on Distributed Computing},
+ year = {1994},
+ publisher = {Sun Microsystems, Inc.},
+ address = {Mountain View, CA, USA},
+} 
+
+@article{citeulike:915718,
+    abstract = {{Considering the urgency of the need for standards which would allow constitution of heterogeneous computer networks, ISO created a new subcommittee for "Open Systems Interconnection" (ISO/ TC97/SC 16) in 1977. The first priority of subcommittee 16 was to develop an architecture for open systems interconnection which could serve as a framework for the definition of standard protocols. As a result of 18 months of studies and discussions, SC16 adopted a layered architecture comprising seven layers (Physical, Data Link, Network, Transport, Session, Presentation, and Application). In July 1979 the specifications of this architecture, established by SC16, were passed under the name of "OSI Reference Model" to Technical Committee 97 "Data Processing" along with recommendations to start officially, on this basis, a set of protocols standardization projects to cover the most urgent needs. These recommendations were adopted by T.C97 at the end of 1979 as the basis for the following development of standards for Open Systems Interconnectlon within ISO. The OSI Reference Model was also recognized by CCITT Rapporteur's Group on "Layered Model for Public Data Network Services." This paper presents the model of architecture for Open Systems Interconnection developed by SC16. Some indications are also given on the initial set of protocols which will-likely be developed in this OSI Reference Model.}},
+    author = {Zimmermann, Hubert},
+    booktitle = {Communications, IEEE Transactions on},
+    citeulike-article-id = {915718},
+    citeulike-linkout-0 = {http://dx.doi.org/10.1109/TCOM.1980.1094702},
+    citeulike-linkout-1 = {http://ieeexplore.ieee.org/xpls/abs\_all.jsp?arnumber=1094702},
+    doi = {10.1109/TCOM.1980.1094702},
+    institution = {IRIA/Laboria, Rocquencourt, France},
+    issn = {0090-6778},
+    journal = {Communications, IEEE Transactions on},
+    keywords = {osi, transport},
+    month = apr,
+    number = {4},
+    pages = {425--432},
+    posted-at = {2008-09-23 02:19:26},
+    priority = {2},
+    publisher = {IEEE},
+    title = {{OSI Reference Model--The ISO Model of Architecture for Open Systems Interconnection}},
+    url = {http://dx.doi.org/10.1109/TCOM.1980.1094702},
+    volume = {28},
+    year = {1980}
+}
+
+@article{Chandra:1996:UFD:226643.226647,
+ author = {Chandra, Tushar Deepak and Toueg, Sam},
+ title = {Unreliable failure detectors for reliable distributed systems},
+ journal = {J. ACM},
+ issue_date = {March 1996},
+ volume = {43},
+ number = {2},
+ month = mar,
+ year = {1996},
+ issn = {0004-5411},
+ pages = {225--267},
+ numpages = {43},
+ url = {http://doi.acm.org/10.1145/226643.226647},
+ doi = {10.1145/226643.226647},
+ acmid = {226647},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {Byzantine Generals' problem, agreement problem, asynchronous systems, atomic broadcast, commit problem, consensus problem, crash failures, failure detection, fault-tolerance, message passing, partial synchrony, processor failures},
+}
+
+@INPROCEEDINGS{6195806, 
+author={Carzaniga, A. and Hall, C. and Papalini, M.}, 
+booktitle={INFOCOM, 2012 Proceedings IEEE}, 
+title={Fully decentralized estimation of some global properties of a network}, 
+year={2012}, 
+pages={630-638}, 
+keywords={eigenvalues and eigenfunctions;graph theory;matrix algebra;multivariable systems;network theory (graphs);overlay networks;peer-to-peer computing;random processes;search problems;spectral analysis;transient response;adjacency matrix;decentralized systems;descriptive matrix;eigenvalues;fully decentralized algorithm;fully decentralized estimation;global network property;global property;impulse response;linear dynamic system;local communication;local information;minimal local state communication;network graph;network instability;network mixing time;network spectrum;overlay network;peer-to-peer networks;random walks;search algorithms;spectral property;Approximation algorithms;Approximation methods;Eigenvalues and eigenfunctions;Estimation;Heuristic algorithms;Peer to peer computing;Vectors}, 
+doi={10.1109/INFCOM.2012.6195806}, 
+ISSN={0743-166X},}
+
+@book{parker2003mcgraw,
+  title={McGraw-Hill dictionary of scientific and technical terms},
+  author={Parker, S.P.},
+  isbn={9780070423138},
+  lccn={93034772},
+  series={MCGRAW HILL DICTIONARY OF SCIENTIFIC AND TECHNICAL TERMS},
+  url={http://books.google.co.uk/books?id=xOPzO5HVFfEC},
+  year={2003},
+  publisher={McGraw-Hill}
+}
+
+@article{Stoica:2001:CSP:964723.383071,
+ author = {Stoica, Ion and Morris, Robert and Karger, David and Kaashoek, M. Frans and Balakrishnan, Hari},
+ title = {Chord: A scalable peer-to-peer lookup service for internet applications},
+ journal = {SIGCOMM Comput. Commun. Rev.},
+ issue_date = {October 2001},
+ volume = {31},
+ number = {4},
+ month = aug,
+ year = {2001},
+ issn = {0146-4833},
+ pages = {149--160},
+ numpages = {12},
+ url = {http://doi.acm.org/10.1145/964723.383071},
+ doi = {10.1145/964723.383071},
+ acmid = {383071},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+}
+
+@inproceedings{Rowstron:2001:PSD:646591.697650,
+ author = {Rowstron, Antony I. T. and Druschel, Peter},
+ title = {Pastry: Scalable, Decentralized Object Location, and Routing for Large-Scale Peer-to-Peer Systems},
+ booktitle = {Proceedings of the IFIP/ACM International Conference on Distributed Systems Platforms Heidelberg},
+ series = {Middleware '01},
+ year = {2001},
+ isbn = {3-540-42800-3},
+ pages = {329--350},
+ numpages = {22},
+ url = {http://dl.acm.org/citation.cfm?id=646591.697650},
+ acmid = {697650},
+ publisher = {Springer-Verlag},
+ address = {London, UK, UK},
+}
+
+@inproceedings{Makhloufi:2009:DAP:1692742.1692756,
+ author = {Makhloufi, Rafik and Bonnet, Gr{\'e}gory and Doyen, Guillaume and Ga\"{\i}ti, Dominique},
+ title = {Decentralized Aggregation Protocols in Peer-to-Peer Networks: A Survey},
+ booktitle = {Proceedings of the 4th IEEE International Workshop on Modelling Autonomic Communications Environments},
+ series = {MACE '09},
+ year = {2009},
+ isbn = {978-3-642-05005-3},
+ location = {Venice, Italy},
+ pages = {111--116},
+ numpages = {6},
+ url = {http://dx.doi.org/10.1007/978-3-642-05006-0_10},
+ doi = {10.1007/978-3-642-05006-0_10},
+ acmid = {1692756},
+ publisher = {Springer-Verlag},
+ address = {Berlin, Heidelberg},
+ keywords = {Peer-to-Peer decentralized monitoring, aggregation protocols, gossip-based protocols, tree-based protocols},
+}
+
+@inproceedings{Kempe:2003:GCA:946243.946317,
+ author = {Kempe, David and Dobra, Alin and Gehrke, Johannes},
+ title = {Gossip-Based Computation of Aggregate Information},
+ booktitle = {Proceedings of the 44th Annual IEEE Symposium on Foundations of Computer Science},
+ series = {FOCS '03},
+ year = {2003},
+ isbn = {0-7695-2040-5},
+ pages = {482--},
+ url = {http://dl.acm.org/citation.cfm?id=946243.946317},
+ acmid = {946317},
+ publisher = {IEEE Computer Society},
+ address = {Washington, DC, USA},
+} 
+
+@article{Kempe:2004:SGR:1039488.1039491,
+ author = {Kempe, David and Kleinberg, Jon and Demers, Alan},
+ title = {Spatial gossip and resource location protocols},
+ journal = {J. ACM},
+ issue_date = {November 2004},
+ volume = {51},
+ number = {6},
+ month = nov,
+ year = {2004},
+ issn = {0004-5411},
+ pages = {943--967},
+ numpages = {25},
+ url = {http://doi.acm.org/10.1145/1039488.1039491},
+ doi = {10.1145/1039488.1039491},
+ acmid = {1039491},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {Gossip, decentralized algorithm, resource location},
+} 
+
+@inproceedings{Rabbat:2007:SGA:1524876.1525177,
+ author = {Rabbat, Michael G.},
+ title = {On Spatial Gossip Algorithms for Average Consensus},
+ booktitle = {Proceedings of the 2007 IEEE/SP 14th Workshop on Statistical Signal Processing},
+ series = {SSP '07},
+ year = {2007},
+ isbn = {978-1-4244-1197-9},
+ pages = {705--709},
+ numpages = {5},
+ url = {http://dx.doi.org/10.1109/SSP.2007.4301350},
+ doi = {10.1109/SSP.2007.4301350},
+ acmid = {1525177},
+ publisher = {IEEE Computer Society},
+ address = {Washington, DC, USA},
+}
+
+@TECHREPORT{Bawa03estimatingaggregates,
+    author = {Mayank Bawa and Hector Garcia-molina and Aristides Gionis and Rajeev Motwani},
+    title = {Estimating aggregates on a peer-to-peer network},
+    institution = {},
+    year = {2003}
+}
+
+@INPROCEEDINGS{Dam05ageneric,
+    author = {Mads Dam and Rolf Stadler},
+    title = {A generic protocol for network state aggregation},
+    booktitle = {In Proc. Radiovetenskap och Kommunikation (RVK},
+    year = {2005},
+    pages = {14--16}
+}
+
+@inproceedings{Massoulie:2006:PCS:1146381.1146402,
+ author = {Massouli{\'e}, Laurent and Le Merrer, Erwan and Kermarrec, Anne-Marie and Ganesh, Ayalvadi},
+ title = {Peer counting and sampling in overlay networks: random walk methods},
+ booktitle = {Proceedings of the twenty-fifth annual ACM symposium on Principles of distributed computing},
+ series = {PODC '06},
+ year = {2006},
+ isbn = {1-59593-384-0},
+ location = {Denver, Colorado, USA},
+ pages = {123--132},
+ numpages = {10},
+ url = {http://doi.acm.org/10.1145/1146381.1146402},
+ doi = {10.1145/1146381.1146402},
+ acmid = {1146402},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {expander graphs, peer-to-peer systems, random walks, sampling},
+}
+
+@inproceedings{Kempe:2004:DAS:1007352.1007438,
+ author = {Kempe, David and McSherry, Frank},
+ title = {A decentralized algorithm for spectral analysis},
+ booktitle = {Proceedings of the thirty-sixth annual ACM symposium on Theory of computing},
+ series = {STOC '04},
+ year = {2004},
+ isbn = {1-58113-852-0},
+ location = {Chicago, IL, USA},
+ pages = {561--568},
+ numpages = {8},
+ url = {http://doi.acm.org/10.1145/1007352.1007438},
+ doi = {10.1145/1007352.1007438},
+ acmid = {1007438},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {Markov chain, decentralized algorithm, eigenvectors, large networks, spectral analysis},
+} 
+
+@inproceedings{Kamvar:2003:EAR:775152.775242,
+ author = {Kamvar, Sepandar D. and Schlosser, Mario T. and Garcia-Molina, Hector},
+ title = {The Eigentrust algorithm for reputation management in P2P networks},
+ booktitle = {Proceedings of the 12th international conference on World Wide Web},
+ series = {WWW '03},
+ year = {2003},
+ isbn = {1-58113-680-3},
+ location = {Budapest, Hungary},
+ pages = {640--651},
+ numpages = {12},
+ url = {http://doi.acm.org/10.1145/775152.775242},
+ doi = {10.1145/775152.775242},
+ acmid = {775242},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {distributed eigenvector computation, peer-to-peer, reputation},
+}
+
+@inproceedings{Snader:2009:ESP:1855663.1855672,
+ author = {Snader, Robin and Borisov, Nikita},
+ title = {EigenSpeed: secure peer-to-peer bandwidth evaluation},
+ booktitle = {Proceedings of the 8th international conference on Peer-to-peer systems},
+ series = {IPTPS'09},
+ year = {2009},
+ location = {Boston, MA},
+ pages = {9--9},
+ numpages = {1},
+ url = {http://dl.acm.org/citation.cfm?id=1855663.1855672},
+ acmid = {1855672},
+ publisher = {USENIX Association},
+ address = {Berkeley, CA, USA},
+} 
+
+@article{1992040,
+author = {S. Y. Kung},
+title = {{A New Identification and Model Reduction Algorithm via Singular Value Decomposition}},
+year = {1978},
+masid = {1992040}
+}
+
+@ARTICLE{1164997, 
+author={Pitstick, G. and Cruz, J. and Mulholland, Robert J.}, 
+journal={Acoustics, Speech and Signal Processing, IEEE Transactions on}, 
+title={Approximate realization algorithms for truncated impulse response data}, 
+year={1986}, 
+volume={34}, 
+number={6}, 
+pages={1583-1588}, 
+keywords={Controllability;Deconvolution;Energy resources;Equations;Filters;Matrix decomposition;Observability;Signal processing algorithms;Singular value decomposition;Stability}, 
+doi={10.1109/TASSP.1986.1164997}, 
+ISSN={0096-3518},}

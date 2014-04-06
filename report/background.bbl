@@ -1,0 +1,130 @@
+\begin{thebibliography}{10}
+
+\bibitem{Bawa03estimatingaggregates}
+Mayank Bawa, Hector Garcia-molina, Aristides Gionis, and Rajeev Motwani.
+\newblock Estimating aggregates on a peer-to-peer network.
+\newblock Technical report, 2003.
+
+\bibitem{6195806}
+A.~Carzaniga, C.~Hall, and M.~Papalini.
+\newblock Fully decentralized estimation of some global properties of a
+  network.
+\newblock In {\em INFOCOM, 2012 Proceedings IEEE}, pages 630--638, 2012.
+
+\bibitem{Chandra:1996:UFD:226643.226647}
+Tushar~Deepak Chandra and Sam Toueg.
+\newblock Unreliable failure detectors for reliable distributed systems.
+\newblock {\em J. ACM}, 43(2):225--267, March 1996.
+
+\bibitem{Dam05ageneric}
+Mads Dam and Rolf Stadler.
+\newblock A generic protocol for network state aggregation.
+\newblock In {\em In Proc. Radiovetenskap och Kommunikation (RVK}, pages
+  14--16, 2005.
+
+\bibitem{Kamvar:2003:EAR:775152.775242}
+Sepandar~D. Kamvar, Mario~T. Schlosser, and Hector Garcia-Molina.
+\newblock The eigentrust algorithm for reputation management in p2p networks.
+\newblock In {\em Proceedings of the 12th international conference on World
+  Wide Web}, WWW '03, pages 640--651, New York, NY, USA, 2003. ACM.
+
+\bibitem{Kempe:2003:GCA:946243.946317}
+David Kempe, Alin Dobra, and Johannes Gehrke.
+\newblock Gossip-based computation of aggregate information.
+\newblock In {\em Proceedings of the 44th Annual IEEE Symposium on Foundations
+  of Computer Science}, FOCS '03, pages 482--, Washington, DC, USA, 2003. IEEE
+  Computer Society.
+
+\bibitem{Kempe:2004:SGR:1039488.1039491}
+David Kempe, Jon Kleinberg, and Alan Demers.
+\newblock Spatial gossip and resource location protocols.
+\newblock {\em J. ACM}, 51(6):943--967, November 2004.
+
+\bibitem{Kempe:2004:DAS:1007352.1007438}
+David Kempe and Frank McSherry.
+\newblock A decentralized algorithm for spectral analysis.
+\newblock In {\em Proceedings of the thirty-sixth annual ACM symposium on
+  Theory of computing}, STOC '04, pages 561--568, New York, NY, USA, 2004. ACM.
+
+\bibitem{Kendall:1994:NDC:974938}
+Samuel~C. Kendall, Jim Waldo, Ann Wollrath, and Geoff Wyant.
+\newblock A note on distributed computing.
+\newblock Technical report, Mountain View, CA, USA, 1994.
+
+\bibitem{1992040}
+S.~Y. Kung.
+\newblock {A New Identification and Model Reduction Algorithm via Singular
+  Value Decomposition}.
+\newblock 1978.
+
+\bibitem{Makhloufi:2009:DAP:1692742.1692756}
+Rafik Makhloufi, Gr{\'e}gory Bonnet, Guillaume Doyen, and Dominique Ga\"{\i}ti.
+\newblock Decentralized aggregation protocols in peer-to-peer networks: A
+  survey.
+\newblock In {\em Proceedings of the 4th IEEE International Workshop on
+  Modelling Autonomic Communications Environments}, MACE '09, pages 111--116,
+  Berlin, Heidelberg, 2009. Springer-Verlag.
+
+\bibitem{Massoulie:2006:PCS:1146381.1146402}
+Laurent Massouli{\'e}, Erwan Le~Merrer, Anne-Marie Kermarrec, and Ayalvadi
+  Ganesh.
+\newblock Peer counting and sampling in overlay networks: random walk methods.
+\newblock In {\em Proceedings of the twenty-fifth annual ACM symposium on
+  Principles of distributed computing}, PODC '06, pages 123--132, New York, NY,
+  USA, 2006. ACM.
+
+\bibitem{parker2003mcgraw}
+S.P. Parker.
+\newblock {\em McGraw-Hill dictionary of scientific and technical terms}.
+\newblock MCGRAW HILL DICTIONARY OF SCIENTIFIC AND TECHNICAL TERMS.
+  McGraw-Hill, 2003.
+
+\bibitem{1164997}
+G.~Pitstick, J.~Cruz, and Robert~J. Mulholland.
+\newblock Approximate realization algorithms for truncated impulse response
+  data.
+\newblock {\em Acoustics, Speech and Signal Processing, IEEE Transactions on},
+  34(6):1583--1588, 1986.
+
+\bibitem{Rabbat:2007:SGA:1524876.1525177}
+Michael~G. Rabbat.
+\newblock On spatial gossip algorithms for average consensus.
+\newblock In {\em Proceedings of the 2007 IEEE/SP 14th Workshop on Statistical
+  Signal Processing}, SSP '07, pages 705--709, Washington, DC, USA, 2007. IEEE
+  Computer Society.
+
+\bibitem{Rose01onthe}
+M.~T. Rose.
+\newblock On the design of application protocols.
+\newblock {\em RFC}, 2001.
+
+\bibitem{Rowstron:2001:PSD:646591.697650}
+Antony I.~T. Rowstron and Peter Druschel.
+\newblock Pastry: Scalable, decentralized object location, and routing for
+  large-scale peer-to-peer systems.
+\newblock In {\em Proceedings of the IFIP/ACM International Conference on
+  Distributed Systems Platforms Heidelberg}, Middleware '01, pages 329--350,
+  London, UK, UK, 2001. Springer-Verlag.
+
+\bibitem{Snader:2009:ESP:1855663.1855672}
+Robin Snader and Nikita Borisov.
+\newblock Eigenspeed: secure peer-to-peer bandwidth evaluation.
+\newblock In {\em Proceedings of the 8th international conference on
+  Peer-to-peer systems}, IPTPS'09, pages 9--9, Berkeley, CA, USA, 2009. USENIX
+  Association.
+
+\bibitem{Stoica:2001:CSP:964723.383071}
+Ion Stoica, Robert Morris, David Karger, M.~Frans Kaashoek, and Hari
+  Balakrishnan.
+\newblock Chord: A scalable peer-to-peer lookup service for internet
+  applications.
+\newblock {\em SIGCOMM Comput. Commun. Rev.}, 31(4):149--160, August 2001.
+
+\bibitem{citeulike:915718}
+Hubert Zimmermann.
+\newblock {OSI Reference Model--The ISO Model of Architecture for Open Systems
+  Interconnection}.
+\newblock {\em Communications, IEEE Transactions on}, 28(4):425--432, April
+  1980.
+
+\end{thebibliography}

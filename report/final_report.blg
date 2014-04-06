@@ -1,0 +1,63 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Arch Linux)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: final_report.aux
+The style file: plain.bst
+Database file #1: bibl.bib
+Warning--entry type for "Leach2005" isn't style-file defined
+--line 75 of file bibl.bib
+Warning--entry type for "Eastlake:2001:USH:RFC3174" isn't style-file defined
+--line 214 of file bibl.bib
+Warning--to sort, need author or key in Chordless
+Warning--to sort, need author or key in citeulike:10520984
+Warning--empty author in citeulike:10520984
+Warning--empty journal in citeulike:10520984
+Warning--empty institution in Bawa03estimatingaggregates
+Warning--empty booktitle in Castro:2003:TRS:1809315.1809337
+Warning--empty journal in chien2003malicious
+Warning--empty year in chien2003malicious
+Warning--empty institution in Kendall:1994:NDC:974938
+Warning--empty journal in kunegis2007spectral
+Warning--empty journal in 1992040
+Warning--empty publisher in luenberger1979introduction
+You've used 41 entries,
+            2118 wiz_defined-function locations,
+            754 strings with 11915 characters,
+and the built_in function-call counts, 14216 in all, are:
+= -- 1450
+> -- 593
+< -- 17
++ -- 239
+- -- 194
+* -- 903
+:= -- 2244
+add.period$ -- 132
+call.type$ -- 41
+change.case$ -- 219
+chr.to.int$ -- 0
+cite$ -- 53
+duplicate$ -- 593
+empty$ -- 1151
+format.name$ -- 194
+if$ -- 3113
+int.to.chr$ -- 0
+int.to.str$ -- 41
+missing$ -- 34
+newline$ -- 203
+num.names$ -- 78
+pop$ -- 270
+preamble$ -- 1
+purify$ -- 178
+quote$ -- 0
+skip$ -- 467
+stack$ -- 0
+substring$ -- 813
+swap$ -- 169
+text.length$ -- 17
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 158
+warning$ -- 12
+while$ -- 135
+width$ -- 43
+write$ -- 461
+(There were 14 warnings)

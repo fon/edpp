@@ -1,0 +1,21 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Information stored in an \textit {Execution}. On the right column are the expected results\relax }}{32}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Information stored in a \textit {Session}\relax }}{32}
+\contentsline {table}{\numberline {3.3}{\ignorespaces Contents of the \textit {INIT} message\relax }}{34}
+\contentsline {table}{\numberline {3.4}{\ignorespaces Contents of the \textit {NEXT} message\relax }}{36}
+\contentsline {table}{\numberline {3.5}{\ignorespaces Contents of the \textit {INIT} message\relax }}{38}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Representation of Pastry ids in their original form (hex) and through the \texttt {Id} wrapper \relax }}{48}
+\contentsline {table}{\numberline {5.2}{\ignorespaces Eigenvalue proposals of different sizes made by 3 nodes and their median. Only the three largest eigenvalues will be computed, since the second proposal does not have a fourth eigenvalue \relax }}{51}
+\contentsline {table}{\numberline {5.3}{\ignorespaces Table of pending a received values for \textit {Execution} $x$\relax }}{63}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces Number of out-neighbors per node for networks of different sizes\relax }}{72}
+\contentsline {table}{\numberline {6.2}{\ignorespaces Parameters related to the failure rate and a \textit {Session}'s total execution time\relax }}{79}
+\contentsline {subtable}{\numberline {(a)}{\ignorespaces {Total number of rounds and total time of execution for \textit {Sessions} with multiple \textit {Executions}}}}{79}
+\contentsline {subtable}{\numberline {(b)}{\ignorespaces {Number of introduced failures for various failure rates}}}{79}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

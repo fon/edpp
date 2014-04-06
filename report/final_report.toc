@@ -1,0 +1,58 @@
+\contentsline {chapter}{\numberline {1}Introduction}{11}
+\contentsline {section}{\numberline {1.1}Motivation}{11}
+\contentsline {section}{\numberline {1.2}Contributions}{12}
+\contentsline {section}{\numberline {1.3}Report Structure}{12}
+\contentsline {chapter}{\numberline {2}Background}{13}
+\contentsline {section}{\numberline {2.1}Important Networking Concepts and Technologies}{13}
+\contentsline {subsection}{\numberline {2.1.1}Decentralized Networks}{13}
+\contentsline {subsection}{\numberline {2.1.2}Network Overlays}{14}
+\contentsline {subsection}{\numberline {2.1.3}Chord and Pastry}{15}
+\contentsline {section}{\numberline {2.2}Related Work}{18}
+\contentsline {subsection}{\numberline {2.2.1}Aggregation Algorithms}{18}
+\contentsline {subsection}{\numberline {2.2.2}Sampling Algorithms}{20}
+\contentsline {subsection}{\numberline {2.2.3}Spectral Computation Algorithms }{21}
+\contentsline {section}{\numberline {2.3}A Decentralized Algorithm for Estimation of Global Properties}{22}
+\contentsline {subsection}{\numberline {2.3.1}Dynamic Systems}{22}
+\contentsline {subsubsection}{Kung's Realization Algorithm}{23}
+\contentsline {subsection}{\numberline {2.3.2}Algorithm Overview}{24}
+\contentsline {subsection}{\numberline {2.3.3}Evaluation results and Limitations}{26}
+\contentsline {chapter}{\numberline {3}Protocol Design}{27}
+\contentsline {section}{\numberline {3.1}Model Assumptions}{27}
+\contentsline {section}{\numberline {3.2}Design Requirements}{30}
+\contentsline {subsection}{\numberline {3.2.1}Additional Considerations}{31}
+\contentsline {section}{\numberline {3.3}In-depth Protocol Analysis}{31}
+\contentsline {subsection}{\numberline {3.3.1}Definitions}{32}
+\contentsline {subsection}{\numberline {3.3.2}Protocol Description}{32}
+\contentsline {chapter}{\numberline {4}Software Architecture}{41}
+\contentsline {section}{\numberline {4.1}General overview}{41}
+\contentsline {section}{\numberline {4.2}Components}{44}
+\contentsline {chapter}{\numberline {5}Implementation}{47}
+\contentsline {section}{\numberline {5.1}Protocol Components}{47}
+\contentsline {subsection}{\numberline {5.1.1}Basic Domain Classes and Data Structures}{47}
+\contentsline {subsection}{\numberline {5.1.2}Integration Layer}{52}
+\contentsline {subsection}{\numberline {5.1.3}Communications}{55}
+\contentsline {subsection}{\numberline {5.1.4}Algorithms and Analysis}{60}
+\contentsline {subsection}{\numberline {5.1.5}Protocol Core}{61}
+\contentsline {subsection}{\numberline {5.1.6}Storage}{68}
+\contentsline {section}{\numberline {5.2}Protocol Evaluator}{68}
+\contentsline {section}{\numberline {5.3}Deployment and Documentation}{70}
+\contentsline {section}{\numberline {5.4}Summary}{70}
+\contentsline {chapter}{\numberline {6}Evaluation}{71}
+\contentsline {section}{\numberline {6.1}Experimental Setup}{71}
+\contentsline {section}{\numberline {6.2}Evaluation of Requirements}{73}
+\contentsline {subsection}{\numberline {6.2.1}Correctness}{73}
+\contentsline {subsection}{\numberline {6.2.2}Robustness}{76}
+\contentsline {subsection}{\numberline {6.2.3}Complexity and Termination}{80}
+\contentsline {subsection}{\numberline {6.2.4}Extensibility and Efficiency}{81}
+\contentsline {section}{\numberline {6.3}Sampling Application}{82}
+\contentsline {section}{\numberline {6.4}Limitations}{84}
+\contentsline {chapter}{\numberline {7}Conclusion}{85}
+\contentsline {section}{\numberline {7.1}Future Work}{86}
+\contentsline {chapter}{Appendices}{91}
+\contentsline {chapter}{\numberline {A}Node interface and connector classes for Pastry and Chord}{93}
+\contentsline {section}{\numberline {A.1}Node interface}{93}
+\contentsline {section}{\numberline {A.2}Pastry}{94}
+\contentsline {section}{\numberline {A.3}Chord}{96}
+\contentsline {chapter}{\numberline {B}Detailed design of the impulse response protocol}{97}
+\contentsline {section}{\numberline {B.1}List of packages and classes}{97}
+\contentsline {section}{\numberline {B.2}Dependency graph}{99}

@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2012/Arch Linux)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: background.aux
+The style file: plain.bst
+Database file #1: bibl.bib
+Warning--empty institution in Bawa03estimatingaggregates
+Warning--empty institution in Kendall:1994:NDC:974938
+Warning--empty journal in 1992040
+You've used 20 entries,
+            2118 wiz_defined-function locations,
+            644 strings with 8388 characters,
+and the built_in function-call counts, 7734 in all, are:
+= -- 814
+> -- 310
+< -- 10
++ -- 126
+- -- 102
+* -- 513
+:= -- 1217
+add.period$ -- 69
+call.type$ -- 20
+change.case$ -- 112
+chr.to.int$ -- 0
+cite$ -- 23
+duplicate$ -- 327
+empty$ -- 606
+format.name$ -- 102
+if$ -- 1697
+int.to.chr$ -- 0
+int.to.str$ -- 20
+missing$ -- 19
+newline$ -- 103
+num.names$ -- 40
+pop$ -- 110
+preamble$ -- 1
+purify$ -- 91
+quote$ -- 0
+skip$ -- 252
+stack$ -- 0
+substring$ -- 514
+swap$ -- 103
+text.length$ -- 10
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 78
+warning$ -- 3
+while$ -- 78
+width$ -- 22
+write$ -- 242
+(There were 3 warnings)
